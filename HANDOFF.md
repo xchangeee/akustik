@@ -1,12 +1,12 @@
 # Handoff: measurement session status
 
-Last updated: 2026-11-17 (end of first setup session).
+Last updated: 2026-11-18 (Phase E done).
 Read this first, then [room-acoustics-context.md](room-acoustics-context.md) (room, gear, goals, measurement plan)
 and [measurement-prep-checklist.md](measurement-prep-checklist.md) (step-by-step setup; ticked = done, with dated results).
 
 ## Where we are
 
-Setup phases 1–4 and A–D of the checklist are done. **Next step: Phase E (SPL calibration), then Phase F (first sweeps).**
+Setup phases 1–4 and A–E of the checklist are done (SPL calibration verified 2026-11-18). **Next step: Phase F (first sweeps).**
 No real sweep measurements of the speakers exist yet.
 
 ## Current physical setup (as wired now)
@@ -49,24 +49,25 @@ Pink periodic −24 dBFS, mic centred:
 | L (out 1) | 89.1 dB(C) | 73–74 dB(C) | −16.7 dBFS |
 | R (out 2) | 91.4 dB(C) | 75–76 dB(C) | −15.5 dBFS |
 
-REW reads ~16 dB high on both channels, consistently. Phase E corrects this.
+(Those REW numbers were before calibration. Phase E done 2026-11-18: REW now matches the iPhone within 1 dB; input clips at ~105 dB SPL.)
 
 ## Findings so far
 
 - **Cal files** came from the seller as JustOct `.cal` (in `MM1CBP_allein_Xd/`, untouched originals, plus a plot and the seller's REW test file). Converted to REW format in `cal/`. Mic rolls off below 60 Hz (−3.5 dB at 20 Hz, −11 dB at 10 Hz); sensitivity 3.7 mV/Pa. Only one mic, so no serial check needed.
 - **Loopback** (Out 3 → In 2): flat within 0.2 dB 20 Hz–20 kHz. No soundcard cal file needed.
 - **Noise / hum:** quiet room fine; with amp on at listening volume no new hum, only a small bump near 50 Hz far below signal level.
-- **R speaker ~2.3 dB louder than L.** Not the mic position (re-centred), not the interface/DSP/adapters/cables (swap test 1: swapped DSP outs), not the amp (swap test 2: swapped speaker cables). **Cause: the right speaker itself or the room around it.** Tell apart with 1 m on-axis gated sweeps of each speaker and close-up woofer measurements. Fix either way: DSP output gain per channel (after the sweeps).
+- **R speaker ~2.3 dB louder than L.** Not the mic position (re-centred), not the interface/DSP/adapters/cables (swap test 1: swapped DSP outs), not the amp (swap test 2: swapped speaker cables). **Cause: the right speaker itself or the room around it.** 2026-11-18: band-limited noise shows the excess is in the bass only (30–80 Hz: R +5.6 dB; 500–2000 Hz: R −0.8 dB), pointing to room/boundary or R's woofer/port. Tell apart with 1 m on-axis gated sweeps of each speaker and close-up woofer measurements. Fix either way: DSP output gain per channel (after the sweeps).
 - Speaker cables are back to normal (amp L → left speaker), confirmed.
 
 ## Next steps
 
-1. **Phase E:** REW RTA "Calibrate level" (or SPL meter → Calibrate), left speaker only, read the iPhone (C-weighted, slow, next to the capsule) **while REW's own calibration signal plays**, enter it. Check afterwards: pink noise on L should read ~73–74 dB(C) in the RTA.
+1. ~~Phase E~~ done 2026-11-18.
 2. **Phase F:** first sweeps L and R at the seat, timing reference = Loopback, −24 dBFS. Sanity checks in the checklist (impulse at t ≈ 0, same polarity, similar levels, no clipping).
 3. Then the full measurement plan in the context file (seat positions, corner, DJ spot, close-up woofer/port with the 0° file, electrical DSP check via In 3).
 
 ## Working with this user
 
+- Watch the generator's band radio buttons in their screenshots (Full range / Sub Cal / Speaker Cal): they were left on Sub Cal several times.
 - Communicates in short messages and screenshots of REW / the DSP GUI. Walk them through one step at a time, read the screenshots closely.
 - **Read what they write carefully and don't infer facts they didn't state.** An earlier misreading ("distance unchanged" taken as "left speaker didn't move") caused real frustration. If something is ambiguous, ask.
 - Keep the checklist updated with dated results as steps are done.

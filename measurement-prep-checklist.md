@@ -182,9 +182,13 @@ This is the part that answers "what level where". Work from the source forward.
 
 ## 11. Phase E: SPL calibration (optional, after levels are fixed)
 
-- [ ] SPL meter at the mic position, as close as possible to the mic capsule, same height.
-- [ ] REW: **SPL meter window → Calibrate**. Follow the dialog: REW plays pink noise; type in what your SPL meter shows (C-weighted).
-- [ ] Done. REW's dB numbers are now real dB SPL, valid while the gain knob stays where it is.
+Done 2026-11-18. REW reported input clipping at ~105 dB SPL (≈30 dB headroom at our ~74 dB). iPhone showed 87.6 dB(C) during REW's calibration signal (whether Sub Cal was selected during calibration is unconfirmed; the check below passed anyway).
+Check, pink random −24 dBFS, Speaker Cal (500–2000 Hz): REW L 74.6 / R 73.8 dB(C); iPhone C within 1 dB of REW. ✔
+
+- [x] SPL meter at the mic position, as close as possible to the mic capsule, same height.
+- [x] REW: **SPL meter window → Calibrate**. Follow the dialog: REW plays pink noise; type in what your SPL meter shows (C-weighted).
+- [x] Done. REW's dB numbers are now real dB SPL, valid while the gain knob stays where it is.
+- Side finding (calibrated REW, pink random −24 dBFS): Sub Cal 30–80 Hz L 76.2 / R 81.8 dB(C) (an earlier R reading was 77.1, unexplained); Speaker Cal 500–2000 Hz L 74.6 / R 73.8. **R's extra level is in the bass, not the mids.**
 - [ ] No SPL meter? Skip this. All the EQ work still works, the curves will just be shifted up or down.
 
 ## 12. Phase F: first real test measurement
