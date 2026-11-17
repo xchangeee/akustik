@@ -193,14 +193,21 @@ Check, pink random −24 dBFS, Speaker Cal (500–2000 Hz): REW L 74.6 / R 73.8 
 
 ## 12. Phase F: first real test measurement
 
-- [ ] Room quiet: windows closed, fridge/fans/dishwasher off if possible, phone on silent, you sitting still (or out of the room).
-- [ ] Measure **L only** at the main seat. Then **R only**.
-- [ ] Sanity checks (see "Measurement plan" in the context file):
-  - [ ] Impulse response starts at t ≈ 0 (timing reference works)
-  - [ ] L and R impulses have the same polarity (both main peaks point the same way)
-  - [ ] L and R are at similar levels
-  - [ ] Curve looks plausible: big peaks/dips in the bass are normal (room modes), the treble roughly falls gently
-  - [ ] No clipping warning from REW
+Done 2026-11-18 (REW measurements 3 = L, 4 = R; sweep 512k, 10 Hz–22.05 kHz, −24 dBFS, loopback timing, 90° cal file).
+
+- [x] Room quiet: windows closed, fridge/fans/dishwasher off if possible, phone on silent, you sitting still (or out of the room).
+- [x] Measure **L only** at the main seat. Then **R only**.
+- [x] Sanity checks (see "Measurement plan" in the context file):
+  - [x] Timing reference works: delay vs loopback L 9.284 ms (3.184 m), R 9.153 ms (3.139 m); difference 0.13 ms, so below the 0.2 ms threshold and no delay needed. (With loopback timing the peak sits at the acoustic delay, not at t = 0.)
+  - [x] Same polarity: both show a small spike up (+65 % L / +70 % R) and then the main spike down (−100 %).
+  - [x] Levels similar from 1 to 8 kHz (L 72–75, R 72–74 dB). **Bass differs a lot** (see below).
+  - [x] Curves plausible: treble falls gently (about 74 dB at 2–8 kHz to 66–68 dB at 20 kHz); big bass peaks/dips.
+  - [x] No clipping (peak input before clipping 105 dB SPL).
+- Readings (1/6 oct): L: peak ~85 dB @ ~42 Hz, hump ~82 dB @ 90–110 Hz, dips @ ~55 Hz (~71), ~150 Hz, ~390 Hz (~66), steep roll-off below ~35 Hz (30 Hz ~66).
+  R: peaks ~89–90 dB @ ~55 Hz and ~87 dB @ ~85 Hz, ~81 dB @ ~125 Hz, 30 Hz ~77, deep dip ~64 dB @ ~190 Hz.
+  So R has much more bass from 25 to 90 Hz, with peaks and dips at different frequencies than L: points to room/position.
+- R impulse has a small spike at ~−780 ms (~25 dB above the noise floor), outside the window. Probably a distortion product or a noise during the sweep; not checked yet.
+- Early reflections visible in both impulses at ~1 ms and ~6 ms after the direct sound.
 - [ ] If something's off: compare with the troubleshooting table below before measuring more.
 
 Once this works, you're ready for the full measurement plan in [room-acoustics-context.md](room-acoustics-context.md).

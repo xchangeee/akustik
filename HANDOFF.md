@@ -1,13 +1,13 @@
 # Handoff: measurement session status
 
-Last updated: 2026-11-18 (Phase E done).
+Last updated: 2026-11-18 (Phases E and F done).
 Read this first, then [room-acoustics-context.md](room-acoustics-context.md) (room, gear, goals, measurement plan)
 and [measurement-prep-checklist.md](measurement-prep-checklist.md) (step-by-step setup; ticked = done, with dated results).
 
 ## Where we are
 
-Setup phases 1–4 and A–E of the checklist are done (SPL calibration verified 2026-11-18). **Next step: Phase F (first sweeps).**
-No real sweep measurements of the speakers exist yet.
+Setup phases 1–4 and A–F of the checklist are done (2026-11-18). First sweeps at the main seat exist (REW measurements 3 = L, 4 = R; not saved to a file yet unless the user did). All sanity checks passed; results are in the checklist, Phase F.
+**Next step: measurement plan step 3 (6–8 positions around the seat per speaker, then RMS average).**
 
 ## Current physical setup (as wired now)
 
@@ -62,7 +62,7 @@ Pink periodic −24 dBFS, mic centred:
 ## Next steps
 
 1. ~~Phase E~~ done 2026-11-18.
-2. **Phase F:** first sweeps L and R at the seat, timing reference = Loopback, −24 dBFS. Sanity checks in the checklist (impulse at t ≈ 0, same polarity, similar levels, no clipping).
+2. ~~Phase F~~ done 2026-11-18.
 3. Then the full measurement plan in the context file (seat positions, corner, DJ spot, close-up woofer/port with the 0° file, electrical DSP check via In 3).
 
 ## Working with this user
