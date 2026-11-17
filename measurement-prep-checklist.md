@@ -150,7 +150,7 @@ Do this in this order, every time.
 
 - [x] **Amp OFF** while plugging/unplugging anything.
 - [x] DSP flat (2026-11-17): routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed; HPF/LPF off; gate + compressor off; delay 0; mute and polarity (Ø) off. No separate limiter in the software (use the compressor at a high ratio later).
-- [ ] Save this state as DSP preset **"FLAT"**.
+- [x] Save this state as DSP preset **"FLAT"**.
 - [x] Amp: EQ modes and 50 Hz high-pass **OFF**, input = RCA (checked 2026-11-17).
 - [x] Interface **Out 1 → DSP in 1**, **Out 2 → DSP in 2** (TRS–TRS). DSP out 1/2 → amp L/R (RCA). Wired 2026-11-17.
       (Plan said in 3/4; in 1/2 works the same because the EQ sits on the outputs. Keep the DSP *input* channels 1/2 flat.)

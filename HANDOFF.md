@@ -27,7 +27,7 @@ No real sweep measurements of the speakers exist yet.
 ## DSP (t.racks DSP 4x4 Mini)
 
 User has software access to it (a GUI with an "Import REW filters…" button). State is flat: routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off. No separate limiter (use the compressor later).
-**Not confirmed:** whether this was saved as preset "FLAT".
+Saved as preset **"FLAT"** (confirmed 2026-11-17).
 
 Amp (SMSL A300): EQ modes off, no high-pass, RCA input.
 
@@ -41,7 +41,7 @@ Amp (SMSL A300): EQ modes off, no high-pass, RCA input.
 
 ## Levels (fixed for this session; don't touch)
 
-Amp volume and In 1 gain were set in Phase D and must stay where they are (user was asked to take a photo).
+Amp volume and In 1 gain were set in Phase D and must stay where they are. The user has a photo of both knobs (not needed for now).
 Pink periodic −24 dBFS, mic centred:
 
 | | REW RTA, uncalibrated | iPhone NIOSH SLM, C-weighted | Peak |
@@ -57,14 +57,13 @@ REW reads ~16 dB high on both channels, consistently. Phase E corrects this.
 - **Loopback** (Out 3 → In 2): flat within 0.2 dB 20 Hz–20 kHz. No soundcard cal file needed.
 - **Noise / hum:** quiet room fine; with amp on at listening volume no new hum, only a small bump near 50 Hz far below signal level.
 - **R speaker ~2.3 dB louder than L.** Not the mic position (re-centred), not the interface/DSP/adapters/cables (swap test 1: swapped DSP outs), not the amp (swap test 2: swapped speaker cables). **Cause: the right speaker itself or the room around it.** Tell apart with 1 m on-axis gated sweeps of each speaker and close-up woofer measurements. Fix either way: DSP output gain per channel (after the sweeps).
-- Make sure the speaker cables are back to normal (amp L → left speaker). The user was told to restore them, not confirmed.
+- Speaker cables are back to normal (amp L → left speaker), confirmed.
 
 ## Next steps
 
-1. Confirm: speaker cables back to normal, DSP preset "FLAT" saved, photo of amp + mic gain taken.
-2. **Phase E:** REW RTA "Calibrate level" (or SPL meter → Calibrate), left speaker only, read the iPhone (C-weighted, slow, next to the capsule) **while REW's own calibration signal plays**, enter it. Check afterwards: pink noise on L should read ~73–74 dB(C) in the RTA.
-3. **Phase F:** first sweeps L and R at the seat, timing reference = Loopback, −24 dBFS. Sanity checks in the checklist (impulse at t ≈ 0, same polarity, similar levels, no clipping).
-4. Then the full measurement plan in the context file (seat positions, corner, DJ spot, close-up woofer/port with the 0° file, electrical DSP check via In 3).
+1. **Phase E:** REW RTA "Calibrate level" (or SPL meter → Calibrate), left speaker only, read the iPhone (C-weighted, slow, next to the capsule) **while REW's own calibration signal plays**, enter it. Check afterwards: pink noise on L should read ~73–74 dB(C) in the RTA.
+2. **Phase F:** first sweeps L and R at the seat, timing reference = Loopback, −24 dBFS. Sanity checks in the checklist (impulse at t ≈ 0, same polarity, similar levels, no clipping).
+3. Then the full measurement plan in the context file (seat positions, corner, DJ spot, close-up woofer/port with the 0° file, electrical DSP check via In 3).
 
 ## Working with this user
 
