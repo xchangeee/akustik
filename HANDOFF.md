@@ -7,7 +7,8 @@ and [measurement-prep-checklist.md](measurement-prep-checklist.md) (step-by-step
 ## Where we are
 
 Setup phases 1–4 and A–F of the checklist are done (2026-11-18). First sweeps at the main seat exist (REW measurements 3 = L, 4 = R; not saved to a file yet unless the user did). All sanity checks passed; results are in the checklist, Phase F.
-**Next step: measurement plan step 3 (6–8 positions around the seat per speaker, then RMS average).**
+Measurement plan step 3 done 2026-11-18: 6 positions + seat per speaker, analysed from IR exports → [measurements/2026-11-18-analysis.md](measurements/2026-11-18-analysis.md).
+**Next step: corner (3b) and DJ position (3c) measurements, same workflow (measure, Save all, export IRs as WAV: 32-bit float, t=0 at 256, no normalise/window), then EQ design.**
 
 ## Current physical setup (as wired now)
 
@@ -64,6 +65,11 @@ Pink periodic −24 dBFS, mic centred:
 1. ~~Phase E~~ done 2026-11-18.
 2. ~~Phase F~~ done 2026-11-18.
 3. Then the full measurement plan in the context file (seat positions, corner, DJ spot, close-up woofer/port with the 0° file, electrical DSP check via In 3).
+
+## Analysis workflow
+
+- User measures in REW and exports IRs as WAV into `measurements/<date>-<name>/`; Claude analyses with [analysis/analyse_positions.py](analysis/analyse_positions.py).
+- Python env: use **mise + uv** (user's preference), e.g. `mise exec python@3.14 uv@0.13.5 -- uv venv …` then `uv pip install numpy scipy matplotlib`.
 
 ## Working with this user
 
