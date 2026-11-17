@@ -8,7 +8,8 @@ and [measurement-prep-checklist.md](measurement-prep-checklist.md) (step-by-step
 
 Setup phases 1–4 and A–F of the checklist are done (2026-11-18). First sweeps at the main seat exist (REW measurements 3 = L, 4 = R; not saved to a file yet unless the user did). All sanity checks passed; results are in the checklist, Phase F.
 Measurement plan step 3 done 2026-11-18: 6 positions + seat per speaker, analysed from IR exports → [measurements/2026-11-18-analysis.md](measurements/2026-11-18-analysis.md).
-**Next step: corner (3b) and DJ position (3c) measurements, same workflow (measure, Save all, export IRs as WAV: 32-bit float, t=0 at 256, no normalise/window), then EQ design.**
+Corners (3b) done 2026-11-18 (front-left/front-right only, rest blocked), results in the same analysis file.
+**Next step: DJ position (3c) measurements, same workflow (measure, Save all, export IRs as WAV: 32-bit float, t=0 at 256, no normalise/window), then EQ design.**
 
 ## Current physical setup (as wired now)
 
