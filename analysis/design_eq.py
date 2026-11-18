@@ -26,6 +26,7 @@ NBANDS = 7
 HPF = dict(fc=30.0, order=4)          # Butterworth 24 dB/oct
 HPF_ALT = [25.0, 30.0, 35.0, 40.0]    # reported for comparison
 FIT = (25, 250)
+GMIN = -12.0                          # DSP (own configurator) accepts +-12 dB per band
 QMAX = 8.0                            # robust to position changes (context: Q 3-8 for clear modes)
 REG = 0.005                           # cost per dB of total cut: avoids stacked / wasted bands
 
@@ -194,13 +195,13 @@ def init_bands(s):
     pk, pr = find_peaks(np.where(sel, e, -99), prominence=2)
     pk = [i for i in pk if e[i] > 1.5]
     pk = sorted(pk, key=lambda i: -e[i])[:NBANDS]
-    bands = [(g[i], -min(e[i] * 0.7, 12), 4.0) for i in pk]
+    bands = [(g[i], -min(e[i] * 0.7, -GMIN), 4.0) for i in pk]
     while len(bands) < NBANDS:          # unused bands start as 0 dB (optimiser may use them)
         bands.append((60.0 * (1 + len(bands) % 3), -0.1, 3.0))
     return bands
 
 
-BOUND1 = [(np.log(FIT[0]), np.log(FIT[1])), (-15, 0), (np.log(0.7), np.log(QMAX))]
+BOUND1 = [(np.log(FIT[0]), np.log(FIT[1])), (GMIN, 0), (np.log(0.7), np.log(QMAX))]
 
 
 def fit(start_bands, restarts=1):
@@ -223,7 +224,7 @@ def merge(bl):
     for fc, g, q in bl:
         if outb and abs(np.log2(fc / outb[-1][0])) < 1 / 12:
             f2, g2, q2 = outb[-1]; w = g / (g + g2)
-            outb[-1] = (f2 ** (1 - w) * fc ** w, max(g + g2, -15), q2 * (1 - w) + q * w)
+            outb[-1] = (f2 ** (1 - w) * fc ** w, max(g + g2, GMIN), q2 * (1 - w) + q * w)
         else:
             outb.append((fc, g, q))
     return outb
@@ -239,9 +240,51 @@ while True:   # merge stacked bands, re-fit with the smaller set, until nothing 
     COUNTS.update({s: len(m[s]) for s in "LR"})
     bands, fun = fit(m)
 best_fun = fun
+print(f"continuous fit cost {fun:.3f}")
 
-# round to what a DSP GUI takes
-final = {s: sorted((round(fc, 1), round(g, 1), round(q, 2)) for fc, g, q in bands[s]) for s in "LR"}
+# ---------- snap to the device ----------
+# t.racks DSP 4x4 Mini, from the protocol RE (../tracks/docs/protocol.md §5, §6.2):
+#   PEQ gain raw 0..240, dB = (raw-120)/10;  freq raw 0..300, Hz = 1000*2^((raw-170)/30);  Q raw 0..100, Q = 2^((raw-16)/12)
+#   Peak = RBJ peaking with Q_rbj = Q_device / A, A = 10^(|G|/40). Butterworth 24 HPF = textbook (sections 0.7654/1.8478).
+freq_hz = lambda r: 1000 * 2 ** ((r - 170) / 30)
+freq_raw = lambda hz: int(np.clip(round(170 + 30 * np.log2(hz / 1000)), 0, 300))
+q_val = lambda r: 2 ** ((r - 16) / 12)
+q_raw = lambda q: int(np.clip(round(16 + 12 * np.log2(q)), 0, 100))
+A_of = lambda graw: 10 ** (abs((graw - 120) / 10) / 40)
+
+
+def dev_to_rbj(d):
+    fr, gr, qr = d
+    return (freq_hz(fr), (gr - 120) / 10, q_val(qr) / A_of(gr))
+
+
+def rbj_to_dev(b):
+    fc, g, q = b
+    gr = int(np.clip(round(g * 10 + 120), 0, 120))        # cut only: raw <= 120
+    return (freq_raw(fc), gr, q_raw(q * A_of(gr)))
+
+
+QRAW_OK = lambda d: d[2] >= 0 and d[2] <= 100 and q_val(d[2]) / A_of(d[1]) <= QMAX * 2 ** (1 / 24)
+dev = {s: [rbj_to_dev(b) for b in bands[s]] for s in "LR"}
+dcost = lambda dv: cost(pack({s: [dev_to_rbj(d) for d in dv[s]] for s in "LR"}))
+c_snap = dcost(dev)
+improved = True
+while improved:   # coordinate search on the integer grid: +-1 step per parameter
+    improved = False
+    for s in "LR":
+        for i in range(len(dev[s])):
+            for j in range(3):
+                for step in (-1, 1):
+                    d = list(dev[s][i]); d[j] += step; d = tuple(d)
+                    if not (0 <= d[0] <= 300 and 0 <= d[1] <= 120 and QRAW_OK(d)): continue
+                    trial = {k: list(v) for k, v in dev.items()}; trial[s][i] = d
+                    c = dcost(trial)
+                    if c < c_snap - 1e-6:
+                        dev, c_snap, improved = trial, c, True
+dev = {s: sorted(d for d in dev[s] if d[1] < 120) for s in "LR"}
+best_fun = c_snap
+HPF["fc"] = freq_hz(freq_raw(HPF["fc"]))
+final = {s: [dev_to_rbj(d) for d in dev[s]] for s in "LR"}
 EQ = {s: chain(final[s], ONE) for s in "LR"}
 after = responses(EQ)
 
@@ -260,12 +303,14 @@ def bass_energy(r, key, lo=30, hi=150):
 
 lines = []
 P = lambda *a: lines.append(" ".join(str(x) for x in a))
-P(f"EQ design {datetime.date.today()} | HPF Butterworth {HPF['order']*6} dB/oct @ {HPF['fc']} Hz (DSP HP filter) | fit {FIT[0]}-{FIT[1]} Hz, 1/{FRAC} oct, target flat at mid level")
-P(f"cost terms: {TERMS}; Q max {QMAX}, cut penalty {REG}/dB; optimiser cost {best_fun:.3f}")
+P(f"EQ design {datetime.date.today()} | HPF Butterworth {HPF['order']*6} dB/oct @ {HPF['fc']:.1f} Hz (DSP HP filter, freq raw {freq_raw(HPF['fc'])}, slope raw 8) | fit {FIT[0]}-{FIT[1]} Hz, 1/{FRAC} oct, target flat at mid level")
+P(f"cost terms: {TERMS}; Q max {QMAX}, cut penalty {REG}/dB; cost after snapping to the device grid {best_fun:.3f} (continuous {fun:.3f})")
+P("Simulation uses the device values exactly (Peak = RBJ with Q/A). Not modelled: the open low-frequency offset (peaks below 150 Hz measured up to 41 cents low, tracks TODO).")
 for s in "LR":
     P(f"\n{s} PEQ ({len(final[s])} bands):")
-    for i, (fc, g, q) in enumerate(final[s], 1):
-        P(f"  {i}: PK  Fc {fc:7.1f} Hz  Gain {g:6.1f} dB  Q {q:5.2f}")
+    P("   band | device: freq     gain   Q (raw f/g/q)      | = RBJ cookbook: Fc, Gain, Q")
+    for i, (d, (fc, g, q)) in enumerate(zip(dev[s], final[s]), 1):
+        P(f"   {i:4d} | {freq_hz(d[0]):7.1f} Hz {g:6.1f} dB {q_val(d[2]):6.2f} ({d[0]:3d}/{d[1]:3d}/{d[2]:3d}) | {fc:7.2f} Hz {g:6.1f} dB {q:6.3f}")
 P("\nMid reference levels (300 Hz-3 kHz, dB):", ", ".join(f"{k[0]} {k[1]} {v:.1f}" for k, v in REF.items()))
 P("\n=== Flatness vs own mid level, 30-200 Hz: rms / max / min (dB) ===")
 P(f"{'set':>14} | {'flat (no HPF)':>20} | {'HPF only':>20} | {'HPF + PEQ':>20}")
@@ -307,12 +352,13 @@ print(txt)
 stamp = datetime.datetime.now().strftime("%d %b %Y %H:%M:%S")
 for s, name in (("L", "left (DSP out 1)"), ("R", "right (DSP out 2)")):
     fl = ["Filter Settings file", "", "Room EQ V5.31", f"Dated: {stamp}", "",
-          f"Notes:akustik EQ {name}; cut-only; DSP HP filter separately: Butterworth 24 dB/oct {HPF['fc']:.0f} Hz",
+          f"Notes:akustik EQ {name}; designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct {HPF['fc']:.1f} Hz",
           "", "Equaliser: Generic", f"akustik {s}"]
     for i in range(NBANDS):   # the DSP has 7 PEQ bands per output
         if i < len(final[s]):
-            fc, g, q = final[s][i]
-            fl.append(f"Filter {i+1:2d}: ON  PK       Fc {fc:7.1f} Hz  Gain {g:5.1f} dB  Q {q:6.2f}")
+            fc, g, q = final[s][i]   # exact device values: the import maps Q*A and rounds back onto dev[s][i]
+            fl.append(f"Filter {i+1:2d}: ON  PK       Fc {fc:8.2f} Hz  Gain {g:5.1f} dB  Q {q:7.4f}")
+            assert rbj_to_dev((round(fc, 2), round(g, 1), round(q, 4))) == dev[s][i]
         else:
             fl.append(f"Filter {i+1:2d}: OFF None")
     with open(os.path.join(eqdir, f"akustik_{s}.txt"), "w", newline="\r\n") as fh:

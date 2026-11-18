@@ -11,8 +11,8 @@ Measurement plan step 3 done 2026-11-18: 6 positions + seat per speaker, analyse
 Corners (3b) done 2026-11-18 (front-left/front-right only, rest blocked), results in the same analysis file.
 DJ position (3c) and L+R sum (step 4, computed from summed IRs) done 2026-11-18, same analysis file.
 Close-ups (step 5) done 2026-11-18: port tuning ≈ 35 Hz, L/R woofers identical (R's extra bass = room).
-EQ design v1 done 2026-11-18: [analysis/design_eq.py](analysis/design_eq.py), filter files [eq/akustik_L.txt](eq/akustik_L.txt) / [eq/akustik_R.txt](eq/akustik_R.txt), results at the end of the analysis file. HPF Butterworth 24 dB/oct 30 Hz (set by hand in the DSP's HP filter, not in the file). Simulated: seat L+R peaks +15 → +4 dB, bass energy −6…−8 dB everywhere.
-**Next step: get the filters into the DSP**: import each file on its output ("Import REW filters…"), set the HPF, save as a new preset (keep "FLAT"), screenshot the PEQ page so Claude can check the values. Then electrical check (DSP out → spare UMC input, no amp) vs predicted curve, then re-measure seat/DJ/corner with EQ on.
+EQ design v1 done 2026-11-18: [analysis/design_eq.py](analysis/design_eq.py), filter files [eq/akustik_L.txt](eq/akustik_L.txt) / [eq/akustik_R.txt](eq/akustik_R.txt), values + results at the end of the analysis file. Designed directly on the DSP's parameter grid (±12 dB, 1/30-oct freq, 1/12-oct Q, device Q = cookbook Q · A); the files are REW text only because the configurator imports that format. HPF Butterworth 24, 29.8 Hz (set by hand in the crossover, not in the file). Simulated: seat L+R peaks +15 → +3 dB, bass energy −6…−8 dB everywhere.
+**Next step: get the filters into the DSP**: import each file on its output (onto the flat state), set the HPF, store as a new preset (keep "FLAT"), screenshot the PEQ pages so Claude can compare with the table. Then electrical check (DSP out → spare UMC input, no amp) vs predicted curve, then re-measure seat/DJ/corner with EQ on.
 IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no normalise/window.
 
 ## Current physical setup (as wired now)
@@ -31,6 +31,8 @@ IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no n
 - Mic at the main seat, centred between the speakers, pointing up, 90° cal file.
 
 ## DSP (t.racks DSP 4x4 Mini)
+
+Configured with the **user's own configurator** in `/Users/xchange/WPlay/tracks` (browser/WebHID, 1:1 reimplementation of the vendor editor from the reverse-engineered firmware/protocol). Parameter grids, filter shapes and measurements: `tracks/docs/protocol.md`, `tracks/docs/measurements.md`; REW import: `tracks/web/src/rew.ts`. REW is only used for measuring.
 
 User has software access to it (a GUI with an "Import REW filters…" button). State is flat: routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off. No separate limiter (use the compressor later).
 Saved as preset **"FLAT"** (confirmed 2026-11-17).

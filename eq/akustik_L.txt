@@ -1,16 +1,16 @@
 Filter Settings file
 
 Room EQ V5.31
-Dated: 18 Nov 2026 01:35:19
+Dated: 18 Nov 2026 01:43:15
 
-Notes:akustik EQ left (DSP out 1); cut-only; DSP HP filter separately: Butterworth 24 dB/oct 30 Hz
+Notes:akustik EQ left (DSP out 1); designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct 29.8 Hz
 
 Equaliser: Generic
 akustik L
-Filter  1: ON  PK       Fc    43.3 Hz  Gain -12.6 dB  Q   8.00
-Filter  2: ON  PK       Fc    50.6 Hz  Gain  -1.1 dB  Q   8.00
-Filter  3: ON  PK       Fc    93.3 Hz  Gain  -8.6 dB  Q   8.00
-Filter  4: ON  PK       Fc   112.5 Hz  Gain  -7.3 dB  Q   8.00
-Filter  5: ON  PK       Fc   124.3 Hz  Gain  -5.3 dB  Q   8.00
+Filter  1: ON  PK       Fc    43.18 Hz  Gain -12.0 dB  Q  8.0190
+Filter  2: ON  PK       Fc    82.47 Hz  Gain  -1.8 dB  Q  8.0958
+Filter  3: ON  PK       Fc    94.73 Hz  Gain  -7.4 dB  Q  7.8287
+Filter  4: ON  PK       Fc   113.97 Hz  Gain  -7.8 dB  Q  8.1054
+Filter  5: ON  PK       Fc   125.00 Hz  Gain  -4.6 dB  Q  8.1944
 Filter  6: OFF None
 Filter  7: OFF None
