@@ -1,0 +1,31 @@
+=== L: 1 L dsp electrical Nov 18.wav  (IR peak -20.7 dBFS, 1-5 kHz normalised)
+  bands: 43.2/-12.0/8.019, 82.5/-1.8/8.096, 94.7/-7.4/7.829, 114.0/-7.8/8.105, 125.0/-4.6/8.194; HPF BW24 29.8 Hz
+     20-30    Hz: measured - predicted  mean -0.62  rms 0.64  max |0.93| dB
+     30-60    Hz: measured - predicted  mean -0.17  rms 0.20  max |0.37| dB
+     60-150   Hz: measured - predicted  mean -0.00  rms 0.03  max |0.07| dB
+    150-1000  Hz: measured - predicted  mean +0.02  rms 0.02  max |0.04| dB
+   1000-20000 Hz: measured - predicted  mean -0.08  rms 0.15  max |0.52| dB
+  fit 18-1000 Hz: rms 0.23 dB as designed; best with all filter frequencies x1.00248 (+4 cents): rms 0.22 dB
+  at the band centres (measured / predicted dB):
+       43.2 Hz: -12.42 / -12.30   min of measured within +-1/6 oct at 43.1 Hz
+       82.5 Hz:  -3.67 /  -3.69   min of measured within +-1/6 oct at 92.5 Hz
+       94.7 Hz:  -8.82 /  -8.84   min of measured within +-1/6 oct at 94.8 Hz
+      114.0 Hz: -10.11 / -10.16   min of measured within +-1/6 oct at 114.3 Hz
+      125.0 Hz:  -7.52 /  -7.55   min of measured within +-1/6 oct at 114.3 Hz
+=== R: 2 R dsp electrical Nov 18.wav  (IR peak -21.0 dBFS, 1-5 kHz normalised)
+  bands: 42.2/-11.6/8.206, 52.0/-12.0/8.019, 62.5/-6.7/4.075, 82.5/-11.0/8.017, 88.4/-8.2/7.921, 111.4/-3.2/7.913, 125.0/-6.6/8.198; HPF BW24 29.8 Hz
+     20-30    Hz: measured - predicted  mean -0.95  rms 1.00  max |1.36| dB
+     30-60    Hz: measured - predicted  mean -0.10  rms 0.19  max |0.34| dB
+     60-150   Hz: measured - predicted  mean +0.01  rms 0.04  max |0.17| dB
+    150-1000  Hz: measured - predicted  mean +0.02  rms 0.02  max |0.04| dB
+   1000-20000 Hz: measured - predicted  mean -0.09  rms 0.16  max |0.54| dB
+  fit 18-1000 Hz: rms 0.40 dB as designed; best with all filter frequencies x1.00233 (+4 cents): rms 0.39 dB
+  at the band centres (measured / predicted dB):
+       42.2 Hz: -13.65 / -13.85   min of measured within +-1/6 oct at 42.3 Hz
+       52.0 Hz: -15.65 / -15.64   min of measured within +-1/6 oct at 52.0 Hz
+       62.5 Hz:  -9.58 /  -9.54   min of measured within +-1/6 oct at 55.9 Hz
+       82.5 Hz: -16.49 / -16.52   min of measured within +-1/6 oct at 83.2 Hz
+       88.4 Hz: -14.55 / -14.66   min of measured within +-1/6 oct at 83.2 Hz
+      111.4 Hz:  -6.28 /  -6.28   min of measured within +-1/6 oct at 124.6 Hz
+      125.0 Hz:  -8.17 /  -8.20   min of measured within +-1/6 oct at 124.6 Hz
+plot: analysis/output/dsp_electrical.png

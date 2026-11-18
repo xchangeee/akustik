@@ -12,7 +12,8 @@ Corners (3b) done 2026-11-18 (front-left/front-right only, rest blocked), result
 DJ position (3c) and L+R sum (step 4, computed from summed IRs) done 2026-11-18, same analysis file.
 Close-ups (step 5) done 2026-11-18: port tuning ≈ 35 Hz, L/R woofers identical (R's extra bass = room).
 EQ design v1 done 2026-11-18: [analysis/design_eq.py](analysis/design_eq.py), filter files [eq/akustik_L.txt](eq/akustik_L.txt) / [eq/akustik_R.txt](eq/akustik_R.txt), values + results at the end of the analysis file. Designed directly on the DSP's parameter grid (±12 dB, 1/30-oct freq, 1/12-oct Q, device Q = cookbook Q · A); the files are REW text only because the configurator imports that format. HPF Butterworth 24, 29.8 Hz (set by hand in the crossover, not in the file). Simulated: seat L+R peaks +15 → +3 dB, bass energy −6…−8 dB everywhere.
-**Next step: get the filters into the DSP**: import each file on its output (onto the flat state), set the HPF, store as a new preset (keep "FLAT"), screenshot the PEQ pages so Claude can compare with the table. Then electrical check (DSP out → spare UMC input, no amp) vs predicted curve, then re-measure seat/DJ/corner with EQ on.
+Filters imported 2026-11-18 (screenshots checked: all bands, HPF BW 24 29.8 Hz on Out 1/2, EQ Bypass off). Electrical check done: DSP matches the design within 0.05 dB in 30–150 Hz, no frequency offset (results at the end of the analysis file). Not confirmed yet: whether the EQ preset was stored in a new slot with P01 "Flat" kept.
+**Next step: acoustic re-measurement with EQ on**: rewire DSP Out 1/2 back to the amp, UMC In 3 out, mic cal 90° back on, In 1 gain and amp volume unchanged, −24 dBFS. Re-measure seat + 6 positions, DJ 7 spots, 2 corners (same names, new folder `2026-11-1x-eq1-…`), then compare with the simulation.
 IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no normalise/window.
 
 ## Current physical setup (as wired now)
