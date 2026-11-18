@@ -2,6 +2,7 @@
 
 Python scripts that analyse the REW impulse-response exports in [../measurements/](../measurements/).
 Findings and interpretation: [../measurements/2026-11-18-analysis.md](../measurements/2026-11-18-analysis.md).
+How the EQ was designed, with background: [../eq-design-explained.md](../eq-design-explained.md).
 
 ## Run
 
