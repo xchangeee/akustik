@@ -17,6 +17,10 @@ Filters imported 2026-11-18 (screenshots checked: all bands, HPF BW 24 29.8 Hz o
 2026-11-18, after listening: sound feels "boring", low low end missing. Likely the flat EQ target; plan = EQ v2 with a moderate house curve, then optionally a PreSonus Eris Sub8 as an overlay on DSP Out 3 (sub off = today's sound). Details, order of work and open questions: [sub-and-house-curve-notes.md](sub-and-house-curve-notes.md).
 IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no normalise/window.
 
+## Room layout (user's sketch 2026-11-18, positions approximate)
+
+[docs/room-layout-sketch.png](docs/room-layout-sketch.png). Speaker wall = 6 m wall with (left to right) door at the corner, DJ cupboard, L, TV, R. DJ stand in front of the cupboard: ~1.8 m from the left wall, ~0.75 m from the speaker wall. Table on the left, KALLAX in the middle, sofa against the back wall on the right. Seat ~4.4 m along the speaker wall. **Head position varies:** sitting upright at the front of the sofa (where all seat measurements were made) ~1.2 m in front of the back wall (~2.75 m from the speaker wall); lying back ~0.4 m from the back wall. The EQ is designed for upright; lying back gets more 44/88 Hz.
+
 ## Current physical setup (as wired now)
 
 | From | To | Notes |

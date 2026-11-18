@@ -64,7 +64,7 @@ Below about 150–200 Hz the modes are far enough apart that each one stands out
 
 ### Why it matters here
 
-- **The sofa is against a wall.** Every mode along the 3.9 m axis is at its loudest there, so 44 Hz and 88 Hz boom at the seat.
+- **The head position on the sofa varies.** Sitting upright at the front (where we measured), the head is about 1.2 m in front of the back wall: the 44 Hz width mode is still strong there, the 88 Hz width mode close to a null. Lying back, the head is about 0.4 m from the wall, near the loud spot of every width mode, so 44 and 88 Hz boom more. Layout sketch: [docs/room-layout-sketch.png](docs/room-layout-sketch.png).
 - **L and R sit in different places.** L is in the middle of the 6 m wall, which is the null of the odd length modes (29 Hz, 86 Hz), so it hardly excites them. R is near the side wall, so it excites all of them. That is why R measured with much more bass than L, even though the two speakers are identical (confirmed by the close-up measurement).
 - **Bass leaking into the staircase** is the room's mode energy. A mode that rings throughout the room pushes on the walls, doors and floor everywhere, not only at the seat.
 
@@ -348,10 +348,10 @@ High-pass on both outputs: Butterworth 24 dB/oct, 29.8 Hz.
 
 Reading the table with §1 in mind:
 
-- **42–43 Hz on both:** the 44 Hz width mode, loud at the sofa.
-- **52 Hz on R only:** a mode that only R excites strongly (R is near the side wall).
-- **82–88 Hz, much deeper on R:** the 86/88 Hz stack (length + width modes). L sits on the null of the 86 Hz length mode, so it needs little there.
-- **95–125 Hz:** the broad hump around the 114 Hz length mode and the 122 Hz height mode.
+- **42–43 Hz on both:** the 44 Hz width mode. Both speakers stand close to the speaker wall, a loud spot of every width mode, so both drive it.
+- **52 Hz on R only:** most likely the tangential mode of width and length together (√(44² + 29²) ≈ 53 Hz). Its null runs through the middle of the 6 m wall, where L stands, so only R excites it.
+- **82–88 Hz, much deeper on R:** the 86 Hz length mode. L stands on its null, R drives it, and the seat (about 4.4 m along the wall) is near one of its loud spots. The 88 Hz width mode is close to a null when sitting upright.
+- **95–125 Hz:** the broad hump around the 114 Hz length mode (L stands on a loud spot of it, so L gets the deeper cuts here), plus the 122 Hz height mode and the 132 Hz width mode.
 
 ### Simulated effect (30–200 Hz, relative to the mid level)
 
@@ -375,7 +375,7 @@ What the EQ doesn't fix:
 
 - **Dips and cancellations:** R's dip at 173 Hz, the DJ spot's 55–75 Hz hole (L and R cancel there), the 30–35 Hz region at the DJ spot. These need different speaker positions, more bass sources (subwoofers) or absorption.
 - **Ringing as such:** cutting a peak reduces the energy the mode gets, but the room still decays at its own rate. Only absorption changes the decay time itself.
-- **Narrow listening area:** the design is for the sofa area and the DJ spot. Elsewhere it's still better than before (less energy overall), but not flat.
+- **Narrow listening area:** the design is for sitting upright on the sofa and for the DJ spot. Lying back (head ~0.4 m from the wall) you'll hear more 44 and 88 Hz than simulated; the cuts still help, but it won't be as flat. Elsewhere it's still better than before (less energy overall), but not flat.
 
 What the numbers are based on:
 
