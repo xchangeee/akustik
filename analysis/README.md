@@ -29,6 +29,7 @@ Absolute level: fixed offset of 100.9 dB so that the L seat 1–8 kHz average is
 | `analyse_dj_sum.py` | DJ spot (7 positions) vs seat, plus **L+R = coherent sum of the L and R IRs** (same mic spot, same loopback timing) | `dj_sum.txt`, `dj_vs_seat.png` |
 | `analyse_closeups.py` | Woofer/port close-ups (0° cal): port tuning, L vs R woofer | `closeups.txt`, `closeups.png` |
 | `design_eq.py` | Optional 4th arg `harman` (EQ v2: +6 dB low-shelf target, outputs `*_harman.*`, `eq/akustik_harman_*.txt`). Cut-only PEQ design (≤7 bands/channel) + fixed HPF, fitted on seat L/R/L+R and DJ L+R; simulates seat/DJ/corner from the IRs (complex multiply, so sums include filter phase) | `eq_design.txt`, `eq_design.png`, `eq_filters.png`, `eq_design.log`; filter files in [../eq/](../eq/) |
+| `analyse_treble.py` | Seat/DJ treble (1/6 oct) vs a Harman-style tilt (−1 dB/oct above 1 kHz), slope fit | `treble.txt`, `treble.png` |
 | `build_explainer.py` | Inlines the bass spectra, IR, design stages and electrical check into [../explainer/template.html](../explainer/template.html) → interactive explainer page | `../explainer/eq-explained.html` |
 | `check_dsp_electrical.py` | DSP out → UMC In 3 (no amp/mic) vs the curve predicted from `eq/` files; fits a common frequency offset | `dsp_electrical.txt`, `dsp_electrical.png` |
 
