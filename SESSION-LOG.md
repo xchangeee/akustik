@@ -1,7 +1,7 @@
 # Session log
 
 Read this first. **Status** and **Next** are kept current; the **Log** gets one dated entry per session (newest at the bottom; don't edit old entries).
-Map of the repo: [README.md](README.md). What is wired/configured now: [docs/current-setup.md](docs/current-setup.md).
+Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md). What is wired/configured now: [docs/current-setup.md](docs/current-setup.md).
 
 ## Status (2026-11-19)
 
@@ -39,12 +39,4 @@ Open questions for the user: where the Sub8 could go physically (walkway, DJ cup
 ### 2026-11-19: limiter plan, repo cleanup
 
 - Decided: no input gate, output compressor as safety limiter, threshold measured: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
-- Repo restructured: README, docs/ (context, current setup, decisions, procedures, plans), `findings/` split by topic, `measurements/<date>/<set>/`, `eq/<version>/`, `reference/`. HANDOFF.md → SESSION-LOG.md. Re-running `mise run analyse` reproduces all results.
-
-## Notes for Claude
-
-- Communicates in short messages and screenshots of REW / the DSP GUI. Walk them through one step at a time, read the screenshots closely.
-- **Read what they write carefully and don't infer facts they didn't state.** An earlier misreading ("distance unchanged" taken as "left speaker didn't move") caused real frustration. If something is ambiguous, ask.
-- Watch the generator's band radio buttons in their screenshots (Full range / Sub Cal / Speaker Cal): they were left on Sub Cal several times.
-- Measurements: user exports IRs as WAV into `measurements/<date>/<set>/` ([conventions](measurements/README.md)); analysis scripts in [analysis/](analysis/README.md), run with `mise run analyse` (mise + uv). Keep all analysis work (scripts, text output, plots) in the repo.
-- At the end of a session: update Status/Next, add a Log entry, keep [docs/current-setup.md](docs/current-setup.md) and [docs/decisions.md](docs/decisions.md) current, commit.
+- Repo restructured: README, docs/ (context, current setup, decisions, procedures, plans), `findings/` split by topic, `measurements/<date>/<set>/`, `eq/<version>/`, `reference/`. HANDOFF.md → SESSION-LOG.md; working rules for Claude moved from Claude's memory into CLAUDE.md. Re-running `mise run analyse` reproduces all results.

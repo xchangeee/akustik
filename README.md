@@ -9,6 +9,7 @@ Living-room bass: measure the room with REW, design a room EQ for the t.racks DS
 | Path | What |
 | --- | --- |
 | [SESSION-LOG.md](SESSION-LOG.md) | Status, next steps, dated log of every session |
+| [CLAUDE.md](CLAUDE.md) | Working rules for Claude in this repo |
 | [docs/context.md](docs/context.md) | Goal, gear, room, predicted problems (stable facts) |
 | [docs/current-setup.md](docs/current-setup.md) | What is wired and configured right now: wiring, DSP presets, levels, REW |
 | [docs/decisions.md](docs/decisions.md) | Decisions with the reason for each |
