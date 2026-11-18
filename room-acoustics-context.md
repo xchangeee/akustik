@@ -35,6 +35,7 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
   - Placement (moved 2026-11-17): **both** speakers pushed back, front baffle/woofer 0.33 m from the rear (speaker) wall.
     R speaker also moved farther from the right side wall, now 0.43 m. L side distance unchanged (value still to note), as are L–R spacing and seat distance.
   - **No subwoofer.** The mains cover the whole range, so the port tuning sets the useful low end.
+  - 2026-11-18: a PreSonus Eris Sub8 is available as an occasional add-on (not connected yet). Plan: [sub-and-house-curve-notes.md](sub-and-house-curve-notes.md).
 - Sources (normal use):
   1. TV: unbalanced analog output only
   2. Pioneer DJ mixer: has balanced XLR and unbalanced RCA master outputs. Currently RCA straight into the amp (bypassing the DSP). Keeps using RCA (only ~3 m cable run, fine unbalanced)
