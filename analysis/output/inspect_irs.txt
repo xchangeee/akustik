@@ -1,5 +1,7 @@
-1 first sweep, left speaker only Nov 18.wav   sr=48000 n=83774 (1.75s) peak@702 (9.292 ms after t0) val=-0.0158 tailnoise=-85.9 dB
-2 first sweep, right speaker o.wav            sr=48000 n=83767 (1.75s) peak@695 (9.146 ms after t0) val=-0.0136 tailnoise=-84.9 dB
+1 L close up port Nov 18.wav                  sr=48000 n=83438 (1.74s) peak@366 (2.292 ms after t0) val=-0.0057 tailnoise=-75.0 dB
+1 L close up woofer Nov 18.wav                sr=48000 n=83385 (1.74s) peak@313 (1.188 ms after t0) val=+0.0395 tailnoise=-91.3 dB
+2 R close up port Nov 18.wav                  sr=48000 n=83439 (1.74s) peak@367 (2.312 ms after t0) val=-0.0053 tailnoise=-72.9 dB
+2 R close up woofer Nov 18.wav                sr=48000 n=83385 (1.74s) peak@313 (1.188 ms after t0) val=+0.0400 tailnoise=-90.9 dB
 1 L corner front left Nov 18.wav              sr=48000 n=84158 (1.75s) peak@1086 (17.292 ms after t0) val=+0.0016 tailnoise=-65.5 dB
 1 L corner front right Nov 18.wav             sr=48000 n=84634 (1.76s) peak@1562 (27.208 ms after t0) val=-0.0033 tailnoise=-71.1 dB
 2 R corner front left Nov 18.wav              sr=48000 n=84824 (1.77s) peak@1752 (31.167 ms after t0) val=-0.0019 tailnoise=-67.7 dB
@@ -18,6 +20,8 @@
 2 R DJ pos Nov 18.wav                         sr=48000 n=83863 (1.75s) peak@791 (11.146 ms after t0) val=-0.0050 tailnoise=-76.5 dB
 2 R DJ right30 Nov 18.wav                     sr=48000 n=83816 (1.75s) peak@744 (10.167 ms after t0) val=-0.0055 tailnoise=-76.5 dB
 2 R DJ up30 Nov 18.wav                        sr=48000 n=83875 (1.75s) peak@803 (11.396 ms after t0) val=-0.0049 tailnoise=-75.5 dB
+1 L dsp electrical Nov 18.wav                 sr=48000 n=83373 (1.74s) peak@301 (0.938 ms after t0) val=+0.0921 tailnoise=-112.8 dB
+2 R dsp electrical Nov 18.wav                 sr=48000 n=83373 (1.74s) peak@301 (0.938 ms after t0) val=+0.0896 tailnoise=-112.8 dB
 1 L pos1 left30 Nov 18.wav                    sr=48000 n=83766 (1.75s) peak@694 (9.125 ms after t0) val=-0.0161 tailnoise=-85.9 dB
 1 L pos2 right30 Nov 18.wav                   sr=48000 n=83800 (1.75s) peak@728 (9.833 ms after t0) val=-0.0133 tailnoise=-83.6 dB
 1 L pos3 fwd20 Nov 18.wav                     sr=48000 n=83728 (1.74s) peak@656 (8.333 ms after t0) val=-0.0177 tailnoise=-86.7 dB
@@ -30,7 +34,5 @@
 2 R pos4 back20 Nov 18.wav                    sr=48000 n=83812 (1.75s) peak@739 (10.062 ms after t0) val=-0.0102 tailnoise=-81.1 dB
 2 R pos5 up10 Nov 18.wav                      sr=48000 n=83781 (1.75s) peak@709 (9.438 ms after t0) val=-0.0122 tailnoise=-83.2 dB
 2 R pos6 down10 Nov 18.wav                    sr=48000 n=83769 (1.75s) peak@697 (9.188 ms after t0) val=-0.0148 tailnoise=-84.8 dB
-1 L close up port Nov 18.wav                  sr=48000 n=83438 (1.74s) peak@366 (2.292 ms after t0) val=-0.0057 tailnoise=-75.0 dB
-1 L close up woofer Nov 18.wav                sr=48000 n=83385 (1.74s) peak@313 (1.188 ms after t0) val=+0.0395 tailnoise=-91.3 dB
-2 R close up port Nov 18.wav                  sr=48000 n=83439 (1.74s) peak@367 (2.312 ms after t0) val=-0.0053 tailnoise=-72.9 dB
-2 R close up woofer Nov 18.wav                sr=48000 n=83385 (1.74s) peak@313 (1.188 ms after t0) val=+0.0400 tailnoise=-90.9 dB
+1 first sweep, left speaker only Nov 18.wav   sr=48000 n=83774 (1.75s) peak@702 (9.292 ms after t0) val=-0.0158 tailnoise=-85.9 dB
+2 first sweep, right speaker o.wav            sr=48000 n=83767 (1.75s) peak@695 (9.146 ms after t0) val=-0.0136 tailnoise=-84.9 dB

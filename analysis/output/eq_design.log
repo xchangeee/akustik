@@ -104,4 +104,4 @@ Mid reference levels (300 Hz-3 kHz, dB): seat L 73.3, seat R 72.6, seat L+R 77.0
      dj       right30: rms  7.5 ->  5.3   max +17.4 ->  +8.5
      dj          up30: rms  7.0 ->  4.7   max +16.7 ->  +6.7
 
-wrote analysis/output/eq_design.txt analysis/output/eq_design.png analysis/output/eq_filters.png eq/akustik_L.txt eq/akustik_R.txt
+wrote analysis/output/eq_design.txt analysis/output/eq_design.png analysis/output/eq_filters.png eq/v1-flat/L.txt eq/v1-flat/R.txt

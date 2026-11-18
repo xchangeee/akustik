@@ -5,7 +5,7 @@ from scipy.signal import find_peaks
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 repo, out = sys.argv[1], sys.argv[2]
 T0, SR, NFFT = 256, 48000, 1 << 18
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_0deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_0deg.txt"), comments="*")
 fq = np.fft.rfftfreq(NFFT, 1 / SR)
 calc = np.interp(np.log10(np.maximum(fq, 1)), np.log10(cal[:, 0]), cal[:, 1])
 def spec(f, right_ms):
@@ -19,7 +19,7 @@ def smooth(d, frac):
     lo = np.searchsorted(fq, grid * 2 ** (-0.5 / frac)); hi = np.maximum(np.searchsorted(fq, grid * 2 ** (0.5 / frac)), lo + 1)
     return grid, 10 * np.log10((cs[hi] - cs[lo]) / (hi - lo))
 files = {}
-for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18-woofer-port-sweeps-L-R", "*.wav")):
+for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18/closeups", "*.wav")):
     m = re.search(r"\d ([LR]) close up (\w+) ", os.path.basename(f)); files[(m.group(1), m.group(2))] = f
 at = lambda g, y, f0: np.interp(np.log10(f0), np.log10(g), y)
 fig, axs = plt.subplots(2, 1, figsize=(12, 9))

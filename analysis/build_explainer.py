@@ -16,7 +16,7 @@ NFFT = 1 << 17                     # 0.366 Hz bins (true resolution of the 500 m
 F_LO, F_HI = 14.0, 320.0           # bass only; the 300 Hz-3 kHz reference levels are computed here (EQ is flat there)
 NORM = 10 ** (70 / 20)             # store spectra relative to 70 dB SPL, so values are ~0.01..10
 
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 fq = np.fft.rfftfreq(NFFT, 1 / SR)
 i0, i1 = np.searchsorted(fq, F_LO), np.searchsorted(fq, F_HI)
 calc = np.interp(np.log10(np.maximum(fq, 1)), np.log10(cal[:, 0]), cal[:, 1])
@@ -64,11 +64,11 @@ def pairs(folder, pat):
 
 
 sets = {
-    "seat": pairs("2026-11-18-pos-sweeps-L-R", r"\d ([LR]) (pos\d \w+) "),
-    "dj": pairs("2026-11-18-dj-sweeps-L-R", r"\d ([LR]) DJ (\w+) "),
-    "corner": pairs("2026-11-18-corner-sweeps-L-R", r"\d ([LR]) corner front (\w+) "),
+    "seat": pairs("2026-11-18/positions", r"\d ([LR]) (pos\d \w+) "),
+    "dj": pairs("2026-11-18/dj", r"\d ([LR]) DJ (\w+) "),
+    "corner": pairs("2026-11-18/corners", r"\d ([LR]) corner front (\w+) "),
 }
-sets["seat"] = {"seat": {("L" if "left" in f else "R"): f for f in glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav"))}, **sets["seat"]}
+sets["seat"] = {"seat": {("L" if "left" in f else "R"): f for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav"))}, **sets["seat"]}
 
 data = {"f0": float(fq[i0]), "df": float(SR / NFFT), "n": int(i1 - i0), "norm_db": 70.0, "sets": {}}
 data["ref"] = {}
@@ -81,7 +81,7 @@ for name, d in sets.items():
 
 # ---- design (device values as RBJ cookbook parameters) from the filter files ----
 def read_eq(s):
-    txt = open(os.path.join(repo, "eq", f"akustik_{s}.txt")).read()
+    txt = open(os.path.join(repo, "eq", "v1-flat", f"{s}.txt")).read()
     bands = [[float(f), float(g), float(q)] for f, g, q in
              re.findall(r"ON\s+PK\s+Fc\s+([\d.]+)\s*Hz\s+Gain\s+([-\d.]+)\s*dB\s+Q\s+([\d.]+)", txt)]
     hp = float(re.search(r"Butterworth 24 dB/oct ([\d.]+) Hz", txt).group(1))
@@ -105,7 +105,7 @@ data["ir_zoom"] = {"t0_ms": 8, "step_ms": 4 / 48, "v": [round(float(v), 3) for v
 grid = np.geomspace(15, 20000, 320)
 fqe = np.fft.rfftfreq(1 << 18, 1 / SR)
 el = {"f": [round(float(v), 2) for v in grid]}
-folder = glob.glob(os.path.join(repo, "measurements", "2026-11-18-dsp-ele*trical"))[0]
+folder = os.path.join(repo, "measurements", "2026-11-18", "dsp-electrical")
 for s, bands in (("L", bL), ("R", bR)):
     xx = load(glob.glob(os.path.join(folder, f"* {s} *.wav"))[0])
     n_end = T0 + int(0.5 * SR); xx = np.pad(xx, (0, max(0, n_end - len(xx))))[:n_end]

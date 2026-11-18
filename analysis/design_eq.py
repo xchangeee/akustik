@@ -3,11 +3,11 @@
 Usage: design_eq.py <repo> <out_dir> <eq_dir> [flat|harman]
 
 Targets
-- flat (default, EQ v1): bass at each set's own 300 Hz-3 kHz level. Outputs eq_design.*, eq/akustik_{L,R}.txt.
+- flat (default, EQ v1): bass at each set's own 300 Hz-3 kHz level. Outputs eq_design.*, eq/v1-flat/{L,R}.txt.
 - harman (EQ v2): Harman-style in-room bass rise = RBJ low shelf +6 dB, 105 Hz, Q 0.707 on top of the mid level
   (about +5.8 dB at 30 Hz, +5.2 at 50, +3 at 105, +1.3 at 200, +0.6 at 300 Hz). The treble tilt of the Harman
   in-room curve isn't part of this (the EQ only touches the bass; the 300 Hz-3 kHz reference stays the 0 dB point).
-  Outputs eq_design_harman.*, eq/akustik_harman_{L,R}.txt; the report also simulates v1 for comparison.
+  Outputs eq_design_harman.*, eq/v2-harman/{L,R}.txt; the report also simulates v1 for comparison.
 
 Method
 - Complex spectra of every IR (500 ms window, 90° mic cal). The EQ (biquads at 48 kHz, RBJ peaking,
@@ -33,8 +33,9 @@ repo, out, eqdir = sys.argv[1], sys.argv[2], sys.argv[3]
 TARGET = sys.argv[4] if len(sys.argv) > 4 else "flat"
 assert TARGET in ("flat", "harman"), TARGET
 SFX = "" if TARGET == "flat" else "_" + TARGET     # output file suffix; v1 files stay untouched
+EQSUB = "v1-flat" if TARGET == "flat" else "v2-" + TARGET   # filter files go to eq/<EQSUB>/{L,R}.txt
 SHELF = dict(gain=6.0, f0=105.0, q=0.707)           # harman target: RBJ low shelf on top of the mid level
-os.makedirs(eqdir, exist_ok=True)
+os.makedirs(os.path.join(eqdir, EQSUB), exist_ok=True)
 T0, SR, NFFT, OFFSET = 256, 48000, 1 << 18, 100.9
 NBANDS = 7
 HPF = dict(fc=30.0, order=4)          # Butterworth 24 dB/oct
@@ -44,7 +45,7 @@ GMIN = -12.0                          # DSP (own configurator) accepts +-12 dB p
 QMAX = 8.0                            # robust to position changes (context: Q 3-8 for clear modes)
 REG = 0.005                           # cost per dB of total cut: avoids stacked / wasted bands
 
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 fq_all = np.fft.rfftfreq(NFFT, 1 / SR)
 KEEP = fq_all < 4000                   # bins we need (bass fit + mid reference)
 fq = fq_all[KEEP]
@@ -97,12 +98,12 @@ def pairs(folder, pat):
     return d
 
 sets = {
-    "seat": pairs("2026-11-18-pos-sweeps-L-R", r"\d ([LR]) (pos\d \w+) "),
-    "dj": pairs("2026-11-18-dj-sweeps-L-R", r"\d ([LR]) DJ (\w+) "),
-    "corner": pairs("2026-11-18-corner-sweeps-L-R", r"\d ([LR]) corner front (\w+) "),
+    "seat": pairs("2026-11-18/positions", r"\d ([LR]) (pos\d \w+) "),
+    "dj": pairs("2026-11-18/dj", r"\d ([LR]) DJ (\w+) "),
+    "corner": pairs("2026-11-18/corners", r"\d ([LR]) corner front (\w+) "),
 }
 sets["seat"]["seat"] = {("L" if "left" in f else "R"): spec(f)
-                        for f in glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav"))}
+                        for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav"))}
 for k, v in sets.items():
     assert all(len(lr) == 2 for lr in v.values()), k
 print("positions:", {k: len(v) for k, v in sets.items()})
@@ -318,9 +319,9 @@ EQ = {s: chain(final[s], ONE) for s in "LR"}
 after = responses(EQ)
 
 V1 = None   # EQ v1 (flat target) from its filter files, for comparison in the v2 report
-if TARGET != "flat" and all(os.path.exists(os.path.join(eqdir, f"akustik_{s}.txt")) for s in "LR"):
+if TARGET != "flat" and all(os.path.exists(os.path.join(eqdir, "v1-flat", f"{s}.txt")) for s in "LR"):
     rx = r"Filter\s+\d+: ON\s+PK\s+Fc\s+([\d.]+) Hz\s+Gain\s+([-\d.]+) dB\s+Q\s+([\d.]+)"
-    v1b = {s: [tuple(map(float, m)) for m in re.findall(rx, open(os.path.join(eqdir, f"akustik_{s}.txt")).read())] for s in "LR"}
+    v1b = {s: [tuple(map(float, m)) for m in re.findall(rx, open(os.path.join(eqdir, "v1-flat", f"{s}.txt")).read())] for s in "LR"}
     V1 = responses({s: chain(v1b[s], ONE) for s in "LR"})
 
 
@@ -402,7 +403,7 @@ for s, name in (("L", "left (DSP out 1)"), ("R", "right (DSP out 2)")):
             assert rbj_to_dev((round(fc, 2), round(g, 1), round(q, 4))) == dev[s][i]
         else:
             fl.append(f"Filter {i+1:2d}: OFF None")
-    with open(os.path.join(eqdir, f"akustik{SFX}_{s}.txt"), "w", newline="\r\n") as fh:
+    with open(os.path.join(eqdir, EQSUB, f"{s}.txt"), "w", newline="\r\n") as fh:
         fh.write("\n".join(fl) + "\n")
 with open(os.path.join(out, f"eq_design{SFX}.txt"), "w") as fh:
     fh.write(txt + "\n")
@@ -431,4 +432,4 @@ ax.set_xlim(15, 1000); ax.set_ylim(-30, 3); ax.grid(True, which="both", alpha=0.
 ax.set_xticks(ticks + [1000]); ax.set_xticklabels(ticks + ["1k"]); ax.set_ylabel("dB"); ax.set_title("Filter responses (thin = single bands)")
 plt.tight_layout(); plt.savefig(os.path.join(out, f"eq_filters{SFX}.png"), dpi=110)
 print("\nwrote", *(os.path.join(out, f"{n}{SFX}.{e}") for n, e in (("eq_design", "txt"), ("eq_design", "png"), ("eq_filters", "png"))),
-      *(os.path.join(eqdir, f"akustik{SFX}_{s}.txt") for s in "LR"))
+      *(os.path.join(eqdir, EQSUB, f"{s}.txt") for s in "LR"))

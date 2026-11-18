@@ -11,7 +11,7 @@ import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 
 repo, out = sys.argv[1], sys.argv[2]
 T0, SR, NFFT = 256, 48000, 1 << 16
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 fq = np.fft.rfftfreq(NFFT, 1 / SR)
 calc = np.interp(np.log10(np.maximum(fq, 1)), np.log10(cal[:, 0]), cal[:, 1])
 
@@ -36,9 +36,9 @@ def pairs(folder, pat):
     return d
 
 
-sets = {"seat": pairs("2026-11-18-pos-sweeps-L-R", r"\d ([LR]) (pos\d \w+) "),
-        "dj": pairs("2026-11-18-dj-sweeps-L-R", r"\d ([LR]) DJ (\w+) ")}
-sets["seat"]["seat"] = {("L" if "left" in f else "R"): spec(f) for f in glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav"))}
+sets = {"seat": pairs("2026-11-18/positions", r"\d ([LR]) (pos\d \w+) "),
+        "dj": pairs("2026-11-18/dj", r"\d ([LR]) DJ (\w+) ")}
+sets["seat"]["seat"] = {("L" if "left" in f else "R"): spec(f) for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav"))}
 TILT = np.where(GRID > 1000, -np.log2(GRID / 1000), 0.0)
 REFB = (GRID > 300) & (GRID < 3000)
 res = {}

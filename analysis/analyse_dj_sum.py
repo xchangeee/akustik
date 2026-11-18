@@ -4,7 +4,7 @@ from scipy.io import wavfile
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 repo, out = sys.argv[1], sys.argv[2]
 T0, SR, NFFT, OFFSET = 256, 48000, 1 << 18, 100.9
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 fq = np.fft.rfftfreq(NFFT, 1 / SR)
 calc = np.interp(np.log10(np.maximum(fq, 1)), np.log10(cal[:, 0]), cal[:, 1])
 def spec(f):
@@ -24,9 +24,9 @@ def pairs(folder, pat):
         m = re.search(pat, os.path.basename(f))
         if m: d.setdefault(m.group(2), {})[m.group(1)] = f
     return d
-seat = pairs("2026-11-18-pos-sweeps-L-R", r"\d ([LR]) (pos\d \w+) ")
-seat["seat"] = {("L" if "left" in f else "R"): f for f in glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav"))}
-dj = pairs("2026-11-18-dj-sweeps-L-R", r"\d ([LR]) DJ (\w+) ")
+seat = pairs("2026-11-18/positions", r"\d ([LR]) (pos\d \w+) ")
+seat["seat"] = {("L" if "left" in f else "R"): f for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav"))}
+dj = pairs("2026-11-18/dj", r"\d ([LR]) DJ (\w+) ")
 print("seat positions:", sorted(seat), "\nDJ positions:", sorted(dj))
 res = {}
 for name, d in (("seat", seat), ("dj", dj)):

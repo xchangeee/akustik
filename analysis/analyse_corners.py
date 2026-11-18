@@ -5,7 +5,7 @@ from scipy.signal import find_peaks
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 repo, out = sys.argv[1], sys.argv[2]
 T0, SR, NFFT = 256, 48000, 1 << 18
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 OFFSET = 100.9  # same as position analysis (L seat 1-8 kHz = 73.5 dB)
 def fr(f):
     sr, x = wavfile.read(f); x = x.astype(float)
@@ -21,12 +21,12 @@ def smooth(f, db, frac):
     return grid, 10 * np.log10((cs[hi] - cs[lo]) / (hi - lo)) + OFFSET
 def pavg(cs): return 10 * np.log10(np.mean(10 ** (np.array(cs) / 10), axis=0))
 seatfiles = {"L": [], "R": []}
-for f in glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav")):
+for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav")):
     seatfiles["L" if "left" in f else "R"].append(f)
-for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18-pos-sweeps-L-R", "*.wav")):
+for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18/positions", "*.wav")):
     seatfiles[re.search(r"\d ([LR]) ", os.path.basename(f)).group(1)].append(f)
 corner = {}
-for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18-corner-sweeps-L-R", "*.wav")):
+for f in glob.glob(os.path.join(repo, "measurements", "2026-11-18/corners", "*.wav")):
     m = re.search(r"\d ([LR]) corner front (\w+) ", os.path.basename(f)); corner[(m.group(1), m.group(2))] = f
 at = lambda g, y, f0: np.interp(np.log10(f0), np.log10(g), y)
 fig, axs = plt.subplots(2, 1, figsize=(12, 9), sharex=True)

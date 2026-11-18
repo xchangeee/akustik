@@ -16,16 +16,16 @@ NFFT = 1 << 18     # 0.18 Hz bins
 
 # ---------- load ----------
 files = {}
-seat = sorted(glob.glob(os.path.join(repo, "measurements", "*first sweep*.wav")))
+seat = sorted(glob.glob(os.path.join(repo, "measurements", "2026-11-18", "seat", "*first sweep*.wav")))
 for f in seat:
     spk = "L" if "left" in f else "R"
     files[(spk, "seat")] = f
-for f in sorted(glob.glob(os.path.join(repo, "measurements", "2026-11-18-pos-sweeps-L-R", "*.wav"))):
+for f in sorted(glob.glob(os.path.join(repo, "measurements", "2026-11-18/positions", "*.wav"))):
     m = re.search(r"\d ([LR]) (pos\d \w+) ", os.path.basename(f))
     files[(m.group(1), m.group(2))] = f
 positions = ["seat"] + sorted({p for (_, p) in files if p != "seat"})
 
-cal = np.loadtxt(os.path.join(repo, "cal", "MM-1C_90deg.txt"), comments="*")
+cal = np.loadtxt(os.path.join(repo, "reference", "mic-cal", "MM-1C_90deg.txt"), comments="*")
 
 def load(f):
     sr, x = wavfile.read(f)

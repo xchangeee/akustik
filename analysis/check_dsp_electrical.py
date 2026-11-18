@@ -15,11 +15,11 @@ import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 
 repo, out = sys.argv[1], sys.argv[2]
 T0, SR, NFFT = 256, 48000, 1 << 18
-folder = glob.glob(os.path.join(repo, "measurements", "2026-11-18-dsp-ele*trical"))[0]
+folder = os.path.join(repo, "measurements", "2026-11-18", "dsp-electrical")
 
 
 def read_eq(s):
-    txt = open(os.path.join(repo, "eq", f"akustik_{s}.txt")).read()
+    txt = open(os.path.join(repo, "eq", "v1-flat", f"{s}.txt")).read()
     bands = [(float(f), float(g), float(q)) for f, g, q in
              re.findall(r"ON\s+PK\s+Fc\s+([\d.]+)\s*Hz\s+Gain\s+([-\d.]+)\s*dB\s+Q\s+([\d.]+)", txt)]
     hp = float(re.search(r"Butterworth 24 dB/oct ([\d.]+) Hz", txt).group(1))
