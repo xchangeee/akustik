@@ -4,10 +4,10 @@ This explains how the EQ now in the DSP was made, step by step. Each step includ
 
 Where things live:
 
-- Measurement findings: [measurements/2026-11-18-analysis.md](measurements/2026-11-18-analysis.md)
-- Scripts: [analysis/](analysis/README.md); the EQ design is [analysis/design_eq.py](analysis/design_eq.py)
-- Filter files: [eq/](eq/)
-- Room, gear and goals: [room-acoustics-context.md](room-acoustics-context.md)
+- Measurement findings: [findings/2026-11-18-baseline.md](../findings/2026-11-18-baseline.md); EQ results: [findings/eq-v1-flat.md](../findings/eq-v1-flat.md), [findings/eq-v2-harman.md](../findings/eq-v2-harman.md)
+- Scripts: [analysis/](../analysis/README.md); the EQ design is [analysis/design_eq.py](../analysis/design_eq.py)
+- Filter files: [eq/](../eq/)
+- Room, gear and goals: [context.md](context.md)
 
 Contents
 
@@ -64,7 +64,7 @@ Below about 150–200 Hz the modes are far enough apart that each one stands out
 
 ### Why it matters here
 
-- **The head position on the sofa varies.** Sitting upright at the front (where we measured), the head is about 1.2 m in front of the back wall: the 44 Hz width mode is still strong there, the 88 Hz width mode close to a null. Lying back, the head is about 0.4 m from the wall, near the loud spot of every width mode, so 44 and 88 Hz boom more. Layout sketch: [docs/room-layout-sketch.png](docs/room-layout-sketch.png).
+- **The head position on the sofa varies.** Sitting upright at the front (where we measured), the head is about 1.2 m in front of the back wall: the 44 Hz width mode is still strong there, the 88 Hz width mode close to a null. Lying back, the head is about 0.4 m from the wall, near the loud spot of every width mode, so 44 and 88 Hz boom more. Layout sketch: [img/room-layout-sketch.png](img/room-layout-sketch.png).
 - **L and R sit in different places.** L is in the middle of the 6 m wall, which is the null of the odd length modes (29 Hz, 86 Hz), so it hardly excites them. R is near the side wall, so it excites all of them. That is why R measured with much more bass than L, even though the two speakers are identical (confirmed by the close-up measurement).
 - **Bass leaking into the staircase** is the room's mode energy. A mode that rings throughout the room pushes on the walls, doors and floor everywhere, not only at the seat.
 
@@ -317,7 +317,7 @@ Every one of the 14 positions improves.
 
 ### Electrical check: does the DSP do what the model says?
 
-The simulation assumes the DSP builds exactly the filters we think. To check, DSP Out 1 and Out 2 were connected straight to an interface input (no amp, no speaker, no mic) and measured with a sweep. This isolates the DSP. Result ([plot](analysis/output/dsp_electrical.png)):
+The simulation assumes the DSP builds exactly the filters we think. To check, DSP Out 1 and Out 2 were connected straight to an interface input (no amp, no speaker, no mic) and measured with a sweep. This isolates the DSP. Result ([plot](../analysis/output/dsp_electrical.png)):
 
 | Measured minus predicted | 30–60 Hz | 60–150 Hz | 150 Hz–1 kHz |
 | --- | --- | --- | --- |
@@ -363,9 +363,9 @@ Reading the table with §1 in mind:
 
 The bass energy in the corners (where all modes are loudest) is the best indicator in the data for what leaks out of the room: 6 dB less at the same volume setting. Mids and treble are untouched.
 
-![before/after](analysis/output/eq_design.png)
+![before/after](../analysis/output/eq_design.png)
 
-![filters](analysis/output/eq_filters.png)
+![filters](../analysis/output/eq_filters.png)
 
 ---
 

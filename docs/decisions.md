@@ -1,0 +1,19 @@
+# Decisions
+
+One entry per decision: what, why, where the details are. Add new ones at the bottom. If one is reversed, add a new entry; don't edit the old one.
+
+| Date | Decision | Why | Details |
+| --- | --- | --- | --- |
+| 2026-11-17 | Interface feeds DSP **In 1/2** for measuring (plan said 3/4) | The EQ sits on the outputs, so any input works; keep DSP input channels 1/2 flat | [procedures/measurement-setup.md](procedures/measurement-setup.md) Phase C |
+| 2026-11-17 | DSP Out 1/2 → amp **temporarily via TS adapters** | Only cables at hand. Shorts the DSP's cold output; user accepted the risk for now. Replace with TRS → 2× RCA (tip only) | [current-setup.md](current-setup.md) |
+| 2026-11-17 | iPhone + NIOSH SLM instead of an SPL meter; no soundcard cal file | ~±2 dB is enough for level setting; loopback is flat within 0.2 dB | [findings/2026-11-17-setup-checks.md](../findings/2026-11-17-setup-checks.md) |
+| 2026-11-17 | Keep a **FLAT** preset on the DSP | Every re-measurement of the room needs the un-EQ'd state | [current-setup.md](current-setup.md) |
+| 2026-11-18 | No delay, no channel gain change | L/R arrivals differ by 0.13 ms (< 0.2 ms); L/R mid levels within 0.7 dB. R's extra bass is room, handled by its EQ | [findings/eq-v1-flat.md](../findings/eq-v1-flat.md) |
+| 2026-11-18 | EQ designed in Python (`analysis/design_eq.py`), not with REW's auto-EQ; directly on the DSP's parameter grid | Simulates every measured IR (incl. L+R sums with filter phase), fits seat and DJ spot together, lands exactly on the device values. REW's filter text format is only the transport for the configurator import | [eq-design-explained.md](eq-design-explained.md) |
+| 2026-11-18 | **Cut-only**, per channel, ≤ 7 bands, never boost dips | Cutting mode peaks lowers bass energy everywhere (leakage); dips are cancellations that boosts can't fill | [context.md](context.md), [eq-design-explained.md](eq-design-explained.md) |
+| 2026-11-18 | HPF Butterworth 24 dB/oct at 29.8 Hz on both outputs | Protects the woofer below the 35 Hz port tuning. 35 Hz would cost ~2 dB at 35 Hz for only 0.4 dB less bass energy (option for a DJ/leakage preset) | [findings/eq-v1-flat.md](../findings/eq-v1-flat.md) |
+| 2026-11-18 | EQ target: flat (v1) → **Harman** in-room bass rise, +6 dB low shelf at 105 Hz (v2) | v1 sounded "boring", low end missing. v2 cuts less: ~3.5 dB more bass energy than v1, still ~4.4 dB below no EQ | [findings/eq-v2-harman.md](../findings/eq-v2-harman.md) |
+| 2026-11-18 | No treble band in v2 | The seat already has the Harman treble slope (−0.9 / −1.4 dB/oct); a band would dull the DJ spot | [findings/eq-v2-harman.md](../findings/eq-v2-harman.md#treble-tilt-checked-not-added-2026-11-18) |
+| 2026-11-18 | Sub8, if added: **overlay** on DSP Out 3 (mains unchanged), not real 2.1 | Sub off = today's sound; no preset switching for occasional use | [plans/sub8-overlay.md](plans/sub8-overlay.md) |
+| 2026-11-18 | DJ spot: no boosting for it | Its holes (30–35, 55–75 Hz) are cancellations; boosts would blast the room. Headphones / booth monitor instead | [context.md](context.md#dj-position), [findings/2026-11-18-baseline.md](../findings/2026-11-18-baseline.md#dj-position--lr-sum) |
+| 2026-11-19 | **No input gate; output compressor as safety limiter** (ratio Limit, threshold measured) | Nothing audible to gate, and this DSP's gate would cut off starts after silence. The threshold acts on the output level, and where amp + speakers run out is unknown, so it's measured | [procedures/output-limiter.md](procedures/output-limiter.md) |

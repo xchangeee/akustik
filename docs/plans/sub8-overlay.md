@@ -1,4 +1,4 @@
-# Notes: "boring" bass, house curve, adding the Eris Sub8 (2026-11-18)
+# Plan: "boring" bass, house curve, adding the Eris Sub8 (2026-11-18)
 
 After listening to music with EQ v1 for a while, the sound feels a bit "boring": something is missing in the low low end.
 A PreSonus Eris Sub8 is available and could be added to the DSP. It draws up to 100 W, so it should only run sometimes, for extra punch.
@@ -13,14 +13,14 @@ A PreSonus Eris Sub8 is available and could be added to the DSP. It draws up to 
 ## 1. Probable main cause: the flat EQ target
 
 EQ v1 targets **flat** (bass at the 300 Hz–3 kHz mid level). Simulated at the seat, L+R is about ±3 dB from 35 to 130 Hz,
-−3 dB at 30 Hz and −14 dB at 25 Hz ([eq_design.txt](analysis/output/eq_design.txt)).
+−3 dB at 30 Hz and −14 dB at 25 Hz ([eq_design.txt](../../analysis/output/eq_design.txt)).
 An in-room response that's flat usually sounds thin and polite. Most listeners prefer a **house curve**: bass rising about
 +5…+8 dB from ~100 Hz down to ~30 Hz. Before the EQ the room had +10…+15 dB of boom, so going straight to flat is a big change.
 
-- Fix (no power, no hardware): **EQ v2 with a gently rising target**. Still cut-only, just cutting less. Same script ([analysis/design_eq.py](analysis/design_eq.py)), different target. The peaks at 43, 51 and 85–89 Hz still get cut.
+- Fix (no power, no hardware): **EQ v2 with a gently rising target**. Still cut-only, just cutting less. Same script ([analysis/design_eq.py](../../analysis/design_eq.py)), different target. The peaks at 43, 51 and 85–89 Hz still get cut.
 - Trade-off: the leakage goal. Cutting less gives back some bass energy in the staircase (rough guess 3–5 dB of the 6–8 dB EQ v1 removed). The user decides how much.
-- Starting proposal: about +4 dB at 40 Hz relative to the mids, rising from ~100 Hz.
-- The acoustic re-measurement with EQ v1 on is still open (see [HANDOFF.md](HANDOFF.md)). It also shows whether the narrow −12 dB notches at 42–43 Hz overshoot at some positions, which would thin the low end further.
+- Starting proposal was about +4 dB at 40 Hz. **Done as EQ v2 with a Harman target (+6 dB low shelf, 105 Hz):** [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md).
+- The acoustic re-measurement with EQ v1 on is still open (see [SESSION-LOG.md](../../SESSION-LOG.md)). It also shows whether the narrow −12 dB notches at 42–43 Hz overshoot at some positions, which would thin the low end further.
 
 ## 2. What to expect from the Sub8
 
@@ -58,10 +58,10 @@ Use a switched power strip or smart plug, and switch the sub on after the DSP an
 ## Order of work
 
 1. Acoustic re-measurement with EQ v1 on (pending).
-2. EQ v2 with a moderate house curve. Listen first: it may already fix "boring". **Designed 2026-11-18 with a Harman target (+6 dB shelf, 105 Hz), see the end of the analysis file; not imported/listened yet.**
+2. EQ v2 with a moderate house curve. Listen first: it may already fix "boring". **Designed 2026-11-18 with a Harman target (+6 dB shelf, 105 Hz), see [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md); not imported/listened yet.**
 3. Sub as overlay: sub-only sweeps at candidate spots → simulate → configure Out 3.
 
 ## Open questions for the user
 
 - Where can the sub physically go (walkway, DJ cupboard, sofa)?
-- How much bass rise below 100 Hz to try in v2? (Proposal: about +4 dB at 40 Hz.)
+- ~~How much bass rise below 100 Hz to try in v2?~~ Decided: Harman, +6 dB shelf.
