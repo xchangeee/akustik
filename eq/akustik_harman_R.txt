@@ -1,0 +1,16 @@
+Filter Settings file
+
+Room EQ V5.31
+Dated: 18 Nov 2026 23:30:05
+
+Notes:akustik EQ v2 (harman target) right (DSP out 2); designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct 29.8 Hz
+
+Equaliser: Generic
+akustik_harman R
+Filter  1: ON  PK       Fc    43.18 Hz  Gain  -5.1 dB  Q  7.9619
+Filter  2: ON  PK       Fc    53.17 Hz  Gain  -7.6 dB  Q  8.1993
+Filter  3: ON  PK       Fc    84.40 Hz  Gain -12.0 dB  Q  8.0190
+Filter  4: ON  PK       Fc   125.00 Hz  Gain  -8.2 dB  Q  7.9209
+Filter  5: OFF None
+Filter  6: OFF None
+Filter  7: OFF None

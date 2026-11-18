@@ -1,9 +1,9 @@
 Filter Settings file
 
 Room EQ V5.31
-Dated: 18 Nov 2026 01:43:15
+Dated: 18 Nov 2026 23:28:50
 
-Notes:akustik EQ right (DSP out 2); designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct 29.8 Hz
+Notes:akustik EQ v1 (flat target) right (DSP out 2); designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct 29.8 Hz
 
 Equaliser: Generic
 akustik R

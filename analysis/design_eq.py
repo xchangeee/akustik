@@ -1,14 +1,24 @@
 """EQ design: cut-only PEQs per channel (max 7) + fixed DSP high-pass, simulated on all measured IRs.
 
-Usage: design_eq.py <repo> <out_dir> <eq_dir>
+Usage: design_eq.py <repo> <out_dir> <eq_dir> [flat|harman]
+
+Targets
+- flat (default, EQ v1): bass at each set's own 300 Hz-3 kHz level. Outputs eq_design.*, eq/akustik_{L,R}.txt.
+- harman (EQ v2): Harman-style in-room bass rise = RBJ low shelf +6 dB, 105 Hz, Q 0.707 on top of the mid level
+  (about +5.8 dB at 30 Hz, +5.2 at 50, +3 at 105, +1.3 at 200, +0.6 at 300 Hz). The treble tilt of the Harman
+  in-room curve isn't part of this (the EQ only touches the bass; the 300 Hz-3 kHz reference stays the 0 dB point).
+  Outputs eq_design_harman.*, eq/akustik_harman_{L,R}.txt; the report also simulates v1 for comparison.
 
 Method
 - Complex spectra of every IR (500 ms window, 90° mic cal). The EQ (biquads at 48 kHz, RBJ peaking,
   the definition REW's "Generic" equaliser uses) is applied as a complex multiply, so the L+R sums
   include the filters' phase.
-- Target: flat at each set's own 300 Hz-3 kHz level (no bass boost), fit range 25-250 Hz, 1/24 oct.
+- Target: see above, relative to each set's own 300 Hz-3 kHz level; fit range 25-250 Hz, 1/24 oct.
 - Cost (asymmetric): excess above target counts fully; going below target counts only where the EQ
-  made it deeper than it already was (so cuts aren't spent on dips). Terms and weights:
+  made it deeper than it already was (so cuts aren't spent on dips). flat: penalty e^2 - e0^2; harman: (e - e0)^2
+  for the extra depth only. With the raised target many spots sit several dB below it already (e.g. 47 Hz next to
+  the 43 Hz mode), and e^2 - e0^2 then made every dB of filter skirt there ~10x as expensive, so the 43 Hz mode
+  stayed +5 dB above target. Terms and weights:
     seat L+R sum 1.0, seat L 0.5, seat R 0.5, DJ L+R sum 0.4.
 - High-pass (DSP HP filter, not a PEQ band) is fixed during the fit.
 """
@@ -20,6 +30,10 @@ from scipy.signal import find_peaks
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 
 repo, out, eqdir = sys.argv[1], sys.argv[2], sys.argv[3]
+TARGET = sys.argv[4] if len(sys.argv) > 4 else "flat"
+assert TARGET in ("flat", "harman"), TARGET
+SFX = "" if TARGET == "flat" else "_" + TARGET     # output file suffix; v1 files stay untouched
+SHELF = dict(gain=6.0, f0=105.0, q=0.707)           # harman target: RBJ low shelf on top of the mid level
 os.makedirs(eqdir, exist_ok=True)
 T0, SR, NFFT, OFFSET = 256, 48000, 1 << 18, 100.9
 NBANDS = 7
@@ -47,6 +61,18 @@ def spec(f):
 
 GRID = np.geomspace(18, 3500, 700)
 FRAC = 24
+
+
+def low_shelf_db(f, gain, f0, q, sr=SR):
+    """RBJ cookbook low-shelf magnitude in dB at frequencies f"""
+    A = 10 ** (gain / 40); w = 2 * np.pi * f0 / sr; al = np.sin(w) / (2 * q); c = np.cos(w); sA = 2 * np.sqrt(A) * al
+    b = [A * ((A + 1) - (A - 1) * c + sA), 2 * A * ((A - 1) - (A + 1) * c), A * ((A + 1) - (A - 1) * c - sA)]
+    a = [(A + 1) + (A - 1) * c + sA, -2 * ((A - 1) + (A + 1) * c), (A + 1) + (A - 1) * c - sA]
+    zz = np.exp(-1j * 2 * np.pi * np.asarray(f) / sr)
+    return 20 * np.log10(np.abs((b[0] + b[1] * zz + b[2] * zz ** 2) / (a[0] + a[1] * zz + a[2] * zz ** 2)))
+
+
+TGT = np.zeros_like(GRID) if TARGET == "flat" else low_shelf_db(GRID, **SHELF)   # target rel. to mid level, dB
 _lo = np.searchsorted(fq, GRID * 2 ** (-0.5 / FRAC))
 _hi = np.maximum(np.searchsorted(fq, GRID * 2 ** (0.5 / FRAC)), _lo + 1)
 
@@ -149,7 +175,7 @@ def sp_fit(H):
 
 
 fitdata = {n: [(lr["L"][FB] * hp_fb, lr["R"][FB] * hp_fb) for lr in sets[n].values()] for n in ("seat", "dj")}
-e0 = {k: base[k][FITB] - REF[k] for k, _ in TERMS}
+e0 = {k: base[k][FITB] - REF[k] - TGT[FITB] for k, _ in TERMS}
 
 
 COUNTS = {"L": NBANDS, "R": NBANDS}
@@ -180,16 +206,19 @@ def cost(p):
         for L, R in fitdata[name]:
             Lq, Rq = L * E["L"], R * E["R"]
             ps.append(sp_fit(Lq if which == "L" else Rq if which == "R" else Lq + Rq))
-        e = 10 * np.log10(np.mean(ps, axis=0)) + OFFSET - REF[(name, which)]
+        e = 10 * np.log10(np.mean(ps, axis=0)) + OFFSET - REF[(name, which)] - TGT[FITB]
         pos = np.maximum(e, 0) ** 2
-        neg = np.maximum(np.minimum(e, 0) ** 2 - np.minimum(e0[(name, which)], 0) ** 2, 0)
+        if TARGET == "flat":   # v1: e^2 - e0^2 (grows with how deep the dip already was)
+            neg = np.maximum(np.minimum(e, 0) ** 2 - np.minimum(e0[(name, which)], 0) ** 2, 0)
+        else:                  # v2: only the extra depth the EQ adds, squared (see docstring)
+            neg = np.minimum(np.minimum(e, 0) - np.minimum(e0[(name, which)], 0), 0) ** 2
         tot += w * np.mean(pos + neg)
     return tot + REG * sum(-g for s in bands for _, g, _ in bands[s])
 
 
 def init_bands(s):
     """greedy start: biggest peaks of the channel's seat excess (and of the sum, for shared modes)"""
-    e = base[("seat", s)] - REF[("seat", s)]
+    e = base[("seat", s)] - REF[("seat", s)] - TGT
     g = GRID
     sel = FITB
     pk, pr = find_peaks(np.where(sel, e, -99), prominence=2)
@@ -288,11 +317,17 @@ final = {s: [dev_to_rbj(d) for d in dev[s]] for s in "LR"}
 EQ = {s: chain(final[s], ONE) for s in "LR"}
 after = responses(EQ)
 
+V1 = None   # EQ v1 (flat target) from its filter files, for comparison in the v2 report
+if TARGET != "flat" and all(os.path.exists(os.path.join(eqdir, f"akustik_{s}.txt")) for s in "LR"):
+    rx = r"Filter\s+\d+: ON\s+PK\s+Fc\s+([\d.]+) Hz\s+Gain\s+([-\d.]+) dB\s+Q\s+([\d.]+)"
+    v1b = {s: [tuple(map(float, m)) for m in re.findall(rx, open(os.path.join(eqdir, f"akustik_{s}.txt")).read())] for s in "LR"}
+    V1 = responses({s: chain(v1b[s], ONE) for s in "LR"})
+
 
 # ---------- report ----------
 def stats(r, key, lo=30, hi=200):
     b = (GRID >= lo) & (GRID <= hi)
-    e = r[key][b] - REF[key]
+    e = r[key][b] - REF[key] - TGT[b]
     return np.sqrt(np.mean(e ** 2)), e.max(), e.min()
 
 
@@ -303,7 +338,7 @@ def bass_energy(r, key, lo=30, hi=150):
 
 lines = []
 P = lambda *a: lines.append(" ".join(str(x) for x in a))
-P(f"EQ design {datetime.date.today()} | HPF Butterworth {HPF['order']*6} dB/oct @ {HPF['fc']:.1f} Hz (DSP HP filter, freq raw {freq_raw(HPF['fc'])}, slope raw 8) | fit {FIT[0]}-{FIT[1]} Hz, 1/{FRAC} oct, target flat at mid level")
+P(f"EQ design {datetime.date.today()} | HPF Butterworth {HPF['order']*6} dB/oct @ {HPF['fc']:.1f} Hz (DSP HP filter, freq raw {freq_raw(HPF['fc'])}, slope raw 8) | fit {FIT[0]}-{FIT[1]} Hz, 1/{FRAC} oct, target " + ("flat at mid level" if TARGET == "flat" else f"harman = mid level + low shelf {SHELF['gain']:+.0f} dB @ {SHELF['f0']:.0f} Hz Q {SHELF['q']}"))
 P(f"cost terms: {TERMS}; Q max {QMAX}, cut penalty {REG}/dB; cost after snapping to the device grid {best_fun:.3f} (continuous {fun:.3f})")
 P("Simulation uses the device values exactly (Peak = RBJ with Q/A). Not modelled: the open low-frequency offset (peaks below 150 Hz measured up to 41 cents low, tracks TODO).")
 for s in "LR":
@@ -312,38 +347,44 @@ for s in "LR":
     for i, (d, (fc, g, q)) in enumerate(zip(dev[s], final[s]), 1):
         P(f"   {i:4d} | {freq_hz(d[0]):7.1f} Hz {g:6.1f} dB {q_val(d[2]):6.2f} ({d[0]:3d}/{d[1]:3d}/{d[2]:3d}) | {fc:7.2f} Hz {g:6.1f} dB {q:6.3f}")
 P("\nMid reference levels (300 Hz-3 kHz, dB):", ", ".join(f"{k[0]} {k[1]} {v:.1f}" for k, v in REF.items()))
-P("\n=== Flatness vs own mid level, 30-200 Hz: rms / max / min (dB) ===")
-P(f"{'set':>14} | {'flat (no HPF)':>20} | {'HPF only':>20} | {'HPF + PEQ':>20}")
+if TARGET != "flat":
+    P("\nTarget rel. to mid level (dB): " + ", ".join(f"{f0} Hz {low_shelf_db(f0, **SHELF):+.1f}" for f0 in (25, 30, 40, 50, 60, 80, 100, 150, 200, 300)))
+P("\n=== Deviation from target, 30-200 Hz: rms / max / min (dB) ===" if TARGET != "flat" else "\n=== Flatness vs own mid level, 30-200 Hz: rms / max / min (dB) ===")
+cols = [("flat (no HPF)", flat), ("HPF only", base)] + ([("EQ v1 (flat)", V1)] if V1 else []) + [("HPF + PEQ", after)]
+P(f"{'set':>14} | " + " | ".join(f"{c:>20}" for c, _ in cols))
 for k in REF:
-    row = [stats(r, k) for r in (flat, base, after)]
+    row = [stats(r, k) for _, r in cols]
     P(f"{k[0]+' '+k[1]:>14} | " + " | ".join(f"{a:5.1f} {b:+6.1f} {c:+6.1f}  " for a, b, c in row))
 P("\n=== Bass energy 30-150 Hz (power mean, dB SPL approx) = leakage proxy ===")
-P(f"{'set':>14} | {'flat':>6} {'HPF':>6} {'EQ':>6} | change")
+P(f"{'set':>14} | {'flat':>6} {'HPF':>6} {'EQ':>6} | change" + (" | v1 EQ, change | v2 - v1" if V1 else ""))
 for k in REF:
     a, b, c = bass_energy(flat, k), bass_energy(base, k), bass_energy(after, k)
-    P(f"{k[0]+' '+k[1]:>14} | {a:6.1f} {b:6.1f} {c:6.1f} | {c-a:+5.1f}")
-P("\n=== L+R sum, 1/24 oct, relative to own mid level: before (flat) -> after (HPF + PEQ) ===")
-P(f"{'Hz':>5} | {'seat':>13} | {'DJ':>13} | {'corner':>13}")
+    extra = ""
+    if V1:
+        v = bass_energy(V1, k); extra = f" | {v:6.1f} {v-a:+5.1f} | {c-v:+5.1f}"
+    P(f"{k[0]+' '+k[1]:>14} | {a:6.1f} {b:6.1f} {c:6.1f} | {c-a:+5.1f}" + extra)
+P("\n=== L+R sum, 1/24 oct, relative to own mid level: before (flat) -> after (HPF + PEQ) ===" + (" [v1 after]; target column" if V1 else ""))
+P(f"{'Hz':>5} | {'seat':>13} | {'DJ':>13} | {'corner':>13}" + (" | target" if TARGET != "flat" else ""))
 at = lambda y, f0: np.interp(np.log10(f0), np.log10(GRID), y)
 for f0 in [25, 28, 30, 35, 40, 43, 47, 51, 55, 60, 65, 68, 75, 80, 85, 89, 95, 100, 110, 115, 120, 128, 140, 163, 190, 250]:
     row = []
     for n in ("seat", "dj", "corner"):
         k = (n, "L+R")
-        row.append(f"{at(flat[k], f0)-REF[k]:+5.1f} -> {at(after[k], f0)-REF[k]:+5.1f}")
-    P(f"{f0:5} | " + " | ".join(row))
+        row.append(f"{at(flat[k], f0)-REF[k]:+5.1f} -> {at(after[k], f0)-REF[k]:+5.1f}" + (f" [{at(V1[k], f0)-REF[k]:+5.1f}]" if V1 else ""))
+    P(f"{f0:5} | " + " | ".join(row) + (f" | {at(TGT, f0):+5.1f}" if TARGET != "flat" else ""))
 P("\n=== HPF alternatives (with the same PEQs): seat L+R / DJ L+R level at 25/30/35/40 Hz rel. mid, bass energy 30-150 seat L+R ===")
 for fc in HPF_ALT:
     r = responses(EQ, hp_fc=fc)
     vals = " ".join(f"{at(r[('seat','L+R')], f0)-REF[('seat','L+R')]:+5.1f}" for f0 in (25, 30, 35, 40))
     vd = " ".join(f"{at(r[('dj','L+R')], f0)-REF[('dj','L+R')]:+5.1f}" for f0 in (25, 30, 35, 40))
     P(f"  HPF {fc:4.0f} Hz: seat {vals} | DJ {vd} | energy {bass_energy(r, ('seat','L+R')):.1f}")
-P("\n=== Robustness: L+R per single position, 30-200 Hz rms / max vs own set mid level, before -> after ===")
+P("\n=== Robustness: L+R per single position, 30-200 Hz rms / max vs target (own set mid level" + (" + shelf" if TARGET != "flat" else "") + "), before -> after ===")
 hp = hpf(HPF["fc"])
 for n in ("seat", "dj"):
     for pos, lr in sorted(sets[n].items()):
         b = (GRID >= 30) & (GRID <= 200); k = (n, "L+R")
-        e1 = 10 * np.log10(smooth_pow(lr["L"] + lr["R"]))[b] + OFFSET - REF[k]
-        e2 = 10 * np.log10(smooth_pow((lr["L"] * EQ["L"] + lr["R"] * EQ["R"]) * hp))[b] + OFFSET - REF[k]
+        e1 = 10 * np.log10(smooth_pow(lr["L"] + lr["R"]))[b] + OFFSET - REF[k] - TGT[b]
+        e2 = 10 * np.log10(smooth_pow((lr["L"] * EQ["L"] + lr["R"] * EQ["R"]) * hp))[b] + OFFSET - REF[k] - TGT[b]
         P(f"  {n:>5} {pos:>13}: rms {np.sqrt(np.mean(e1**2)):4.1f} -> {np.sqrt(np.mean(e2**2)):4.1f}   max {e1.max():+5.1f} -> {e2.max():+5.1f}")
 txt = "\n".join(lines)
 print(txt)
@@ -352,8 +393,8 @@ print(txt)
 stamp = datetime.datetime.now().strftime("%d %b %Y %H:%M:%S")
 for s, name in (("L", "left (DSP out 1)"), ("R", "right (DSP out 2)")):
     fl = ["Filter Settings file", "", "Room EQ V5.31", f"Dated: {stamp}", "",
-          f"Notes:akustik EQ {name}; designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct {HPF['fc']:.1f} Hz",
-          "", "Equaliser: Generic", f"akustik {s}"]
+          f"Notes:akustik EQ {'v1 (flat target)' if TARGET == 'flat' else 'v2 (harman target)'} {name}; designed by analysis/design_eq.py on the t.racks grid (REW text format = transport for the configurator import); HP filter separately: Butterworth 24 dB/oct {HPF['fc']:.1f} Hz",
+          "", "Equaliser: Generic", f"akustik{SFX} {s}"]
     for i in range(NBANDS):   # the DSP has 7 PEQ bands per output
         if i < len(final[s]):
             fc, g, q = final[s][i]   # exact device values: the import maps Q*A and rounds back onto dev[s][i]
@@ -361,9 +402,9 @@ for s, name in (("L", "left (DSP out 1)"), ("R", "right (DSP out 2)")):
             assert rbj_to_dev((round(fc, 2), round(g, 1), round(q, 4))) == dev[s][i]
         else:
             fl.append(f"Filter {i+1:2d}: OFF None")
-    with open(os.path.join(eqdir, f"akustik_{s}.txt"), "w", newline="\r\n") as fh:
+    with open(os.path.join(eqdir, f"akustik{SFX}_{s}.txt"), "w", newline="\r\n") as fh:
         fh.write("\n".join(fl) + "\n")
-with open(os.path.join(out, "eq_design.txt"), "w") as fh:
+with open(os.path.join(out, f"eq_design{SFX}.txt"), "w") as fh:
     fh.write(txt + "\n")
 
 # ---------- plots ----------
@@ -372,11 +413,12 @@ fig, axs = plt.subplots(3, 2, figsize=(14, 12), sharex=True)
 for ax, k in zip(axs.flat, [("seat", "L"), ("seat", "R"), ("seat", "L+R"), ("dj", "L+R"), ("corner", "L"), ("corner", "R")]):
     ax.semilogx(GRID, flat[k] - REF[k], color="grey", lw=1, label="before (flat DSP)")
     ax.semilogx(GRID, after[k] - REF[k], "k", lw=2, label="after (HPF + PEQ)")
-    ax.axhline(0, color="tab:green", lw=1, ls="--", label="target (mid level)")
+    if V1: ax.semilogx(GRID, V1[k] - REF[k], color="tab:blue", lw=1, alpha=0.7, label="EQ v1 (flat target)")
+    ax.semilogx(GRID, TGT, color="tab:green", lw=1, ls="--", label="target (mid level)" if TARGET == "flat" else "target (harman shelf)")
     ax.set_xlim(18, 500); ax.set_ylim(-25, 25 if k[0] != "corner" else 35); ax.grid(True, which="both", alpha=0.3)
     ax.set_title(f"{k[0]} {k[1]} (power avg, 1/24 oct, rel. to own 300 Hz-3 kHz level)", fontsize=9)
     ax.set_xticks(ticks); ax.set_xticklabels(ticks); ax.legend(fontsize=7)
-plt.tight_layout(); plt.savefig(os.path.join(out, "eq_design.png"), dpi=110)
+plt.tight_layout(); plt.savefig(os.path.join(out, f"eq_design{SFX}.png"), dpi=110)
 
 fig, ax = plt.subplots(figsize=(12, 4.5))
 hp = hpf(HPF["fc"])
@@ -387,6 +429,6 @@ for s, col in (("L", "tab:blue"), ("R", "tab:orange")):
         ax.semilogx(fq[1:], 20 * np.log10(np.abs(peq(fc, g, q)))[1:], col, lw=0.6, alpha=0.6)
 ax.set_xlim(15, 1000); ax.set_ylim(-30, 3); ax.grid(True, which="both", alpha=0.3); ax.legend()
 ax.set_xticks(ticks + [1000]); ax.set_xticklabels(ticks + ["1k"]); ax.set_ylabel("dB"); ax.set_title("Filter responses (thin = single bands)")
-plt.tight_layout(); plt.savefig(os.path.join(out, "eq_filters.png"), dpi=110)
-print("\nwrote", os.path.join(out, "eq_design.txt"), os.path.join(out, "eq_design.png"), os.path.join(out, "eq_filters.png"),
-      os.path.join(eqdir, "akustik_L.txt"), os.path.join(eqdir, "akustik_R.txt"))
+plt.tight_layout(); plt.savefig(os.path.join(out, f"eq_filters{SFX}.png"), dpi=110)
+print("\nwrote", *(os.path.join(out, f"{n}{SFX}.{e}") for n, e in (("eq_design", "txt"), ("eq_design", "png"), ("eq_filters", "png"))),
+      *(os.path.join(eqdir, f"akustik{SFX}_{s}.txt") for s in "LR"))

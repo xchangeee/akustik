@@ -88,7 +88,7 @@ Mid reference levels (300 Hz-3 kHz, dB): seat L 73.3, seat R 72.6, seat L+R 77.0
   HPF   35 Hz: seat -19.0  -6.4  -2.4  +0.6 | DJ -21.5 -15.8  -9.1  -1.2 | energy 77.1
   HPF   40 Hz: seat -23.5 -10.4  -5.3  -1.1 | DJ -26.0 -19.7 -12.0  -2.9 | energy 76.7
 
-=== Robustness: L+R per single position, 30-200 Hz rms / max vs own set mid level, before -> after ===
+=== Robustness: L+R per single position, 30-200 Hz rms / max vs target (own set mid level), before -> after ===
    seat   pos1 left30: rms  6.5 ->  3.3   max +15.5 ->  +4.0
    seat  pos2 right30: rms  7.5 ->  3.1   max +15.1 ->  +4.9
    seat    pos3 fwd20: rms  7.5 ->  4.8   max +17.3 ->  +7.1
