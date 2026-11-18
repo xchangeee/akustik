@@ -1,0 +1,982 @@
+<title>Taming the Living-Room Bass</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~68ch) with wider "bench" figures; every figure is a live instrument on your own measurements. */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --ink: #131820;
+  --ink-2: #47505f;
+  --muted: #7d8696;
+  --line: #dfe3ea;
+  --grid: #edf0f4;
+  --accent: #2f55c4;
+  --accent-ink: #ffffff;
+  --L: #eb6834;
+  --R: #1baf7a;
+  --bad: #d14343;
+  --bad-fill: rgba(209, 67, 67, 0.16);
+  --ok-fill: rgba(47, 85, 196, 0.10);
+  --before: #a5adba;
+  --band: rgba(125, 134, 150, 0.16);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --col: 68ch;
+  --wide: 1080px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1015; --surface: #151a21; --ink: #edf0f4; --ink-2: #b3bbc9; --muted: #7b8495;
+    --line: #262d38; --grid: #1c222b; --accent: #7f9df5; --accent-ink: #0d1015;
+    --L: #d95926; --R: #199e70; --bad: #e66767; --bad-fill: rgba(230, 103, 103, 0.20);
+    --ok-fill: rgba(127, 157, 245, 0.14); --before: #5c6575; --band: rgba(123, 132, 149, 0.20);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1015; --surface: #151a21; --ink: #edf0f4; --ink-2: #b3bbc9; --muted: #7b8495;
+  --line: #262d38; --grid: #1c222b; --accent: #7f9df5; --accent-ink: #0d1015;
+  --L: #d95926; --R: #199e70; --bad: #e66767; --bad-fill: rgba(230, 103, 103, 0.20);
+  --ok-fill: rgba(127, 157, 245, 0.14); --before: #5c6575; --band: rgba(123, 132, 149, 0.20);
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+main { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.col { width: 100%; max-width: var(--col); }
+.wide { width: 100%; max-width: var(--wide); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.15rem; font-weight: 600; }
+p { margin: 0; }
+.prose { display: flex; flex-direction: column; gap: 14px; }
+.prose ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.L { color: var(--L); } .R { color: var(--R); }
+strong { font-weight: 600; }
+section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 22px; padding-block: 56px 8px; }
+section + section { border-top: 1px solid var(--line); margin-top: 40px; }
+header.hero { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 22px; padding-block: 48px 8px; }
+
+/* figures */
+.fig { width: 100%; max-width: var(--wide); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 12px; }
+.fig-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.fig-title { font-weight: 600; font-size: 0.98rem; }
+.caption { font-size: 0.9rem; color: var(--ink-2); max-width: 80ch; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+.chart .ann { fill: var(--ink-2); font-size: 11.5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.85rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid currentColor; }
+.legend i.dash { border-top-style: dashed; }
+.legend i.box { height: 10px; border: none; border-radius: 2px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); min-width: 150px; z-index: 5; }
+.tip .tf { font-family: var(--font-mono); color: var(--muted); margin-bottom: 4px; }
+.tip .row { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.tip .row b { font-family: var(--font-mono); font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tip .row span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.tip .row i { width: 12px; border-top: 2px solid currentColor; display: inline-block; }
+
+/* controls */
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; flex-wrap: wrap; }
+.seg button { font: inherit; font-size: 0.85rem; padding: 6px 12px; background: transparent; color: var(--ink-2); border: none; border-right: 1px solid var(--line); cursor: pointer; }
+.seg button:last-child { border-right: none; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 24px; }
+.slider { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; color: var(--ink-2); }
+.slider label { display: flex; justify-content: space-between; gap: 8px; }
+.slider output { font-family: var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chips .who { font-family: var(--font-mono); font-size: 0.8rem; width: 64px; color: var(--ink-2); }
+.chip { font: inherit; font-size: 0.8rem; font-family: var(--font-mono); padding: 4px 9px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { color: var(--ink); border-color: currentColor; }
+.chip.cL[aria-pressed="true"] { border-color: var(--L); }
+.chip.cR[aria-pressed="true"] { border-color: var(--R); }
+.chip.cH[aria-pressed="true"] { border-color: var(--ink-2); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 0.78rem; color: var(--muted); }
+.stat .v { font-family: var(--font-mono); font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.stat .v small { font-size: 0.8rem; color: var(--muted); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+canvas { display: block; width: 100%; height: auto; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; counter-reset: s; }
+.step { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 0.86rem; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; background: var(--surface); }
+.step b { color: var(--ink); font-weight: 600; }
+.step::before { counter-increment: s; content: counter(s); font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.note { border-left: 3px solid var(--accent); padding: 6px 0 6px 14px; color: var(--ink-2); font-size: 0.95rem; }
+.stage-note { min-height: 4.8em; }
+table.vals { border-collapse: collapse; font-size: 0.86rem; width: 100%; }
+table.vals th, table.vals td { text-align: left; padding: 5px 10px 5px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+table.vals th { font-weight: 500; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.tablewrap { overflow-x: auto; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<main>
+<header class="hero">
+  <div class="col prose">
+    <span class="eyebrow">6.0 × 3.9 × 2.8 m living room · 2 floorstanders · t.racks DSP 4x4 Mini</span>
+    <h1>Taming the Living‑Room Bass</h1>
+    <p class="lede">How the room EQ in your DSP was designed, from standing waves to filter files. Every chart on this page is computed live from your own measurements of 18 November 2026.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">At the sofa, both speakers playing</span>
+      <div class="seg" role="group" aria-label="EQ on or off">
+        <button id="hero-off" aria-pressed="false">EQ off</button>
+        <button id="hero-on" aria-pressed="true">EQ on</button>
+      </div>
+    </div>
+    <div class="chart" id="hero-chart"></div>
+    <div class="legend" id="hero-legend"></div>
+    <div class="stats" id="hero-stats"></div>
+    <p class="caption">Level relative to the mids (300 Hz–3 kHz), averaged over 7 head positions. 0 dB means the bass is as loud as everything else. Hover the chart for values.</p>
+  </div>
+</header>
+
+<section id="modes">
+  <div class="col prose">
+    <span class="eyebrow">1 · The problem</span>
+    <h2>Your room is a resonator</h2>
+    <p>Between two parallel walls, a sound wave whose half wavelength fits the gap exactly bounces back and forth and builds itself up. That's a <strong>standing wave</strong>, or room mode. Its frequency is <span class="mono">f = n · 343 / (2 · distance)</span>.</p>
+    <p>A mode has fixed loud spots (always at the walls) and quiet spots (nulls) in between. Drag the frequency below and watch where the pressure piles up. The lower chart shows how loud each spot gets at every frequency.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title" id="modes-title">Across the 3.9 m width: speaker wall → sofa</span>
+      <div class="seg" role="group" aria-label="Room dimension">
+        <button id="dim-w" aria-pressed="true">Width 3.9 m</button>
+        <button id="dim-l" aria-pressed="false">Length 6.0 m</button>
+      </div>
+    </div>
+    <canvas id="modes-canvas" width="1040" height="250" aria-label="Animated standing wave in the room"></canvas>
+    <div class="sliders">
+      <div class="slider"><label for="mode-f">Frequency <output id="mode-f-out">44 Hz</output></label><input id="mode-f" type="range" min="15" max="200" step="0.5" value="44"></div>
+      <div class="slider"><label>Snap to a mode</label><div class="chips" id="mode-snaps"></div></div>
+    </div>
+    <div class="chart" id="modes-chart"></div>
+    <div class="legend" id="modes-legend"></div>
+    <p class="caption" id="modes-caption"></p>
+  </div>
+  <div class="col prose">
+    <p>Two things follow for this room:</p>
+    <ul>
+      <li><strong>The sofa is against a wall</strong>, so every width mode (44, 88 Hz) is at its loudest exactly where you sit.</li>
+      <li><strong>L sits in the middle of the 6 m wall</strong>, which is the null of the odd length modes (29, 86 Hz). R sits near the side wall and drives all of them. The two speakers are identical, yet R measured with much more bass. Switch to "Length 6.0 m" to see it.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="cut">
+  <div class="col prose">
+    <span class="eyebrow">2 · The rule</span>
+    <h2>Peaks can be cut, dips can't be filled</h2>
+    <p>A dip is usually two waves arriving out of step (the direct sound and a reflection, or the left and the right speaker) and cancelling each other. Turning that frequency up makes both waves bigger, and they still cancel. A peak is the opposite: waves adding up, and turning down really lowers it. Try it.</p>
+  </div>
+  <div class="fig">
+    <div class="sliders">
+      <div class="slider"><label for="cx-phase">Delay between the two waves <output id="cx-phase-out">180°</output></label><input id="cx-phase" type="range" min="0" max="180" step="1" value="180"></div>
+      <div class="slider"><label for="cx-gain">EQ at this frequency <output id="cx-gain-out">+6 dB</output></label><input id="cx-gain" type="range" min="-12" max="12" step="0.5" value="6"></div>
+    </div>
+    <canvas id="cx-canvas" width="1040" height="260" aria-label="Two waves and their sum"></canvas>
+    <p class="caption" id="cx-caption"></p>
+  </div>
+  <div class="col prose">
+    <p>So the design is <strong>cut only</strong>. Cutting the room's peaks evens out the response at the sofa <em>and</em> reduces the energy that rings through the room and leaks into the staircase. Boosting dips would only blast the rest of the room.</p>
+  </div>
+</section>
+
+<section id="measure">
+  <div class="col prose">
+    <span class="eyebrow">3 · Measuring</span>
+    <h2>A sweep becomes an impulse response</h2>
+    <p>REW plays a tone gliding from 10 Hz to 22 kHz in 11 seconds and records it. Dividing the recording by the original sweep gives the <strong>impulse response</strong>: what the mic would hear if the speaker played one infinitely short click. Because speaker and room behave linearly, this one curve describes everything about the path from speaker to mic.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head"><span class="fig-title">Left speaker → sofa: the impulse response</span></div>
+    <div class="two">
+      <div><div class="chart" id="ir-zoom"></div><p class="caption">The first 30 ms. The sound needs 9.3 ms to travel the 3.2 m, then come the direct spike and the first reflections.</p></div>
+      <div><div class="chart" id="ir-chart"></div><p class="caption">700 ms on a dB scale. The long tail is the room ringing, mostly bass modes. The scripts keep the first 500 ms (shaded), with a smooth fade at the end.</p></div>
+    </div>
+  </div>
+  <div class="wide steps" aria-label="Processing steps">
+    <div class="step"><b>Export the IR</b>WAV, 32-bit float, t = 0 at sample 256</div>
+    <div class="step"><b>Window 500 ms</b>long enough for the modes to build up, short enough to drop the noise</div>
+    <div class="step"><b>FFT</b>turns time into frequency: a level and a phase per frequency</div>
+    <div class="step"><b>Mic calibration</b>subtract the mic's own response (−3.5 dB at 20 Hz)</div>
+    <div class="step"><b>Smooth 1/24 octave</b>average neighbours, on power, so peaks keep their weight</div>
+    <div class="step"><b>Average 7 positions</b>power average: what's there across the listening area</div>
+  </div>
+  <div class="col prose">
+    <p>One mic position is a snapshot; move your head 30 cm and the curve changes. That's why each speaker was measured at 7 spots around the sofa. The spread between them is the most useful clue in the whole project: <strong>a room mode stays put when the mic moves; a cancellation dip jumps around.</strong></p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">7 head positions and their average</span>
+      <div class="seg" role="group" aria-label="Speaker">
+        <button id="pos-L" aria-pressed="true">Left speaker</button>
+        <button id="pos-R" aria-pressed="false">Right speaker</button>
+      </div>
+    </div>
+    <div class="chart" id="pos-chart"></div>
+    <div class="legend" id="pos-legend"></div>
+    <p class="caption">Grey lines: single positions. Shaded: the range between the quietest and loudest position. Narrow range = stable peak, worth cutting. Wide range at a dip = cancellation, leave it.</p>
+  </div>
+</section>
+
+<section id="sum">
+  <div class="col prose">
+    <span class="eyebrow">4 · Both speakers together</span>
+    <h2>Left plus right is not left and right</h2>
+    <p>Music has mostly mono bass: both speakers play the same bass at once. At your ear the two waves add <strong>with their timing</strong>, so they can reinforce or cancel. Thanks to the loopback timing reference, every measurement has the same time zero, so adding the left and right measurements gives exactly what the mic would have heard with both playing.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title" id="sum-title">Sofa: left, right and both together</span>
+      <div class="seg" role="group" aria-label="Place">
+        <button id="sum-seat" aria-pressed="true">Sofa</button>
+        <button id="sum-dj" aria-pressed="false">DJ spot</button>
+      </div>
+    </div>
+    <div class="chart" id="sum-chart"></div>
+    <div class="legend" id="sum-legend"></div>
+    <p class="caption" id="sum-caption"></p>
+  </div>
+</section>
+
+<section id="filter">
+  <div class="col prose">
+    <span class="eyebrow">5 · The tool</span>
+    <h2>One EQ band, three knobs</h2>
+    <p>Each band is a <strong>peaking filter</strong>: a bell-shaped cut around a centre frequency. It has three settings: <strong>frequency</strong> (where), <strong>gain</strong> (how deep) and <strong>Q</strong> (how narrow; the width is about frequency ÷ Q). Inside the DSP each band is a tiny formula, a biquad, that runs 48 000 times a second.</p>
+  </div>
+  <div class="fig">
+    <div class="sliders">
+      <div class="slider"><label for="pk-f">Frequency <output id="pk-f-out"></output></label><input id="pk-f" type="range" min="25" max="250" step="0.1" value="43.2"></div>
+      <div class="slider"><label for="pk-g">Gain <output id="pk-g-out"></output></label><input id="pk-g" type="range" min="-12" max="0" step="0.1" value="-12"></div>
+      <div class="slider"><label for="pk-q">Q <output id="pk-q-out"></output></label><input id="pk-q" type="range" min="0.5" max="12" step="0.01" value="8"></div>
+    </div>
+    <div class="chart" id="pk-chart"></div>
+    <div class="stats" id="pk-stats"></div>
+    <p class="caption">Preset: band 1 of the left channel. A room mode is about as wide as 2.2 ÷ decay time: with 0.5 s of ringing that's ~4.4 Hz, a Q of about 10 at 43 Hz. That's why the bands here sit at Q 5–8.</p>
+  </div>
+</section>
+
+<section id="eq">
+  <div class="col prose">
+    <span class="eyebrow">6 · The central trick</span>
+    <h2>Simulate first, measure later</h2>
+    <p>Speaker, room and filter are all linear, so their effects simply multiply, frequency by frequency. Multiply each of the 32 recorded measurements by a filter's response and you get exactly what the mic would have recorded with that EQ on, without anyone re-measuring. This chart does that live in your browser. Switch bands on and off and watch the result.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">The EQ in your DSP, applied to your measurements</span>
+      <div class="seg" role="group" aria-label="View">
+        <button data-view="seat:LR" aria-pressed="true">Sofa, both</button>
+        <button data-view="seat:L" aria-pressed="false">Sofa, left</button>
+        <button data-view="seat:R" aria-pressed="false">Sofa, right</button>
+        <button data-view="dj:LR" aria-pressed="false">DJ spot</button>
+        <button data-view="corner:LR" aria-pressed="false">Corners</button>
+      </div>
+    </div>
+    <div class="chips" id="chips-L"></div>
+    <div class="chips" id="chips-R"></div>
+    <div class="chips" id="chips-H"></div>
+    <div class="chart" id="eq-chart"></div>
+    <div class="legend" id="eq-legend"></div>
+    <div class="stats" id="eq-stats"></div>
+    <div class="chart" id="eq-filt"></div>
+    <div class="legend" id="eq-filt-legend"></div>
+    <p class="caption" id="eq-caption">Red area: bass above the mids. Bottom chart: what the filters do on each channel.</p>
+  </div>
+  <div class="col prose">
+    <p>Reading the filters with section 1 in mind:</p>
+    <ul>
+      <li><strong>42–43 Hz on both</strong>: the 44 Hz width mode, loud at the sofa.</li>
+      <li><strong>52 Hz on the right only</strong>: a mode only R drives hard, because it stands near the side wall.</li>
+      <li><strong>82–88 Hz, much deeper on the right</strong>: the 86/88 Hz pile-up. L sits on the null of the 86 Hz length mode and needs little there.</li>
+      <li><strong>95–125 Hz</strong>: the broad hump around the 114 Hz length mode and the 122 Hz height mode.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="opt">
+  <div class="col prose">
+    <span class="eyebrow">7 · Letting the computer choose</span>
+    <h2>What counts as "better"</h2>
+    <p>Finding 7 bands per channel by hand is guesswork, so a numerical optimiser did it. It needs a single score for "how bad is this EQ". The score here is <strong>asymmetric</strong>:</p>
+    <ul>
+      <li>bass <strong>above</strong> the target (red) counts in full: those are the peaks to remove;</li>
+      <li>bass <strong>below</strong> the target (blue) counts only if the EQ made it deeper. An existing dip costs nothing, because EQ can't fix it anyway.</li>
+    </ul>
+    <p>The score adds up four curves: the sofa with both speakers (weight 1.0), the sofa with each speaker alone (0.5 each), and the DJ spot with both (0.4). Each dB of cut costs a tiny bit extra, so no band is spent on nothing.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head"><span class="fig-title">How the score sees the sofa curve without EQ</span></div>
+    <div class="chart" id="cost-chart"></div>
+    <div class="legend" id="cost-legend"></div>
+  </div>
+  <div class="col prose">
+    <p>The optimiser (L-BFGS-B) moves all 42 knobs at once (2 channels × 7 bands × frequency, gain, Q) downhill on that score. It took three attempts to get the limits right:</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">Three attempts</span>
+      <div class="seg" role="group" aria-label="Attempt" id="stage-btns"></div>
+    </div>
+    <p class="note stage-note" id="stage-note"></p>
+    <div class="chart" id="stage-filt"></div>
+    <div class="legend" id="stage-filt-legend"></div>
+    <div class="chart" id="stage-chart"></div>
+    <div class="legend" id="stage-legend"></div>
+  </div>
+</section>
+
+<section id="device">
+  <div class="col prose">
+    <span class="eyebrow">8 · Speaking the DSP's language</span>
+    <h2>Fitting the design onto the device</h2>
+    <p>The DSP only takes values on fixed steps (from your reverse-engineered protocol): gain in 0.1 dB, frequency in 1/30-octave steps, Q in 1/12-octave steps. The design was rounded onto those steps, then nudged one step at a time wherever that improved the score. Rounding cost practically nothing (score 11.57 → 11.61).</p>
+    <p>One more twist: the device's Q is not the textbook Q. Its peaking filter is the standard one, but with <span class="mono">Q<sub>textbook</sub> = Q<sub>device</sub> ÷ A</span>, where A depends on the gain. Move the gain:</p>
+  </div>
+  <div class="fig">
+    <div class="sliders">
+      <div class="slider"><label for="qm-g">Gain <output id="qm-g-out"></output></label><input id="qm-g" type="range" min="-12" max="0" step="0.1" value="-12"></div>
+      <div class="slider"><label for="qm-q">Textbook Q (what the filter really does) <output id="qm-q-out"></output></label><input id="qm-q" type="range" min="1" max="10" step="0.1" value="8"></div>
+    </div>
+    <div class="stats" id="qm-stats"></div>
+    <div class="chart" id="grid-chart"></div>
+    <p class="caption">Ruler: the DSP's frequency steps between 35 and 140 Hz. The dots are your 12 bands; each sits exactly on a step.</p>
+  </div>
+  <div class="col prose">
+    <p>The filter files use REW's text format only because your configurator imports that format. Its import converts the file's textbook Q into device Q and rounds to the steps, so the script wrote values that land exactly where the design wants them. Running the files through the configurator's own import code confirmed it: no errors, identical values.</p>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="col prose">
+    <span class="eyebrow">9 · Proof</span>
+    <h2>Does the DSP do what the model says?</h2>
+    <p>The simulation is only as good as its assumption that the DSP builds exactly these filters. So the DSP outputs were wired straight into the audio interface (no amp, no speaker, no mic) and measured.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">DSP output, measured electrically</span>
+      <div class="seg" role="group" aria-label="Output">
+        <button id="el-L" aria-pressed="true">Out 1 (left)</button>
+        <button id="el-R" aria-pressed="false">Out 2 (right)</button>
+      </div>
+    </div>
+    <div class="chart" id="el-chart"></div>
+    <div class="legend" id="el-legend"></div>
+    <p class="caption">From 30 to 150 Hz the two lines differ by a few hundredths of a dB. Below 30 Hz the measured line drops up to 1 dB further: that's the converters of the interface and DSP, not the EQ.</p>
+  </div>
+</section>
+
+<section id="limits">
+  <div class="col prose">
+    <span class="eyebrow">10 · Limits</span>
+    <h2>What EQ can't do, and what's next</h2>
+    <ul>
+      <li><strong>Dips stay.</strong> R's dip at 173 Hz (reflection off the wall behind it), the DJ spot's hole at 55–75 Hz (L and R cancel there) and its weak 30–35 Hz. These need speaker moves, subwoofers or absorbers.</li>
+      <li><strong>Ringing slows down only with absorption.</strong> The EQ feeds the modes less energy, but the room still decays at its own pace.</li>
+      <li><strong>It's designed for the sofa and the DJ spot.</strong> Elsewhere it's better than before (less energy everywhere) but not flat.</li>
+      <li><strong>Next:</strong> measure the room again with the EQ on, compare with this simulation, and look at a waterfall plot to see whether the ringing got shorter.</li>
+    </ul>
+    <p class="muted">Sources: <span class="mono">analysis/design_eq.py</span>, <span class="mono">eq-design-explained.md</span> and <span class="mono">measurements/2026-11-18-analysis.md</span> in the akustik repo. This page is built by <span class="mono">analysis/build_explainer.py</span>.</p>
+  </div>
+</section>
+</main>
+
+<script>const DATA=/*__DATA__*/null;</script>
+<script>
+(() => {
+"use strict";
+const SR = 48000;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const fmtHz = (f) => (f >= 1000 ? (f / 1000).toFixed(f >= 10000 ? 0 : 1) + " kHz" : (f < 100 ? f.toFixed(1) : f.toFixed(0)) + " Hz");
+const fmtDb = (v) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1) + " dB";
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function cssv(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+/* ---------------- chart helper ---------------- */
+let chartId = 0;
+function Chart(host, o) {
+  const W = o.w || 1000, H = o.h || 340, m = Object.assign({ l: 46, r: 14, t: 12, b: 28 }, o.m || {});
+  const xlog = o.xlog !== false;
+  const id = "c" + (chartId++);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.aria || "chart" }, host);
+  const defs = el("defs", {}, svg);
+  const clip = el("clipPath", { id: id + "clip" }, defs);
+  el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b }, clip);
+  const gGrid = el("g", {}, svg), gData = el("g", { "clip-path": `url(#${id}clip)` }, svg), gAnn = el("g", {}, svg), gCur = el("g", {}, svg);
+  const st = { xmin: o.xmin, xmax: o.xmax, ymin: o.ymin, ymax: o.ymax, series: [], ann: [] };
+  const X = (x) => xlog ? m.l + (Math.log(x / st.xmin) / Math.log(st.xmax / st.xmin)) * (W - m.l - m.r) : m.l + ((x - st.xmin) / (st.xmax - st.xmin)) * (W - m.l - m.r);
+  const Xi = (px) => xlog ? st.xmin * Math.pow(st.xmax / st.xmin, (px - m.l) / (W - m.l - m.r)) : st.xmin + ((px - m.l) / (W - m.l - m.r)) * (st.xmax - st.xmin);
+  const Y = (y) => m.t + (1 - (y - st.ymin) / (st.ymax - st.ymin)) * (H - m.t - m.b);
+  function axes() {
+    gGrid.textContent = "";
+    const yt = o.yticks || []; const xt = o.xticks || [];
+    for (const v of yt) {
+      el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), style: `stroke:var(${v === (o.zero ?? 0) && o.zeroLine !== false ? "--line" : "--grid"});stroke-width:1` }, gGrid);
+      const t = el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end" }, gGrid); t.textContent = o.yfmt ? o.yfmt(v) : v;
+    }
+    for (const v of xt) {
+      el("line", { x1: X(v), x2: X(v), y1: m.t, y2: H - m.b, style: "stroke:var(--grid);stroke-width:1" }, gGrid);
+      const t = el("text", { x: X(v), y: H - m.b + 16, "text-anchor": "middle" }, gGrid); t.textContent = o.xfmt ? o.xfmt(v) : v;
+    }
+    if (o.ylab) { const t = el("text", { x: m.l, y: m.t - 2, "text-anchor": "start" }, gGrid); t.textContent = ""; }
+  }
+  function path(xs, ys) {
+    let d = ""; let pen = false;
+    for (let i = 0; i < xs.length; i++) {
+      const x = xs[i], y = ys[i];
+      if (!isFinite(y) || x < st.xmin || x > st.xmax) { pen = false; continue; }
+      const yy = Math.max(st.ymin - 50, Math.min(st.ymax + 50, y));
+      d += (pen ? "L" : "M") + X(x).toFixed(1) + "," + Y(yy).toFixed(1); pen = true;
+    }
+    return d;
+  }
+  function draw() {
+    gData.textContent = "";
+    for (const s of st.series) {
+      if (s.kind === "band") {
+        let d = path(s.x, s.y1); const xs2 = s.x.slice().reverse(), ys2 = s.y0.slice().reverse();
+        d += path(xs2, ys2).replace(/^M/, "L") + "Z";
+        el("path", { d, style: `fill:${s.fill};stroke:none` }, gData);
+      } else if (s.kind === "excess" || s.kind === "deficit") {
+        const base = s.base ?? 0; const up = s.kind === "excess";
+        const yc = s.y.map((v) => (up ? Math.max(v, base) : Math.min(v, base)));
+        const ref = s.ref ? s.ref.map((v, i) => (up ? Math.max(base, Math.min(v, yc[i])) : Math.min(base, Math.max(v, yc[i])))) : null;
+        let d = path(s.x, yc); const lo = ref || s.x.map(() => base);
+        d += path(s.x.slice().reverse(), lo.slice().reverse()).replace(/^M/, "L") + "Z";
+        el("path", { d, style: `fill:${s.fill};stroke:none` }, gData);
+      } else {
+        el("path", { d: path(s.x, s.y), style: `fill:none;stroke:${s.color};stroke-width:${s.width || 2};stroke-linejoin:round;stroke-linecap:round;${s.dash ? "stroke-dasharray:" + s.dash + ";" : ""}opacity:${s.opacity ?? 1}` }, gData);
+      }
+    }
+    gAnn.textContent = "";
+    for (const a of st.ann) {
+      if (a.span) {
+        el("rect", { x: X(a.span[0]), y: m.t, width: X(a.span[1]) - X(a.span[0]), height: H - m.t - m.b, style: `fill:${a.fill || "var(--band)"}` }, gAnn);
+        if (a.text) { const t = el("text", { x: (X(a.span[0]) + X(a.span[1])) / 2, y: m.t + 14, "text-anchor": "middle", class: "ann" }, gAnn); t.textContent = a.text; }
+      } else if (a.vline !== undefined) {
+        el("line", { x1: X(a.vline), x2: X(a.vline), y1: m.t, y2: H - m.b, style: `stroke:${a.color || "var(--ink-2)"};stroke-width:1.5;${a.dash ? "stroke-dasharray:4 3" : ""}` }, gAnn);
+        if (a.text) { const t = el("text", { x: X(a.vline) + 5, y: m.t + 12, class: "ann" }, gAnn); t.textContent = a.text; }
+      } else {
+        const px = X(a.x), py = Y(a.y);
+        if (a.dot) el("circle", { cx: px, cy: py, r: a.r || 4, style: `fill:${a.color || "var(--ink)"};stroke:var(--surface);stroke-width:2` }, gAnn);
+        if (a.text) {
+          const t = el("text", { x: px + (a.dx ?? 0), y: py + (a.dy ?? -10), "text-anchor": a.anchor || "middle", class: "ann" }, gAnn); t.textContent = a.text;
+        }
+      }
+    }
+  }
+  // tooltip
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; host.appendChild(tip);
+  const cur = el("line", { y1: m.t, y2: H - m.b, style: "stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3", visibility: "hidden" }, gCur);
+  const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, style: "fill:transparent", tabindex: "0" }, svg);
+  function nearest(xs, x) { let lo = 0, hi = xs.length - 1; while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (xs[mid] < x) lo = mid; else hi = mid; } return Math.abs(xs[lo] - x) < Math.abs(xs[hi] - x) ? lo : hi; }
+  function show(px) {
+    const tipSeries = st.series.filter((s) => s.label && s.tip !== false && s.kind !== "excess" && s.kind !== "deficit");
+    if (!tipSeries.length) return;
+    const x = Xi(px); if (x < st.xmin || x > st.xmax) return hide();
+    const xs = tipSeries[0].x; const i = nearest(xs, x); const xv = xs[i];
+    cur.setAttribute("x1", X(xv)); cur.setAttribute("x2", X(xv)); cur.setAttribute("visibility", "visible");
+    tip.textContent = "";
+    const tf = document.createElement("div"); tf.className = "tf"; tf.textContent = o.tipx ? o.tipx(xv) : fmtHz(xv); tip.appendChild(tf);
+    for (const s of tipSeries) {
+      const j = s.x === xs ? i : nearest(s.x, xv);
+      const v = s.kind === "band" ? null : s.y[j];
+      const row = document.createElement("div"); row.className = "row";
+      const sp = document.createElement("span"); const ik = document.createElement("i"); ik.style.color = s.color || s.fill; sp.appendChild(ik); sp.appendChild(document.createTextNode(s.label));
+      const b = document.createElement("b");
+      b.textContent = s.kind === "band" ? `${fmtDb(s.y0[j]).replace(" dB", "")} … ${fmtDb(s.y1[j])}` : (o.tipy ? o.tipy(v) : fmtDb(v));
+      row.appendChild(sp); row.appendChild(b); tip.appendChild(row);
+    }
+    tip.hidden = false;
+    const rect = host.getBoundingClientRect(); const scale = rect.width / W;
+    let left = X(xv) * scale + 14; if (left + 190 > rect.width) left = X(xv) * scale - 14 - tip.offsetWidth;
+    tip.style.left = Math.max(0, left) + "px"; tip.style.top = (m.t * scale + 6) + "px";
+  }
+  function hide() { tip.hidden = true; cur.setAttribute("visibility", "hidden"); }
+  hit.addEventListener("pointermove", (e) => { const r = svg.getBoundingClientRect(); show((e.clientX - r.left) * (W / r.width)); });
+  hit.addEventListener("pointerleave", hide);
+  hit.addEventListener("focus", () => show((m.l + W - m.r) / 2));
+  hit.addEventListener("blur", hide);
+  axes();
+  return {
+    set(series, ann) { st.series = series; st.ann = ann || []; draw(); },
+    range(r) { Object.assign(st, r); axes(); draw(); },
+    X, Y,
+  };
+}
+function legend(host, items) {
+  host.textContent = "";
+  for (const it of items) {
+    const s = document.createElement("span"); const i = document.createElement("i");
+    if (it.box) { i.className = "box"; i.style.background = it.color; } else { i.style.color = it.color; if (it.dash) i.className = "dash"; }
+    s.appendChild(i); s.appendChild(document.createTextNode(it.label)); host.appendChild(s);
+  }
+}
+function seg(ids, onPick) {
+  const btns = ids.map((x) => (typeof x === "string" ? $(x) : x));
+  btns.forEach((b, k) => b.addEventListener("click", () => { btns.forEach((o) => o.setAttribute("aria-pressed", String(o === b))); onPick(k, b); }));
+}
+function stat(host, items) {
+  host.textContent = "";
+  for (const it of items) {
+    const d = document.createElement("div"); d.className = "stat";
+    const k = document.createElement("span"); k.className = "k"; k.textContent = it.k;
+    const v = document.createElement("span"); v.className = "v"; v.textContent = it.v;
+    if (it.sub) { const sm = document.createElement("small"); sm.textContent = " " + it.sub; v.appendChild(sm); }
+    d.appendChild(k); d.appendChild(v); host.appendChild(d);
+  }
+}
+
+/* ---------------- DSP maths (same as design_eq.py) ---------------- */
+const N = DATA.n, F0 = DATA.f0, DF = DATA.df;
+const FB = new Float64Array(N); for (let k = 0; k < N; k++) FB[k] = F0 + k * DF;
+const ZC = new Float64Array(N), ZS = new Float64Array(N); // z^-1 = cos - j sin
+for (let k = 0; k < N; k++) { const w = 2 * Math.PI * FB[k] / SR; ZC[k] = Math.cos(w); ZS[k] = -Math.sin(w); }
+function biquadInto(re, im, b0, b1, b2, a0, a1, a2) {
+  for (let k = 0; k < N; k++) {
+    const c1 = ZC[k], s1 = ZS[k]; const c2 = c1 * c1 - s1 * s1, s2 = 2 * c1 * s1;
+    const nr = b0 + b1 * c1 + b2 * c2, ni = b1 * s1 + b2 * s2;
+    const dr = a0 + a1 * c1 + a2 * c2, di = a1 * s1 + a2 * s2;
+    const dd = dr * dr + di * di; const hr = (nr * dr + ni * di) / dd, hi = (ni * dr - nr * di) / dd;
+    const r = re[k] * hr - im[k] * hi; im[k] = re[k] * hi + im[k] * hr; re[k] = r;
+  }
+}
+function pkCoefs(fc, g, q) { const A = Math.pow(10, g / 40), w = 2 * Math.PI * fc / SR, al = Math.sin(w) / (2 * q), c = Math.cos(w); return [1 + al * A, -2 * c, 1 - al * A, 1 + al / A, -2 * c, 1 - al / A]; }
+function hpCoefs(fc, q) { const w = 2 * Math.PI * fc / SR, al = Math.sin(w) / (2 * q), c = Math.cos(w); return [(1 + c) / 2, -(1 + c), (1 + c) / 2, 1 + al, -2 * c, 1 - al]; }
+const BW4_Q = [1 / 0.7654, 1 / 1.8478]; // Butterworth 24 = two 2nd-order sections (protocol §6.3)
+function response(bands, hp) {
+  const re = new Float64Array(N).fill(1), im = new Float64Array(N);
+  for (const [fc, g, q] of bands) biquadInto(re, im, ...pkCoefs(fc, g, q));
+  if (hp) for (const q of BW4_Q) biquadInto(re, im, ...hpCoefs(hp, q));
+  return { re, im };
+}
+// magnitude of a band list on an arbitrary frequency list (for filter-shape charts)
+function magDb(bands, hp, fs) {
+  return fs.map((f) => {
+    const w = 2 * Math.PI * f / SR; const c1 = Math.cos(w), s1 = -Math.sin(w), c2 = c1 * c1 - s1 * s1, s2 = 2 * c1 * s1;
+    let mag = 1;
+    const one = (b0, b1, b2, a0, a1, a2) => { const nr = b0 + b1 * c1 + b2 * c2, ni = b1 * s1 + b2 * s2, dr = a0 + a1 * c1 + a2 * c2, di = a1 * s1 + a2 * s2; mag *= Math.sqrt((nr * nr + ni * ni) / (dr * dr + di * di)); };
+    for (const [fc, g, q] of bands) one(...pkCoefs(fc, g, q));
+    if (hp) for (const q of BW4_Q) one(...hpCoefs(hp, q));
+    return 20 * Math.log10(mag);
+  });
+}
+const geom = (a, b, n) => Array.from({ length: n }, (_, i) => a * Math.pow(b / a, i / (n - 1)));
+const G = geom(18, 300, 300);
+const GLO = G.map((f) => Math.max(0, Math.ceil((f * Math.pow(2, -1 / 48) - F0) / DF)));
+const GHI = G.map((f, i) => Math.max(GLO[i] + 1, Math.min(N, Math.ceil((f * Math.pow(2, 1 / 48) - F0) / DF))));
+const SETS = {};
+for (const name in DATA.sets) SETS[name] = DATA.sets[name].map((p) => ({ pos: p.pos, L: Float64Array.from(p.L), R: Float64Array.from(p.R) }));
+const ONE = { re: new Float64Array(N).fill(1), im: new Float64Array(N) };
+// power-smoothed curve per position, relative to the set's mid level
+function curves(set, which, HL, HR) {
+  const ms = SETS[set]; const per = []; const avg = new Float64Array(G.length);
+  const ref = DATA.ref[set][which === "LR" ? "LR" : which];
+  for (const p of ms) {
+    const cs = new Float64Array(N + 1);
+    for (let k = 0; k < N; k++) {
+      const lr = p.L[2 * k], li = p.L[2 * k + 1], rr = p.R[2 * k], ri = p.R[2 * k + 1];
+      const ar = lr * HL.re[k] - li * HL.im[k], ai = lr * HL.im[k] + li * HL.re[k];
+      const br = rr * HR.re[k] - ri * HR.im[k], bi = rr * HR.im[k] + ri * HR.re[k];
+      let pr, pi; if (which === "L") { pr = ar; pi = ai; } else if (which === "R") { pr = br; pi = bi; } else { pr = ar + br; pi = ai + bi; }
+      cs[k + 1] = cs[k] + pr * pr + pi * pi;
+    }
+    const sm = G.map((_, i) => (cs[GHI[i]] - cs[GLO[i]]) / (GHI[i] - GLO[i]));
+    sm.forEach((v, i) => (avg[i] += v / ms.length));
+    per.push(sm.map((v) => 10 * Math.log10(v) + DATA.norm_db - ref));
+  }
+  return { avg: Array.from(avg, (v) => 10 * Math.log10(v) + DATA.norm_db - ref), per, ref };
+}
+function statsOf(y, lo = 30, hi = 200) {
+  let mx = -1e9, s2 = 0, n = 0, e = 0, ne = 0;
+  G.forEach((f, i) => { if (f >= lo && f <= hi) { mx = Math.max(mx, y[i]); s2 += y[i] * y[i]; n++; } if (f >= 30 && f <= 150) { e += Math.pow(10, y[i] / 10); ne++; } });
+  return { max: mx, rms: Math.sqrt(s2 / n), energy: 10 * Math.log10(e / ne) };
+}
+const D = DATA.design;
+const HP = D.hp;
+const RESP = { L: response(D.L, HP), R: response(D.R, HP) };
+const XT = [20, 30, 40, 50, 60, 80, 100, 150, 200, 300];
+const XF = (v) => String(v);
+const YT = [-20, -10, 0, 10, 20];
+const bassOpts = (extra) => Object.assign({ xmin: 18, xmax: 300, ymin: -24, ymax: 24, xticks: XT, xfmt: XF, yticks: YT, yfmt: (v) => (v > 0 ? "+" + v : v) }, extra || {});
+const targetLine = () => ({ x: G, y: G.map(() => 0), color: "var(--ink-2)", width: 1.2, dash: "5 4", tip: false });
+
+/* ---------------- hero ---------------- */
+{
+  const ch = Chart($("hero-chart"), bassOpts({ h: 330, aria: "Bass at the sofa with and without EQ" }));
+  const before = curves("seat", "LR", ONE, ONE).avg, after = curves("seat", "LR", RESP.L, RESP.R).avg;
+  const sb = statsOf(before), sa = statsOf(after);
+  let on = true;
+  const draw = () => {
+    const cur = on ? after : before;
+    ch.set([
+      { kind: "excess", x: G, y: cur, fill: "var(--bad-fill)" },
+      targetLine(),
+      { x: G, y: on ? before : after, color: "var(--before)", width: 1.5, label: on ? "EQ off" : "EQ on" },
+      { x: G, y: cur, color: "var(--ink)", width: 2.5, label: on ? "EQ on" : "EQ off" },
+    ]);
+    legend($("hero-legend"), [{ label: on ? "with EQ" : "without EQ", color: "var(--ink)" }, { label: on ? "without EQ" : "with EQ", color: "var(--before)" }, { label: "target: as loud as the mids", color: "var(--ink-2)", dash: true }, { label: "too loud", color: "var(--bad-fill)", box: true }]);
+  };
+  stat($("hero-stats"), [
+    { k: "Biggest bass peak", v: `${fmtDb(sb.max)} → ${fmtDb(sa.max)}` },
+    { k: "Unevenness 30–200 Hz (rms)", v: `${sb.rms.toFixed(1)} → ${sa.rms.toFixed(1)} dB` },
+    { k: "Bass energy 30–150 Hz", v: fmtDb(sa.energy - sb.energy), sub: "less leaking out" },
+  ]);
+  seg(["hero-off", "hero-on"], (k) => { on = k === 1; draw(); });
+  draw();
+}
+
+/* ---------------- room modes ---------------- */
+{
+  const cv = $("modes-canvas"), ctx = cv.getContext("2d");
+  const C = 343, QM = 10;
+  const DIMS = {
+    w: { L: 3.9, title: "Across the 3.9 m width: speaker wall → sofa", src: [{ x: 0.45, label: "speakers", color: "--ink-2" }],
+         ears: [{ x: 3.5, label: "head on the sofa", color: "--ink" }, { x: 1.0, label: "DJ head", color: "--muted" }],
+         left: "speaker wall", right: "sofa wall" },
+    l: { L: 6.0, title: "Along the 6 m speaker wall: L in the middle, R near the side wall", src: [{ x: 3.0, label: "L", color: "--L" }, { x: 5.55, label: "R", color: "--R" }],
+         ears: [{ x: 4.1, label: "sofa middle", color: "--ink" }], left: "left wall", right: "right wall" },
+  };
+  let dim = "w", f = 44, t0 = performance.now();
+  // 1D modal sum: pressure at x for a source at xs
+  function P(Lr, xs, x, fr) {
+    let re = 0, im = 0;
+    for (let n = 0; n < 60; n++) {
+      const fn = n * C / (2 * Lr); const e = n === 0 ? 1 : 2;
+      const num = e * Math.cos(n * Math.PI * xs / Lr) * Math.cos(n * Math.PI * x / Lr);
+      const dr = fn * fn - fr * fr, di = fr * Math.max(fn, 8) / QM; const dd = dr * dr + di * di;
+      re += num * dr / dd; im += -num * di / dd;
+    }
+    return [re, im];
+  }
+  const modesOf = (Lr) => [1, 2, 3, 4, 5, 6].map((n) => n * C / (2 * Lr)).filter((v) => v <= 200);
+  function snaps() {
+    const host = $("mode-snaps"); host.textContent = "";
+    for (const v of modesOf(DIMS[dim].L)) {
+      const b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "false"); b.textContent = v.toFixed(0) + " Hz";
+      b.addEventListener("click", () => { f = v; $("mode-f").value = v; update(); }); host.appendChild(b);
+    }
+  }
+  const ch = Chart($("modes-chart"), { xmin: 15, xmax: 200, ymin: -35, ymax: 20, xticks: [20, 30, 40, 50, 60, 80, 100, 150, 200], xfmt: XF, yticks: [-30, -20, -10, 0, 10, 20], yfmt: (v) => (v > 0 ? "+" + v : v), h: 260, aria: "Level vs frequency at the listening spots" });
+  const FG = geom(15, 200, 400);
+  function levelCurve(src, x) { return FG.map((fr) => { const [re, im] = P(DIMS[dim].L, src.x, x, fr); return 20 * Math.log10(Math.hypot(re, im) * fr + 1e-12) + 25; }); }
+  function update() {
+    const d = DIMS[dim];
+    $("mode-f-out").textContent = f.toFixed(f < 100 ? 1 : 0) + " Hz";
+    $("modes-title").textContent = d.title;
+    const series = [], items = [];
+    if (dim === "w") {
+      for (const e of d.ears) { const y = levelCurve(d.src[0], e.x); series.push({ x: FG, y, color: `var(${e.color})`, width: e.color === "--ink" ? 2.5 : 1.8, label: e.label }); items.push({ label: e.label, color: `var(${e.color})` }); }
+    } else {
+      for (const s of d.src) { const y = levelCurve(s, d.ears[0].x); series.push({ x: FG, y, color: `var(${s.color})`, width: 2.2, label: s.label + " → sofa" }); items.push({ label: (s.label === "L" ? "left" : "right") + " speaker, heard at the sofa", color: `var(${s.color})` }); }
+    }
+    ch.set(series, [{ vline: f, color: "var(--accent)", text: f.toFixed(0) + " Hz" }]);
+    legend($("modes-legend"), items);
+    const ms = modesOf(d.L).map((v) => v.toFixed(0)).join(", ");
+    $("modes-caption").textContent = dim === "w"
+      ? `Modes across the width: ${ms} Hz. The sofa wall is a loud spot for every one of them; the DJ head (about 1 m from the speaker wall) sits near the null of 88 Hz.`
+      : `Modes along the length: ${ms} Hz. L stands at 3.0 m, the null of 29 and 86 Hz, so it can't excite them. R stands near the side wall and drives every mode.`;
+    if (reduceMotion) frame(t0);
+  }
+  function frame(now) {
+    const d = DIMS[dim]; const Wc = cv.width, Hc = cv.height, pad = 40, top = 30, bot = Hc - 46; const mid = (top + bot) / 2;
+    ctx.clearRect(0, 0, Wc, Hc);
+    const ink = cssv("--ink"), ink2 = cssv("--ink-2"), muted = cssv("--muted"), line = cssv("--line"), acc = cssv("--accent");
+    ctx.fillStyle = cssv("--surface"); ctx.fillRect(0, 0, Wc, Hc);
+    // walls
+    ctx.fillStyle = line; ctx.fillRect(pad - 8, top - 10, 8, bot - top + 20); ctx.fillRect(Wc - pad, top - 10, 8, bot - top + 20);
+    const xs = 240; const pts = [];
+    let maxA = 1e-12;
+    const srcs = dim === "w" ? d.src : d.src;
+    for (let i = 0; i <= xs; i++) {
+      const x = (i / xs) * d.L; let re = 0, im = 0;
+      for (const s of srcs) { const p = P(d.L, s.x, x, f); re += p[0]; im += p[1]; }
+      pts.push([re, im]); maxA = Math.max(maxA, Math.hypot(re, im));
+    }
+    const ph = reduceMotion ? 0.6 : ((now - t0) / 1000) * 2 * Math.PI * 0.7;
+    const amp = (bot - top) / 2 - 6; const cph = Math.cos(ph), sph = Math.sin(ph);
+    // envelope
+    ctx.beginPath();
+    for (let i = 0; i <= xs; i++) { const px = pad + (i / xs) * (Wc - 2 * pad); const a = Math.hypot(...pts[i]) / maxA; i ? ctx.lineTo(px, mid - a * amp) : ctx.moveTo(px, mid - a * amp); }
+    for (let i = xs; i >= 0; i--) { const px = pad + (i / xs) * (Wc - 2 * pad); const a = Math.hypot(...pts[i]) / maxA; ctx.lineTo(px, mid + a * amp); }
+    ctx.closePath(); ctx.globalAlpha = 0.12; ctx.fillStyle = acc; ctx.fill(); ctx.globalAlpha = 1;
+    // wave
+    ctx.beginPath(); ctx.lineWidth = 2.5; ctx.strokeStyle = acc;
+    for (let i = 0; i <= xs; i++) { const px = pad + (i / xs) * (Wc - 2 * pad); const v = (pts[i][0] * cph - pts[i][1] * sph) / maxA; i ? ctx.lineTo(px, mid - v * amp) : ctx.moveTo(px, mid - v * amp); }
+    ctx.stroke();
+    ctx.strokeStyle = line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad, mid); ctx.lineTo(Wc - pad, mid); ctx.stroke();
+    ctx.font = "13px " + cssv("--font-mono").split(",")[0]; ctx.textAlign = "center";
+    const mark = (x, label, col, dy, tri) => {
+      const px = pad + (x / d.L) * (Wc - 2 * pad);
+      ctx.fillStyle = col; ctx.beginPath();
+      if (tri) { ctx.moveTo(px - 7, bot + 14); ctx.lineTo(px + 7, bot + 14); ctx.lineTo(px, bot + 4); } else { ctx.arc(px, bot + 10, 5.5, 0, 2 * Math.PI); }
+      ctx.fill(); ctx.fillText(label, px, bot + 32 + dy);
+    };
+    for (const s of d.src) mark(s.x, s.label, s.color === "--ink-2" ? ink2 : cssv(s.color), 0, true);
+    d.ears.forEach((e, k) => mark(e.x, e.label, cssv(e.color), 0, false));
+    ctx.fillStyle = muted; ctx.textAlign = "left"; ctx.fillText(d.left, pad, top - 14); ctx.textAlign = "right"; ctx.fillText(d.right, Wc - pad, top - 14);
+    ctx.textAlign = "center"; ctx.fillText("0 m", pad, Hc - 2); ctx.fillText(d.L.toFixed(1) + " m", Wc - pad, Hc - 2);
+    if (!reduceMotion) requestAnimationFrame(frame);
+  }
+  $("mode-f").addEventListener("input", (e) => { f = +e.target.value; update(); });
+  seg(["dim-w", "dim-l"], (k) => { dim = k ? "l" : "w"; f = k ? 29 : 44; $("mode-f").value = f; snaps(); update(); });
+  snaps(); update();
+  if (!reduceMotion) requestAnimationFrame(frame); else frame(t0);
+}
+
+/* ---------------- cancellation demo ---------------- */
+{
+  const cv = $("cx-canvas"), ctx = cv.getContext("2d");
+  let phase = 180, gain = 6;
+  function draw() {
+    const Wc = cv.width, Hc = cv.height; ctx.fillStyle = cssv("--surface"); ctx.fillRect(0, 0, Wc, Hc);
+    const g = Math.pow(10, gain / 20), rows = [[40, "direct wave"], [125, "reflection"], [210, "what you hear (sum)"]];
+    const ph = (phase * Math.PI) / 180, amp = 26;
+    const cols = [cssv("--L"), cssv("--R"), cssv("--ink")];
+    ctx.font = "13px " + cssv("--font-mono").split(",")[0];
+    rows.forEach(([y, label], r) => {
+      ctx.strokeStyle = cssv("--line"); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(170, y); ctx.lineTo(Wc - 10, y); ctx.stroke();
+      ctx.fillStyle = cssv("--ink-2"); ctx.textAlign = "left"; ctx.fillText(label, 0, y + 4);
+      ctx.strokeStyle = cols[r]; ctx.lineWidth = r === 2 ? 3 : 2; ctx.beginPath();
+      for (let i = 0; i <= 600; i++) {
+        const x = 170 + (i / 600) * (Wc - 180); const t = (i / 600) * 4 * Math.PI;
+        const a = Math.sin(t) * g * 0.5, b = Math.sin(t - ph) * g * 0.5; const v = r === 0 ? a : r === 1 ? b : a + b;
+        const yy = y - v * amp; i ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy);
+      }
+      ctx.stroke();
+    });
+    const sumAmp = Math.abs(2 * Math.cos(ph / 2)) * g * 0.5; // relative to one wave at 0 dB = 0.5
+    const lvl = 20 * Math.log10(sumAmp + 1e-6);
+    $("cx-phase-out").textContent = phase + "°"; $("cx-gain-out").textContent = fmtDb(gain);
+    $("cx-caption").textContent = phase > 170
+      ? `The waves are opposite, so the sum stays at ${lvl < -40 ? "silence" : fmtDb(lvl)} no matter how much EQ you add. Each dB of boost just puts more energy into the rest of the room.`
+      : phase < 60
+        ? `The waves add up: a peak at ${fmtDb(lvl)}. Here the EQ works directly: cut by 6 dB and the peak drops by 6 dB.`
+        : `Partly cancelling: the sum is at ${fmtDb(lvl)}. The closer to 180°, the less EQ can do.`;
+  }
+  $("cx-phase").addEventListener("input", (e) => { phase = +e.target.value; draw(); });
+  $("cx-gain").addEventListener("input", (e) => { gain = +e.target.value; draw(); });
+  draw();
+}
+
+/* ---------------- impulse response ---------------- */
+{
+  const ir = DATA.ir, ts = ir.db.map((_, i) => ir.t0_ms + i * ir.step_ms);
+  const ch = Chart($("ir-chart"), { w: 520, h: 320, m: { l: 40, r: 10, t: 12, b: 28 }, xlog: false, xmin: -5, xmax: 700, ymin: -80, ymax: 0, xticks: [0, 200, 400, 600], xfmt: (v) => v + " ms", yticks: [-80, -60, -40, -20, 0], zero: 999, aria: "Impulse response, dB", tipx: (v) => v.toFixed(0) + " ms", tipy: (v) => v.toFixed(1) + " dB" });
+  ch.set([{ x: ts, y: ir.db, color: "var(--L)", width: 1.3, label: "level" }], [{ span: [0, 375], fill: "var(--ok-fill)", text: "kept" }, { span: [375, 500], fill: "var(--band)", text: "fade" }, { x: 9.3, y: -2, text: "direct sound", anchor: "start", dx: 14, dy: 4 }, { x: 120, y: -30, text: "room ringing", anchor: "start", dx: 0, dy: -14 }]);
+  const z = DATA.ir_zoom, tz = z.v.map((_, i) => z.t0_ms + i * z.step_ms);
+  const cz = Chart($("ir-zoom"), { w: 520, h: 320, m: { l: 40, r: 10, t: 12, b: 28 }, xlog: false, xmin: 8, xmax: 30, ymin: -1.05, ymax: 1.05, xticks: [10, 15, 20, 25, 30], xfmt: (v) => v + " ms", yticks: [-1, 0, 1], aria: "First 30 ms of the impulse response", tipx: (v) => v.toFixed(2) + " ms", tipy: (v) => v.toFixed(2) });
+  // annotate direct + reflections from the data: largest |v| and next peaks
+  let iMax = 0; z.v.forEach((v, i) => { if (Math.abs(v) > Math.abs(z.v[iMax])) iMax = i; });
+  cz.set([{ x: tz, y: z.v, color: "var(--L)", width: 1.3, label: "pressure" }], [{ x: tz[iMax], y: z.v[iMax], text: "direct sound, 9.3 ms", anchor: "start", dx: 10, dy: 4 }, { x: tz[iMax] + 6, y: 0.55, text: "reflections", anchor: "start", dx: 0, dy: 0 }]);
+}
+
+/* ---------------- positions ---------------- */
+{
+  const ch = Chart($("pos-chart"), bassOpts({ h: 340, aria: "7 positions and their average" }));
+  const ANN = {
+    L: [[43.2, "stable peak"], [55.8, "moving dip"], [115, "stable hump"]],
+    R: [[51.5, "stable peak"], [74.7, "moving dip"], [89, "stable peak"], [173, "dip: wall reflection"]],
+  };
+  function draw(s) {
+    const c = curves("seat", s, ONE, ONE);
+    const lo = G.map((_, i) => Math.min(...c.per.map((p) => p[i]))), hi = G.map((_, i) => Math.max(...c.per.map((p) => p[i])));
+    const series = [{ kind: "band", x: G, y0: lo, y1: hi, fill: "var(--band)", label: "range" }];
+    c.per.forEach((p) => series.push({ x: G, y: p, color: "var(--before)", width: 1, opacity: 0.8, tip: false }));
+    series.push(targetLine());
+    series.push({ x: G, y: c.avg, color: `var(--${s})`, width: 2.6, label: "average" });
+    const ann = ANN[s].map(([f, t]) => { const i = G.findIndex((g) => g >= f); const y = t.includes("dip") ? lo[i] : hi[i]; return { x: f, y, text: t, dy: t.includes("dip") ? 16 : -10 }; });
+    ch.set(series, ann);
+    legend($("pos-legend"), [{ label: (s === "L" ? "left" : "right") + " speaker, average of 7", color: `var(--${s})` }, { label: "single positions", color: "var(--before)" }, { label: "quietest … loudest position", color: "var(--band)", box: true }]);
+  }
+  seg(["pos-L", "pos-R"], (k) => draw(k ? "R" : "L"));
+  draw("L");
+}
+
+/* ---------------- L+R sum ---------------- */
+{
+  const ch = Chart($("sum-chart"), bassOpts({ h: 330, aria: "Left, right and sum" }));
+  function draw(set) {
+    const rs = DATA.ref[set].LR;
+    const rel = (w) => { const c = curves(set, w, ONE, ONE); const d = DATA.ref[set][w] - rs; return c.avg.map((v) => v + d); };
+    const L = rel("L"), R = rel("R"), S = rel("LR");
+    const ann = set === "dj" ? [{ span: [55, 75], text: "L and R cancel" }] : [{ span: [40, 130], text: "both add up: +5 … +15 dB", fill: "var(--bad-fill)" }];
+    ch.set([targetLine(), { x: G, y: L, color: "var(--L)", width: 1.8, label: "left only" }, { x: G, y: R, color: "var(--R)", width: 1.8, label: "right only" }, { x: G, y: S, color: "var(--ink)", width: 2.6, label: "both together" }], ann);
+    legend($("sum-legend"), [{ label: "left only", color: "var(--L)" }, { label: "right only", color: "var(--R)" }, { label: "both together (added with timing)", color: "var(--ink)" }]);
+    $("sum-title").textContent = set === "dj" ? "DJ spot: left, right and both together" : "Sofa: left, right and both together";
+    $("sum-caption").textContent = set === "dj"
+      ? "At the DJ spot each speaker alone is loud at 55–75 Hz, but together they cancel: the black line drops to around 0. EQ can't fix that, because cutting or boosting changes both waves equally."
+      : "At the sofa the two speakers mostly reinforce each other in the bass: the black line sits 5–15 dB above the mids from 40 to 130 Hz. That's the boom. All levels relative to the mids with both playing.";
+  }
+  seg(["sum-seat", "sum-dj"], (k) => draw(k ? "dj" : "seat"));
+  draw("seat");
+}
+
+/* ---------------- single filter ---------------- */
+{
+  const FS = geom(20, 500, 400);
+  const ch = Chart($("pk-chart"), { xmin: 20, xmax: 500, ymin: -14, ymax: 2, xticks: [20, 30, 40, 50, 60, 80, 100, 150, 200, 300, 500], xfmt: XF, yticks: [-12, -9, -6, -3, 0], yfmt: (v) => v, h: 260, aria: "One peaking filter" });
+  function draw() {
+    const f = +$("pk-f").value, g = +$("pk-g").value, q = +$("pk-q").value;
+    $("pk-f-out").textContent = f.toFixed(1) + " Hz"; $("pk-g-out").textContent = fmtDb(g); $("pk-q-out").textContent = q.toFixed(2);
+    const y = magDb([[f, g, q]], 0, FS);
+    const bw = f / q;
+    ch.set([{ x: FS, y, color: "var(--accent)", width: 2.5, label: "filter" }], [{ span: [f * Math.pow(2, -Math.asinh(1 / (2 * q)) / Math.log(2)), f * Math.pow(2, Math.asinh(1 / (2 * q)) / Math.log(2))], text: "≈ " + bw.toFixed(1) + " Hz wide" }]);
+    const A = Math.pow(10, Math.abs(g) / 40);
+    stat($("pk-stats"), [{ k: "Width ≈ frequency ÷ Q", v: bw.toFixed(1) + " Hz" }, { k: "Cut at the centre", v: fmtDb(g) }, { k: "Your DSP would show Q as", v: (q * A).toFixed(2), sub: "(see section 8)" }]);
+  }
+  ["pk-f", "pk-g", "pk-q"].forEach((i) => $(i).addEventListener("input", draw));
+  draw();
+}
+
+/* ---------------- the EQ on the room ---------------- */
+{
+  const on = { L: D.L.map(() => true), R: D.R.map(() => true), H: true };
+  let view = ["seat", "LR"];
+  const ch = Chart($("eq-chart"), bassOpts({ h: 340, aria: "Simulated response with the EQ" }));
+  const FS = geom(18, 300, 300);
+  const fch = Chart($("eq-filt"), { xmin: 18, xmax: 300, ymin: -26, ymax: 2, xticks: XT, xfmt: XF, yticks: [-24, -18, -12, -6, 0], h: 200, aria: "Filter responses" });
+  function chips(s) {
+    const host = $("chips-" + s); host.textContent = "";
+    const who = document.createElement("span"); who.className = "who"; who.textContent = s === "H" ? "high-pass" : s === "L" ? "left" : "right"; host.appendChild(who);
+    const list = s === "H" ? [[HP]] : D[s];
+    list.forEach((b, i) => {
+      const c = document.createElement("button"); c.className = "chip c" + s; c.id = `chip-${s}-${i}`;
+      c.textContent = s === "H" ? `${HP.toFixed(1)} Hz BW 24` : `${b[0] < 100 ? b[0].toFixed(1) : b[0].toFixed(0)} Hz ${b[1].toFixed(1)}`;
+      const isOn = () => (s === "H" ? on.H : on[s][i]);
+      c.setAttribute("aria-pressed", String(isOn()));
+      c.addEventListener("click", () => { if (s === "H") on.H = !on.H; else on[s][i] = !on[s][i]; c.setAttribute("aria-pressed", String(isOn())); draw(); });
+      host.appendChild(c);
+    });
+  }
+  ["L", "R", "H"].forEach(chips);
+  function draw() {
+    const bL = D.L.filter((_, i) => on.L[i]), bR = D.R.filter((_, i) => on.R[i]); const hp = on.H ? HP : 0;
+    const HL = response(bL, hp), HR = response(bR, hp);
+    const before = curves(view[0], view[1], ONE, ONE).avg, after = curves(view[0], view[1], HL, HR).avg;
+    ch.set([{ kind: "excess", x: G, y: after, fill: "var(--bad-fill)" }, targetLine(), { x: G, y: before, color: "var(--before)", width: 1.5, label: "without EQ" }, { x: G, y: after, color: "var(--ink)", width: 2.6, label: "with these filters" }]);
+    legend($("eq-legend"), [{ label: "with the filters switched on", color: "var(--ink)" }, { label: "without EQ", color: "var(--before)" }, { label: "target", color: "var(--ink-2)", dash: true }, { label: "too loud", color: "var(--bad-fill)", box: true }]);
+    const sb = statsOf(before), sa = statsOf(after);
+    stat($("eq-stats"), [
+      { k: "Biggest peak 30–200 Hz", v: `${fmtDb(sb.max)} → ${fmtDb(sa.max)}` },
+      { k: "Unevenness (rms)", v: `${sb.rms.toFixed(1)} → ${sa.rms.toFixed(1)} dB` },
+      { k: "Bass energy 30–150 Hz", v: fmtDb(sa.energy - sb.energy) },
+    ]);
+    const fl = view[1] !== "R" ? [{ x: FS, y: magDb(bL, hp, FS), color: "var(--L)", width: 2.2, label: "left filters" }] : [];
+    const fr = view[1] !== "L" ? [{ x: FS, y: magDb(bR, hp, FS), color: "var(--R)", width: 2.2, label: "right filters" }] : [];
+    fch.set([...fl, ...fr]);
+    legend($("eq-filt-legend"), [...(fl.length ? [{ label: "left channel filters", color: "var(--L)" }] : []), ...(fr.length ? [{ label: "right channel filters", color: "var(--R)" }] : [])]);
+    $("eq-caption").textContent = view[0] === "corner"
+      ? "Corners: all modes are loudest here, so this view shows the room's total bass energy (the best clue for what leaks out). The mid level in a corner is unreliable, so watch the energy number, not the 0 dB line."
+      : "Red area: bass above the mids. Switch single filters off to see what each one does. Bottom chart: the filter shapes on each channel.";
+  }
+  document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-view]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+    view = b.dataset.view.split(":"); draw();
+  }));
+  draw();
+}
+
+/* ---------------- cost visual ---------------- */
+{
+  const ch = Chart($("cost-chart"), bassOpts({ h: 300, aria: "What the score counts" }));
+  const c = curves("seat", "LR", ONE, ONE).avg;
+  ch.set([{ kind: "excess", x: G, y: c, fill: "var(--bad-fill)" }, { kind: "deficit", x: G, y: c, fill: "var(--ok-fill)" }, targetLine(), { x: G, y: c, color: "var(--ink)", width: 2.4, label: "sofa, both, no EQ" }],
+    [{ x: 43, y: 15, text: "counts: cut this", dy: -12 }, { x: 160, y: -6, text: "free, unless a cut deepens it", dy: 22 }]);
+  legend($("cost-legend"), [{ label: "above target: counts (squared)", color: "var(--bad-fill)", box: true }, { label: "below target: counts only if the EQ made it worse", color: "var(--ok-fill)", box: true }, { label: "target", color: "var(--ink-2)", dash: true }]);
+}
+
+/* ---------------- stages ---------------- */
+{
+  const FS = geom(18, 300, 300);
+  const fch = Chart($("stage-filt"), { xmin: 18, xmax: 300, ymin: -26, ymax: 2, xticks: XT, xfmt: XF, yticks: [-24, -18, -12, -6, 0], h: 210, aria: "Filters of this attempt" });
+  const ch = Chart($("stage-chart"), bassOpts({ h: 300, aria: "Result of this attempt" }));
+  const before = curves("seat", "LR", ONE, ONE).avg;
+  const NOTES = [
+    "Q allowed up to 10, cuts down to −15 dB. Most bands went straight to Q 10, and two pairs landed on the same frequency (left 43 Hz, right 89 Hz). The optimiser was carving the exact shape of the average: very narrow notches that won't survive you moving your head. Three cuts also go past −12 dB, which the DSP can't do. (The dashed line marks −12 dB.)",
+    "Q capped at 6, and each dB of cut now costs a little. No more stacking; bands closer than 1/12 octave were merged into one. But a single Q 6 band is too wide for the 43 Hz mode, so the left channel's 43 Hz peak stays higher than it could.",
+    "Q up to 8 (matches how wide the room's modes are), no cut deeper than −12 dB, rounded onto the DSP's steps. The left channel needs only 5 bands. This is what's in your DSP now.",
+  ];
+  const host = $("stage-btns");
+  const btns = DATA.stages.map((s, k) => { const b = document.createElement("button"); b.textContent = ["Try 1", "Try 2", "Final"][k]; b.id = "stage-" + k; b.setAttribute("aria-pressed", String(k === 2)); host.appendChild(b); return b; });
+  function draw(k) {
+    const s = DATA.stages[k];
+    const after = curves("seat", "LR", response(s.L, HP), response(s.R, HP)).avg;
+    const st = statsOf(after);
+    $("stage-note").textContent = `${s.name}. ${NOTES[k]} Biggest peak at the sofa: ${fmtDb(st.max)}, unevenness ${st.rms.toFixed(1)} dB.`;
+    fch.set([{ x: FS, y: FS.map(() => -12), color: "var(--bad)", width: 1, dash: "4 3", tip: false }, { x: FS, y: magDb(s.L, 0, FS), color: "var(--L)", width: 2, label: "left" }, { x: FS, y: magDb(s.R, 0, FS), color: "var(--R)", width: 2, label: "right" }]);
+    legend($("stage-filt-legend"), [{ label: "left filters", color: "var(--L)" }, { label: "right filters", color: "var(--R)" }, { label: "DSP limit −12 dB per band", color: "var(--bad)", dash: true }]);
+    ch.set([{ kind: "excess", x: G, y: after, fill: "var(--bad-fill)" }, targetLine(), { x: G, y: before, color: "var(--before)", width: 1.5, label: "no EQ" }, { x: G, y: after, color: "var(--ink)", width: 2.5, label: "this attempt" }]);
+    legend($("stage-legend"), [{ label: "sofa, both, with this attempt", color: "var(--ink)" }, { label: "without EQ", color: "var(--before)" }, { label: "target", color: "var(--ink-2)", dash: true }]);
+  }
+  seg(btns, (k) => draw(k));
+  draw(2);
+}
+
+/* ---------------- device: Q mapping + grid ---------------- */
+{
+  function draw() {
+    const g = +$("qm-g").value, q = +$("qm-q").value; const A = Math.pow(10, Math.abs(g) / 40);
+    $("qm-g-out").textContent = fmtDb(g); $("qm-q-out").textContent = q.toFixed(1);
+    const qd = q * A, raw = Math.round(16 + 12 * Math.log2(qd)), qs = Math.pow(2, (raw - 16) / 12);
+    stat($("qm-stats"), [{ k: "A = 10^(|gain| ÷ 40)", v: A.toFixed(3) }, { k: "Device Q = textbook Q × A", v: qd.toFixed(2) }, { k: "Nearest device step", v: qs.toFixed(2), sub: `raw ${raw}` }]);
+  }
+  ["qm-g", "qm-q"].forEach((i) => $(i).addEventListener("input", draw)); draw();
+  // frequency ruler
+  const host = $("grid-chart");
+  const W = 1000, H = 120, l = 30, r = 20, fmin = 35, fmax = 140;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "DSP frequency steps with the bands" }, host);
+  const X = (f) => l + (Math.log(f / fmin) / Math.log(fmax / fmin)) * (W - l - r);
+  el("line", { x1: l, x2: W - r, y1: 60, y2: 60, style: "stroke:var(--line);stroke-width:1.5" }, svg);
+  for (let raw = 0; raw <= 300; raw++) {
+    const f = 1000 * Math.pow(2, (raw - 170) / 30); if (f < fmin || f > fmax) continue;
+    el("line", { x1: X(f), x2: X(f), y1: 52, y2: 68, style: "stroke:var(--muted);stroke-width:1" }, svg);
+  }
+  for (const f of [40, 50, 60, 80, 100, 125]) { const t = el("text", { x: X(f), y: 100, "text-anchor": "middle" }, svg); t.textContent = f + " Hz"; }
+  for (const [s, y] of [["L", 38], ["R", 82]]) for (const [f] of D[s]) el("circle", { cx: X(f), cy: y, r: 6, style: `fill:var(--${s});stroke:var(--surface);stroke-width:2` }, svg);
+  const tl = el("text", { x: l, y: 20, "text-anchor": "start" }, svg); tl.textContent = "left bands";
+  const tr = el("text", { x: l, y: 116, "text-anchor": "start" }, svg); tr.textContent = "right bands";
+}
+
+/* ---------------- electrical ---------------- */
+{
+  const E = DATA.electrical;
+  const ch = Chart($("el-chart"), { xmin: 15, xmax: 20000, ymin: -30, ymax: 4, xticks: [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000], xfmt: (v) => (v >= 1000 ? v / 1000 + "k" : v), yticks: [-30, -24, -18, -12, -6, 0], h: 320, aria: "Electrical check" });
+  function draw(s) {
+    const diff = E[s].meas.map((v, i) => v - E[s].pred[i]);
+    ch.set([{ x: E.f, y: E[s].meas, color: "var(--ink)", width: 3, label: "measured" }, { x: E.f, y: E[s].pred, color: s === "L" ? "var(--L)" : "var(--R)", width: 1.8, dash: "6 4", label: "predicted" }, { x: E.f, y: diff, color: "var(--muted)", width: 0, label: "difference", tip: true, opacity: 0 }]);
+    legend($("el-legend"), [{ label: "measured at the DSP output", color: "var(--ink)" }, { label: "predicted by the design", color: s === "L" ? "var(--L)" : "var(--R)", dash: true }]);
+  }
+  seg(["el-L", "el-R"], (k) => draw(k ? "R" : "L"));
+  draw("L");
+}
+})();
+</script>
