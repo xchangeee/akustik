@@ -11,4 +11,5 @@ uv run python analysis/analyse_positions.py . analysis/output > analysis/output/
 uv run python analysis/analyse_corners.py . analysis/output > analysis/output/corners.txt
 uv run python analysis/analyse_dj_sum.py . analysis/output > analysis/output/dj_sum.txt
 uv run python analysis/analyse_closeups.py . analysis/output > analysis/output/closeups.txt
+uv run python analysis/design_eq.py . analysis/output eq > analysis/output/eq_design.log
 """

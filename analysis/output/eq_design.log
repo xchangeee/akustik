@@ -1,0 +1,103 @@
+positions: {'seat': 7, 'dj': 7, 'corner': 2}
+cost before EQ: 94.22, at init: 40.26
+  fit {'L': 7, 'R': 7}: restart 0: cost 11.486
+  fit {'L': 7, 'R': 7}: restart 1: cost 11.261
+  fit {'L': 7, 'R': 7}: restart 2: cost 11.378
+  fit {'L': 5, 'R': 7}: restart 0: cost 11.551
+EQ design 2026-11-18 | HPF Butterworth 24 dB/oct @ 30.0 Hz (DSP HP filter) | fit 25-250 Hz, 1/24 oct, target flat at mid level
+cost terms: [(('seat', 'L+R'), 1.0), (('seat', 'L'), 0.5), (('seat', 'R'), 0.5), (('dj', 'L+R'), 0.4)]; Q max 8.0, cut penalty 0.005/dB; optimiser cost 11.551
+
+L PEQ (5 bands):
+  1: PK  Fc    43.3 Hz  Gain  -12.6 dB  Q  8.00
+  2: PK  Fc    50.6 Hz  Gain   -1.1 dB  Q  8.00
+  3: PK  Fc    93.3 Hz  Gain   -8.6 dB  Q  8.00
+  4: PK  Fc   112.5 Hz  Gain   -7.3 dB  Q  8.00
+  5: PK  Fc   124.3 Hz  Gain   -5.3 dB  Q  8.00
+
+R PEQ (7 bands):
+  1: PK  Fc    42.3 Hz  Gain  -11.3 dB  Q  8.00
+  2: PK  Fc    52.4 Hz  Gain  -13.8 dB  Q  8.00
+  3: PK  Fc    63.9 Hz  Gain   -6.5 dB  Q  4.86
+  4: PK  Fc    82.7 Hz  Gain  -11.6 dB  Q  8.00
+  5: PK  Fc    88.2 Hz  Gain   -7.7 dB  Q  8.00
+  6: PK  Fc   112.2 Hz  Gain   -3.2 dB  Q  8.00
+  7: PK  Fc   125.2 Hz  Gain   -6.8 dB  Q  8.00
+
+Mid reference levels (300 Hz-3 kHz, dB): seat L 73.3, seat R 72.6, seat L+R 77.0, dj L 73.9, dj R 71.5, dj L+R 76.1, corner L 69.1, corner R 72.7, corner L+R 74.3
+
+=== Flatness vs own mid level, 30-200 Hz: rms / max / min (dB) ===
+           set |        flat (no HPF) |             HPF only |            HPF + PEQ
+        seat L |   5.4  +13.1   -9.0   |   5.6  +12.9  -12.0   |   3.4   +4.5  -12.6  
+        seat R |   8.9  +18.0  -13.8   |   8.8  +17.9  -13.8   |   3.8   +3.9  -14.4  
+      seat L+R |   7.1  +15.2   -7.0   |   7.0  +15.0   -7.0   |   2.2   +3.9   -8.0  
+          dj L |   7.0  +13.8  -17.8   |   7.3  +13.6  -20.7   |   6.1  +10.3  -21.3  
+          dj R |  10.4  +18.9   -8.3   |  10.5  +18.9  -10.3   |   5.6   +9.4  -11.5  
+        dj L+R |   7.2  +17.0   -8.8   |   7.3  +16.7  -11.8   |   3.8   +5.0  -12.2  
+      corner L |  17.5  +24.7  -22.3   |  17.7  +24.7  -23.9   |  14.7  +21.4  -24.8  
+      corner R |  18.9  +27.1   +1.8   |  18.8  +27.1   -1.1   |  12.7  +20.6   -2.0  
+    corner L+R |  17.6  +24.4   -0.5   |  17.5  +24.4   -3.5   |  12.0  +22.9   -4.3  
+
+=== Bass energy 30-150 Hz (power mean, dB SPL approx) = leakage proxy ===
+           set |   flat    HPF     EQ | change
+        seat L |   78.8   78.7   73.2 |  -5.7
+        seat R |   82.9   82.9   72.9 | -10.1
+      seat L+R |   85.3   85.2   77.4 |  -7.9
+          dj L |   80.3   80.2   76.4 |  -3.9
+          dj R |   83.6   83.6   74.6 |  -9.0
+        dj L+R |   84.4   84.3   76.6 |  -7.8
+      corner L |   87.0   87.0   82.3 |  -4.8
+      corner R |   92.9   92.9   84.9 |  -8.0
+    corner L+R |   93.3   93.2   86.9 |  -6.4
+
+=== L+R sum, 1/24 oct, relative to own mid level: before (flat) -> after (HPF + PEQ) ===
+   Hz |          seat |            DJ |        corner
+   25 |  -7.0 -> -14.3 |  -9.2 -> -16.8 |  +2.3 ->  -5.2
+   28 |  +3.0 ->  -1.7 |  -2.2 ->  -7.1 |  +4.7 ->  -0.2
+   30 |  +0.8 ->  -3.0 |  -8.9 -> -12.3 |  -0.5 ->  -4.3
+   35 |  +2.6 ->  -0.4 |  -4.4 ->  -7.2 |  +6.8 ->  +3.7
+   40 |  +8.7 ->  +1.6 |  +6.6 ->  -0.3 | +14.5 ->  +7.3
+   43 | +15.2 ->  +2.7 | +17.0 ->  +4.1 | +19.7 ->  +7.4
+   47 |  +1.1 ->  -1.8 | +11.8 ->  +2.1 | +13.8 ->  +7.6
+   51 | +11.9 ->  +2.3 | +12.5 ->  -3.5 | +21.6 -> +10.2
+   55 |  +9.4 ->  -1.7 |  +0.0 ->  +0.7 | +12.2 ->  +4.5
+   60 |  +6.8 ->  +0.6 |  -1.1 ->  -2.0 | +18.0 ->  +6.7
+   65 |  +4.6 ->  -1.6 |  -1.4 ->  -2.5 | +18.5 ->  +8.7
+   68 |  +6.5 ->  +0.3 |  +3.6 ->  +0.5 | +18.9 ->  +9.0
+   75 |  +3.1 ->  -1.1 |  -0.3 ->  +0.2 | +14.0 ->  +5.4
+   80 | +10.9 ->  +2.7 |  +5.6 ->  -1.5 | +21.2 -> +11.5
+   85 | +13.4 ->  +2.2 | +11.2 ->  -2.7 | +24.2 -> +10.0
+   89 | +10.9 ->  +0.6 | +10.2 ->  -2.1 | +24.2 -> +10.2
+   95 |  +2.9 ->  +0.2 |  +6.4 ->  -1.8 | +15.2 -> +11.3
+  100 |  +3.5 ->  -2.3 |  +4.2 ->  +3.0 | +14.3 -> +14.9
+  110 |  +8.9 ->  +1.2 |  +4.1 ->  -0.6 | +17.0 -> +12.4
+  115 |  +9.6 ->  +1.3 |  +6.1 ->  -0.1 | +19.8 -> +13.1
+  120 |  +7.7 ->  -0.0 | +10.8 ->  +3.4 | +22.5 -> +15.3
+  128 |  +9.3 ->  +2.6 |  +8.5 ->  +2.0 | +22.5 -> +16.0
+  140 |  -1.6 ->  -3.7 |  +3.8 ->  +1.4 | +21.5 -> +19.1
+  163 |  -5.7 ->  -6.4 |  +2.4 ->  +1.9 | +20.2 -> +18.7
+  190 |  +2.3 ->  +2.0 |  +4.4 ->  +4.3 | +15.0 -> +13.4
+  250 |  -0.7 ->  -0.7 |  +3.1 ->  +3.2 |  +9.9 ->  +9.7
+
+=== HPF alternatives (with the same PEQs): seat L+R / DJ L+R level at 25/30/35/40 Hz rel. mid, bass energy 30-150 seat L+R ===
+  HPF   25 Hz: seat -10.1  -0.9  +0.4  +1.9 | DJ -12.6 -10.2  -6.4  +0.0 | energy 77.6
+  HPF   30 Hz: seat -14.3  -3.0  -0.4  +1.6 | DJ -16.8 -12.3  -7.2  -0.3 | energy 77.4
+  HPF   35 Hz: seat -19.0  -6.4  -2.3  +0.7 | DJ -21.5 -15.8  -9.1  -1.1 | energy 77.1
+  HPF   40 Hz: seat -23.5 -10.4  -5.2  -1.0 | DJ -26.0 -19.7 -12.0  -2.9 | energy 76.7
+
+=== Robustness: L+R per single position, 30-200 Hz rms / max vs own set mid level, before -> after ===
+   seat   pos1 left30: rms  6.5 ->  3.2   max +15.5 ->  +4.1
+   seat  pos2 right30: rms  7.5 ->  3.1   max +15.1 ->  +4.7
+   seat    pos3 fwd20: rms  7.5 ->  4.8   max +17.3 ->  +7.9
+   seat   pos4 back20: rms  7.1 ->  6.1   max +17.4 ->  +4.8
+   seat     pos5 up10: rms  6.6 ->  4.7   max +15.4 ->  +3.9
+   seat   pos6 down10: rms  8.4 ->  3.5   max +16.4 ->  +7.0
+   seat          seat: rms  6.8 ->  2.8   max +15.2 ->  +3.2
+     dj        back30: rms  6.9 ->  5.7   max +14.1 ->  +7.2
+     dj        down30: rms  6.9 ->  4.3   max +17.0 ->  +7.6
+     dj         fwd30: rms  8.4 ->  5.3   max +18.1 ->  +7.7
+     dj        left30: rms  7.7 ->  5.6   max +17.3 ->  +6.7
+     dj           pos: rms  7.4 ->  4.7   max +17.3 ->  +5.7
+     dj       right30: rms  7.5 ->  5.1   max +17.4 ->  +8.4
+     dj          up30: rms  7.0 ->  4.7   max +16.7 ->  +6.7
+
+wrote analysis/output/eq_design.txt analysis/output/eq_design.png analysis/output/eq_filters.png eq/akustik_L.txt eq/akustik_R.txt

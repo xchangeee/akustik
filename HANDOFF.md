@@ -1,6 +1,6 @@
 # Handoff: measurement session status
 
-Last updated: 2026-11-18 (Phases E and F done).
+Last updated: 2026-11-18 (measurements done, EQ v1 designed).
 Read this first, then [room-acoustics-context.md](room-acoustics-context.md) (room, gear, goals, measurement plan)
 and [measurement-prep-checklist.md](measurement-prep-checklist.md) (step-by-step setup; ticked = done, with dated results).
 
@@ -11,7 +11,8 @@ Measurement plan step 3 done 2026-11-18: 6 positions + seat per speaker, analyse
 Corners (3b) done 2026-11-18 (front-left/front-right only, rest blocked), results in the same analysis file.
 DJ position (3c) and L+R sum (step 4, computed from summed IRs) done 2026-11-18, same analysis file.
 Close-ups (step 5) done 2026-11-18: port tuning ≈ 35 Hz, L/R woofers identical (R's extra bass = room).
-**Next step: EQ design: Claude computes cut-only PEQs per channel, simulates seat/DJ/corner results from the IRs, writes a filter file for the DSP's "Import REW filters".**
+EQ design v1 done 2026-11-18: [analysis/design_eq.py](analysis/design_eq.py), filter files [eq/akustik_L.txt](eq/akustik_L.txt) / [eq/akustik_R.txt](eq/akustik_R.txt), results at the end of the analysis file. HPF Butterworth 24 dB/oct 30 Hz (set by hand in the DSP's HP filter, not in the file). Simulated: seat L+R peaks +15 → +4 dB, bass energy −6…−8 dB everywhere.
+**Next step: get the filters into the DSP**: import each file on its output ("Import REW filters…"), set the HPF, save as a new preset (keep "FLAT"), screenshot the PEQ page so Claude can check the values. Then electrical check (DSP out → spare UMC input, no amp) vs predicted curve, then re-measure seat/DJ/corner with EQ on.
 IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no normalise/window.
 
 ## Current physical setup (as wired now)

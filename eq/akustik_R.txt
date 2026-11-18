@@ -1,0 +1,16 @@
+Filter Settings file
+
+Room EQ V5.31
+Dated: 18 Nov 2026 01:35:19
+
+Notes:akustik EQ right (DSP out 2); cut-only; DSP HP filter separately: Butterworth 24 dB/oct 30 Hz
+
+Equaliser: Generic
+akustik R
+Filter  1: ON  PK       Fc    42.3 Hz  Gain -11.3 dB  Q   8.00
+Filter  2: ON  PK       Fc    52.4 Hz  Gain -13.8 dB  Q   8.00
+Filter  3: ON  PK       Fc    63.9 Hz  Gain  -6.5 dB  Q   4.86
+Filter  4: ON  PK       Fc    82.7 Hz  Gain -11.6 dB  Q   8.00
+Filter  5: ON  PK       Fc    88.2 Hz  Gain  -7.7 dB  Q   8.00
+Filter  6: ON  PK       Fc   112.2 Hz  Gain  -3.2 dB  Q   8.00
+Filter  7: ON  PK       Fc   125.2 Hz  Gain  -6.8 dB  Q   8.00

@@ -27,6 +27,7 @@ Absolute level: fixed offset of 100.9 dB so that the L seat 1–8 kHz average is
 | `analyse_corners.py` | Two front floor corners vs seat average, peaks in the corner average | `corners.txt`, `corners.png` |
 | `analyse_dj_sum.py` | DJ spot (7 positions) vs seat, plus **L+R = coherent sum of the L and R IRs** (same mic spot, same loopback timing) | `dj_sum.txt`, `dj_vs_seat.png` |
 | `analyse_closeups.py` | Woofer/port close-ups (0° cal): port tuning, L vs R woofer | `closeups.txt`, `closeups.png` |
+| `design_eq.py` | Cut-only PEQ design (≤7 bands/channel) + fixed HPF, fitted on seat L/R/L+R and DJ L+R; simulates seat/DJ/corner from the IRs (complex multiply, so sums include filter phase) | `eq_design.txt`, `eq_design.png`, `eq_filters.png`, `eq_design.log`; filter files in [../eq/](../eq/) |
 
 ## Known limitations
 
