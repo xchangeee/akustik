@@ -72,8 +72,9 @@ Pink periodic −24 dBFS, mic centred:
 
 ## Analysis workflow
 
-- User measures in REW and exports IRs as WAV into `measurements/<date>-<name>/`; Claude analyses with [analysis/analyse_positions.py](analysis/analyse_positions.py).
-- Python env: use **mise + uv** (user's preference), e.g. `mise exec python@3.14 uv@0.13.5 -- uv venv …` then `uv pip install numpy scipy matplotlib`.
+- User measures in REW and exports IRs as WAV into `measurements/<date>-<name>/`; Claude analyses with the scripts in [analysis/](analysis/README.md).
+- Python env: **mise + uv** (user's preference). `mise run analyse` re-runs everything into `analysis/output/`.
+- Keep all analysis work (scripts, text output, plots) in the repo, not only in the scratchpad: the user wants to inspect it.
 
 ## Working with this user
 

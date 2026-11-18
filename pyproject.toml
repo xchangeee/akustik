@@ -1,0 +1,9 @@
+[project]
+name = "akustik-analysis"
+version = "0.1.0"
+description = "Analysis of REW room measurements (IR exports)"
+requires-python = ">=3.14"
+dependencies = ["numpy", "scipy", "matplotlib"]
+
+[tool.uv]
+package = false

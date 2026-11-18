@@ -1,0 +1,14 @@
+[tools]
+python = "3.14"
+uv = "0.13.5"
+
+[tasks.analyse]
+description = "Run all measurement analyses; plots + text output go to analysis/output/"
+run = """
+uv sync -q
+uv run python analysis/inspect_irs.py measurements/*.wav measurements/2026-11-18-*/*.wav > analysis/output/inspect_irs.txt
+uv run python analysis/analyse_positions.py . analysis/output > analysis/output/positions.txt
+uv run python analysis/analyse_corners.py . analysis/output > analysis/output/corners.txt
+uv run python analysis/analyse_dj_sum.py . analysis/output > analysis/output/dj_sum.txt
+uv run python analysis/analyse_closeups.py . analysis/output > analysis/output/closeups.txt
+"""
