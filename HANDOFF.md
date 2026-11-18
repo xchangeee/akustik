@@ -10,7 +10,8 @@ Setup phases 1–4 and A–F of the checklist are done (2026-11-18). First sweep
 Measurement plan step 3 done 2026-11-18: 6 positions + seat per speaker, analysed from IR exports → [measurements/2026-11-18-analysis.md](measurements/2026-11-18-analysis.md).
 Corners (3b) done 2026-11-18 (front-left/front-right only, rest blocked), results in the same analysis file.
 DJ position (3c) and L+R sum (step 4, computed from summed IRs) done 2026-11-18, same analysis file.
-**Next step: (optional) close-up woofer/port measurements (step 5) for the high-pass choice, then EQ design: Claude computes cut-only PEQs per channel, simulates seat/DJ/corner results from the IRs, writes a filter file for the DSP's "Import REW filters".**
+Close-ups (step 5) done 2026-11-18: port tuning ≈ 35 Hz, L/R woofers identical (R's extra bass = room).
+**Next step: EQ design: Claude computes cut-only PEQs per channel, simulates seat/DJ/corner results from the IRs, writes a filter file for the DSP's "Import REW filters".**
 IR export settings for any new measurements: WAV, 32-bit float, t=0 at 256, no normalise/window.
 
 ## Current physical setup (as wired now)
@@ -60,7 +61,7 @@ Pink periodic −24 dBFS, mic centred:
 - **Cal files** came from the seller as JustOct `.cal` (in `MM1CBP_allein_Xd/`, untouched originals, plus a plot and the seller's REW test file). Converted to REW format in `cal/`. Mic rolls off below 60 Hz (−3.5 dB at 20 Hz, −11 dB at 10 Hz); sensitivity 3.7 mV/Pa. Only one mic, so no serial check needed.
 - **Loopback** (Out 3 → In 2): flat within 0.2 dB 20 Hz–20 kHz. No soundcard cal file needed.
 - **Noise / hum:** quiet room fine; with amp on at listening volume no new hum, only a small bump near 50 Hz far below signal level.
-- **R speaker ~2.3 dB louder than L.** Not the mic position (re-centred), not the interface/DSP/adapters/cables (swap test 1: swapped DSP outs), not the amp (swap test 2: swapped speaker cables). **Cause: the right speaker itself or the room around it.** 2026-11-18: band-limited noise shows the excess is in the bass only (30–80 Hz: R +5.6 dB; 500–2000 Hz: R −0.8 dB), pointing to room/boundary or R's woofer/port. Tell apart with 1 m on-axis gated sweeps of each speaker and close-up woofer measurements. Fix either way: DSP output gain per channel (after the sweeps).
+- **R speaker ~2.3 dB louder than L** (resolved 2026-11-18: woofers identical in close-up, R's extra level is room bass). Not the mic position (re-centred), not the interface/DSP/adapters/cables (swap test 1: swapped DSP outs), not the amp (swap test 2: swapped speaker cables). **Cause: the right speaker itself or the room around it.** 2026-11-18: band-limited noise shows the excess is in the bass only (30–80 Hz: R +5.6 dB; 500–2000 Hz: R −0.8 dB), pointing to room/boundary or R's woofer/port. Tell apart with 1 m on-axis gated sweeps of each speaker and close-up woofer measurements. Fix either way: DSP output gain per channel (after the sweeps).
 - Speaker cables are back to normal (amp L → left speaker), confirmed.
 
 ## Next steps
