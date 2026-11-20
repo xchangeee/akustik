@@ -28,9 +28,10 @@ Results: [findings/2026-11-18-baseline.md](../../findings/2026-11-18-baseline.md
 
 ## With EQ on: next
 
-- Re-measure seat + 6 positions, DJ 7 spots, 2 corners with the same names into a new set folder (e.g. `measurements/<date>/eq1-seat/`), then compare with the simulation in [findings/eq-v1-flat.md](../../findings/eq-v1-flat.md) (or eq-v2, whichever is loaded).
+- Do it for **both** EQ presets: P03 EQ v2 (everyday) and P02 EQ v1 (loud sessions). Same positions and names for each.
+- Re-measure seat + 6 positions, DJ 7 spots, 2 corners into one set folder per preset (e.g. `measurements/<date>/eq2-seat/`, `measurements/<date>/eq1-seat/`), then compare each with its simulation: [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md), [findings/eq-v1-flat.md](../../findings/eq-v1-flat.md).
 - Look at a waterfall to see whether the ringing got shorter.
-- Rewire for this: DSP Out 1/2 back to the amp, UMC In 3 out, mic cal 90° back on, In 1 gain and amp volume unchanged, −24 dBFS.
+- Setup: DSP Out 1/2 → amp (already back, 2026-11-20), UMC In 3 unplugged, mic cal 90° back on, In 1 gain unchanged, −24 dBFS. **Amp back to the Phase D position from the photo** (it's been turned for listening).
 
 ## Optional, later
 

@@ -17,7 +17,7 @@ Living-room bass: measure the room with REW, design a room EQ for the t.racks DS
 | [explainer/levels-explained.html](explainer/levels-explained.html) | General interactive primer on levels: dB, dBu/dBV, dBFS, dB SPL, dB(A)/dB(C), gain staging, crest factor (standalone, no measured data) |
 | [docs/procedures/](docs/procedures/) | [measurement-setup](docs/procedures/measurement-setup.md) (one-time), [session-checklist](docs/procedures/session-checklist.md) (every time), [measurement-plan](docs/procedures/measurement-plan.md), [output-limiter](docs/procedures/output-limiter.md) |
 | [docs/plans/](docs/plans/) | Not yet done: [sub8-overlay](docs/plans/sub8-overlay.md), [room-model-absorbers](docs/plans/room-model-absorbers.md) |
-| [findings/](findings/) | Results, one file per topic: [setup checks](findings/2026-11-17-setup-checks.md), [baseline](findings/2026-11-18-baseline.md), [EQ v1](findings/eq-v1-flat.md), [EQ v2](findings/eq-v2-harman.md) |
+| [findings/](findings/) | Results, one file per topic: [setup checks](findings/2026-11-17-setup-checks.md), [baseline](findings/2026-11-18-baseline.md), [EQ v1](findings/eq-v1-flat.md), [EQ v2](findings/eq-v2-harman.md), [listening, amp volume](findings/2026-11-20-listening.md) |
 | [measurements/](measurements/README.md) | REW projects + IR exports, `<date>/<set>/`; naming and export conventions |
 | [analysis/](analysis/README.md) | Python scripts; `mise run analyse` regenerates [analysis/output/](analysis/output/), [eq/](eq/) and the explainer |
 | [eq/](eq/) | Filter files for the configurator import: `v1-flat/`, `v2-harman/` (`L` = Out 1, `R` = Out 2) |

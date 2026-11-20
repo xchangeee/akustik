@@ -1,13 +1,14 @@
 # Output limiter (do after the EQ is final)
 
 Goal: a compressor on DSP Out 1/2 (later Out 3) that does nothing at normal volume and only catches overload: DJ sets, a hot mixer, loud parties.
+The DSP has no separate limiter: the output **compressor with ratio "Limit"** (index 15, measured ∞:1) is the limiter. It isn't a brickwall peak limiter: the knee is always soft (≥ ~4 dB) and the attack isn't instant, so short peaks get through a little above the threshold. That's fine for protecting against overload.
 No input gate (nothing audible to gate; this DSP's gate opens only hold + 1 ms after the signal starts, so it would cut off starts after silence).
 Why measured: the threshold works on the DSP's output level (after the output gain), and nobody knows yet where the A300 + speakers run out.
 Limiter settings start from tracks `docs/protocol.md` §5/§6.4.
 
 **Before you start**
-- [ ] EQ chosen and imported (v1 or v2 Harman). v2 cuts less bass, so it reaches the limit sooner: measure with the EQ you'll actually use.
-- [ ] **Pick the amp volume position the limiter is for**: the loudest position you'll ever use (or full). Mark it on the knob. The limiter only protects up to that position; turning the amp further up beyond it bypasses the protection.
+- [ ] Do it for both presets: P03 EQ v2 (everyday) and P02 EQ v1 (loud sessions). v2 cuts less bass, so it reaches the limit sooner: measure each preset with its own EQ.
+- [ ] **Pick the amp volume position the limiter is for**: the loudest position you'll ever use (or full). Positions used so far (2026-11-20): v2 up to 45 (higher only briefly), v1 fun at 50 and once at 60 (~100 dB(C) at the seat); see [listening](../../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq). The compressor is stored per preset, so v1 and v2 can each get their own threshold. Mark it on the knob. The limiter only protects up to that position; turning the amp further up beyond it bypasses the protection.
 - [ ] Ear protection on. Neighbours warned / sensible time of day: this part is loud.
 - [ ] Wiring as for the acoustic measurements (DSP Out 1/2 → amp), mic at the seat, 90° cal, REW input level checked so the mic doesn't clip (input clips at ~105 dB SPL: lower In 1 gain for this test if needed, and note it).
 - [ ] Compressor still off on all outputs (threshold "off").

@@ -7,17 +7,15 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
 - **On the DSP:** P01 FLAT untouched; EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
-- EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target), not listened to yet: [findings/eq-v2-harman.md](findings/eq-v2-harman.md).
-- Wiring may still be in the electrical-check state (DSP Out 1/2 → UMC In 3): [docs/current-setup.md](docs/current-setup.md).
+- EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target): more "subby" bass, not boomy, also better at low volume; bass audible outside the room depending on where you stand: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ is in the same file (v2: everyday 30–35, fun 40–45; v1: fun 50). **v2 = everyday EQ, v1 kept for loud sessions.**
 
 ## Next
 
-1. Listen, A/B v1 / v2 (slot 3).
-2. Acoustic re-measurement with the chosen EQ on: [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
-3. Output limiter once the EQ is final: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
-4. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md).
-5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA.
-6. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
+1. Acoustic re-measurement with EQ on, both presets (v2 everyday, v1 loud): [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
+2. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
+3. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md).
+4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA.
+5. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
 
 Open questions for the user: where the Sub8 could go physically (walkway, DJ cupboard, sofa); a fresh REW settings export after the calibration (optional).
 
@@ -45,3 +43,6 @@ Open questions for the user: where the Sub8 could go physically (walkway, DJ cup
 ### 2026-11-20: presets
 
 - User: EQ v1 went into slot 2, P01 FLAT untouched; EQ v2 (Harman) in slot 3: a copy of slot 2 with only the PEQ filters replaced (same HPF). Docs updated.
+- Listened to v2 at amp 45 (75–90 dB(C) at the seat) and lower: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ noted (v1: fun 50, 60 once ≈ 100 dB(C); v2: everyday 30–35, fun 40–45, above 45 only briefly).
+- Decided: EQ v2 = everyday, v1 kept for loud sessions. The DSP has no separate limiter; the output compressor with ratio Limit does that job (made explicit in the limiter procedure).
+- Wiring: DSP Out 1/2 → amp again (confirmed).

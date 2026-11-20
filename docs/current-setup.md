@@ -13,7 +13,7 @@ Last checked: 2026-11-18.
 | UMC Out 2 | DSP In B (2) | TRS–TRS |
 | DSP Out 1 / Out 2 | A300 RCA L / R | **temporarily via TS adapters** (sssnake 1820, RCA female → 6.3 mm TS): shorts the DSP's cold output. Replace with TRS → 2× RCA (use tip/white only). See [decisions.md](decisions.md) |
 
-- After the electrical check (2026-11-18) DSP Out 1/2 may still go to UMC In 3 instead of the amp: rewire before the next acoustic measurement.
+- DSP Out 1/2 back on the amp since the electrical check (confirmed 2026-11-20).
 - MIX knob fully at PLAYBACK. All other UMC gains at minimum except In 1 (mic) and In 2 (loopback, gain min gave −12 dBFS).
 - macOS output = MacBook speakers (verified). UMC at 48 kHz.
 - Mic at the main seat, centred between the speakers, pointing up, 90° cal file.
@@ -33,12 +33,12 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | Preset | Content | Status |
 | --- | --- | --- |
 | P01 **FLAT** | routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring |
-| P02 **EQ v1 (flat target)** | [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
-| P03 **EQ v2 (Harman)** | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked, not listened to / A/B'd yet |
+| P02 **EQ v1 (flat target)**, for loud sessions | [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
+| P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked, not listened to / A/B'd yet |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 
-Amp (SMSL A300): EQ modes off, no high-pass, RCA input.
+Amp (SMSL A300): EQ modes off, no high-pass, RCA input. Volume positions per EQ (v2: everyday 30–35, fun 40–45, above 45 only briefly; v1: fun 50): [findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq).
 
 ## REW
 
