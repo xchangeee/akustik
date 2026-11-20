@@ -1,9 +1,29 @@
 # Current setup
 
 What is wired and configured **right now**. Keep this file true: update it whenever something is rewired or reconfigured (and note the change in [SESSION-LOG.md](../SESSION-LOG.md)).
-Last checked: 2026-11-18.
+Last checked: 2026-11-20.
 
-## Wiring (measurement setup, as wired now)
+## Two modes
+
+The DSP is moved between two setups:
+
+1. **Live** (normal use, **current**): DSP in the hi-fi rack, fed by TV and DJ mixer, out to the amp. UMC not connected.
+2. **Measuring**: DSP taken out of the rack and connected to the UMC (table below).
+
+## Wiring: live (as wired now, 2026-11-20)
+
+| From | To | Notes |
+| --- | --- | --- |
+| TV analog out (3.5 mm TRS stereo) | DSP In A / In B | via adapter cable |
+| DJ mixer RCA master out | DSP In C / In D | keep the master level moderate (inputs clip at ~+9.5 dBu): [context.md](context.md#signal-chain-normal-use-target) |
+| DSP Out 1 / Out 2 | A300 RCA L / R | still via the TS adapters (see the measuring table) |
+
+- Routing in **all presets**: A+C → Out 1, B+D → Out 2 (summed, so whichever source plays is heard).
+- Usually only one source plays at a time. The mixer is usually switched off completely. TV and mixer are on the same power line.
+- Checked 2026-11-20: TV playing with the mixer on but idle, no hum or hiss.
+- Source levels (2026-11-20): TV analog output volume 80/100, mixer master +3 dB on the master level meter. Both set by ear, no difference in loudness noticed. The amp volume positions per EQ ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq)) assume these source levels.
+
+## Wiring: measuring
 
 | From | To | Notes |
 | --- | --- | --- |
@@ -13,7 +33,6 @@ Last checked: 2026-11-18.
 | UMC Out 2 | DSP In B (2) | TRS–TRS |
 | DSP Out 1 / Out 2 | A300 RCA L / R | **temporarily via TS adapters** (sssnake 1820, RCA female → 6.3 mm TS): shorts the DSP's cold output. Replace with TRS → 2× RCA (use tip/white only). See [decisions.md](decisions.md) |
 
-- DSP Out 1/2 back on the amp since the electrical check (confirmed 2026-11-20).
 - MIX knob fully at PLAYBACK. All other UMC gains at minimum except In 1 (mic) and In 2 (loopback, gain min gave −12 dBFS).
 - macOS output = MacBook speakers (verified). UMC at 48 kHz.
 - Mic at the main seat, centred between the speakers, pointing up, 90° cal file.
@@ -32,9 +51,9 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 
 | Preset | Content | Status |
 | --- | --- | --- |
-| P01 **FLAT** | routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring |
-| P02 **EQ v1 (flat target)**, for loud sessions | [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
-| P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked, not listened to / A/B'd yet |
+| P01 **FLAT** | routing A+C→1, B+D→2 (summed, changed 2026-11-20; was A→1, B→2, C→3, D→4); all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring. In the measuring setup only A/B are connected, so the summing doesn't matter |
+| P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
+| P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked; listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 

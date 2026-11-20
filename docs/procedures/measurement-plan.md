@@ -4,7 +4,7 @@ What to measure, in which order, and how to read it. Gear setup: [measurement-se
 
 General:
 
-- Measure through the same DSP outputs and amp as in normal use (interface on DSP In 1/2, see [current-setup.md](../current-setup.md)).
+- Measure through the same DSP outputs and amp as in normal use (measuring mode: DSP out of the rack, interface on DSP In 1/2 (A/B), TV and mixer not connected; see [current-setup.md](../current-setup.md#two-modes)).
 - 90° cal file, mic pointing at the ceiling, for everything except close-ups (0° file, mic pointing at the driver).
 - DSP input clipping: keep the interface output level moderate. DSP inputs clip at ~+9.5 dBu and the clip LEDs aren't reliable.
 

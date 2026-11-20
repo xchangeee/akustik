@@ -6,12 +6,13 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 ## Status (2026-11-20)
 
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
-- **On the DSP:** P01 FLAT untouched; EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
+- **Live mode wired** (TV → In A/B, mixer → In C/D, summed A+C → 1, B+D → 2 in all presets; UMC disconnected; no hum/hiss with the mixer on but idle): [docs/current-setup.md](docs/current-setup.md#two-modes).
+- **On the DSP:** P01 FLAT (routing now summed); EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
 - EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target): more "subby" bass, not boomy, also better at low volume; bass audible outside the room depending on where you stand: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ is in the same file (v2: everyday 30–35, fun 40–45; v1: fun 50). **v2 = everyday EQ, v1 kept for loud sessions.**
 
 ## Next
 
-1. Acoustic re-measurement with EQ on, both presets (v2 everyday, v1 loud): [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
+1. Acoustic re-measurement (measuring mode: DSP back on the UMC) with EQ on, both presets (v2 everyday, v1 loud): [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
 2. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 3. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md).
 4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA.
@@ -46,3 +47,7 @@ Open questions for the user: where the Sub8 could go physically (walkway, DJ cup
 - Listened to v2 at amp 45 (75–90 dB(C) at the seat) and lower: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ noted (v1: fun 50, 60 once ≈ 100 dB(C); v2: everyday 30–35, fun 40–45, above 45 only briefly).
 - Decided: EQ v2 = everyday, v1 kept for loud sessions. The DSP has no separate limiter; the output compressor with ratio Limit does that job (made explicit in the limiter procedure).
 - Wiring: DSP Out 1/2 → amp again (confirmed).
+- Live setup wired: TV (3.5 mm TRS stereo out, adapter cable) → DSP In A/B, DJ mixer → In C/D, both pairs summed to Out 1/2 in all presets (incl. FLAT). Mixer usually off completely; TV and mixer on the same power line. UMC not connected.
+- Two modes recorded: live (DSP in the rack) vs measuring (DSP taken out, on the UMC): [docs/current-setup.md](docs/current-setup.md#two-modes).
+- Checked by the user: TV playing with the mixer on but idle: no hum or hiss.
+- Source levels: TV out 80/100, mixer master +3 dB, both set by ear; no loudness difference noticed.

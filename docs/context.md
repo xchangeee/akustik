@@ -46,7 +46,7 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
     - clip LEDs unreliable
     - delay shown in the vendor software is ~9% off (software assumes 44.1 kHz)
 - Sources (normal use):
-  1. TV: unbalanced analog output only
+  1. TV: unbalanced analog output only (3.5 mm TRS stereo jack)
   2. Pioneer DJ mixer: balanced XLR and unbalanced RCA master outputs. Currently RCA straight into the amp (bypassing the DSP). Keeps using RCA (only ~3 m cable run, fine unbalanced)
 - Measuring: Behringer UMC404HD interface, Omnitronic MM-1C measurement mic (XLR), REW on macOS
 
@@ -57,11 +57,11 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
 - TV analog out → DSP inputs 1/2 (unbalanced)
 - DJ mixer RCA master out → DSP inputs 3/4 (unbalanced)
 - DSP outputs 1/2 → A300 RCA in → speakers. The EQ sits on the outputs, so every source gets the same EQ.
-- Selecting the source: either two DSP presets (TV / mixer), or route both input pairs summed to the outputs
-  so whichever plays is heard. The DSP sums with no adjustable mix, so check the levels match
-  and an idle source doesn't add noise.
+- Selecting the source: both input pairs are **routed summed** to the outputs (A+C → Out 1, B+D → Out 2), so whichever
+  plays is heard; normally only one plays at a time ([decisions.md](decisions.md)). The DSP sums with no adjustable mix,
+  so check the levels match and an idle source doesn't add noise.
 - **Cables:**
-  - TV RCA → DSP: RCA to TS (mono) jack. Balanced inputs accept unbalanced signals.
+  - TV → DSP: the TV's analog out is a 3.5 mm TRS stereo jack, so an adapter cable to In A/B. Balanced inputs accept unbalanced signals.
   - DJ mixer RCA → DSP: RCA to TS (mono) jack, ~3 m. Keep the master level moderate: DSP inputs clip at ~+9.5 dBu
     and a DJ mixer master can go much hotter. Keep the mixer's master meter out of the red / well below max.
   - DSP → amp: TRS to RCA, tip = signal, sleeve = ground, ring (cold) **not connected**.
