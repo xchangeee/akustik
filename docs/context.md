@@ -29,8 +29,8 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
   - Woofer Seas P17 RC-A H468 (170 mm), tweeter Seas K29FD H587 (26 mm)
   - Woofer centre 0.69 m above the floor
   - Bass reflex port on the front; **port tuning ≈ 35 Hz** (measured 2026-11-18)
-  - **No subwoofer.** The mains cover the whole range, so the port tuning sets the useful low end.
-    A PreSonus Eris Sub8 is available as an occasional add-on (not connected): [plans/sub8-overlay.md](plans/sub8-overlay.md).
+  - **Mains run full range** (no high-pass), so with the sub off the port tuning sets the useful low end.
+    A PreSonus Eris Sub8 will be added as an overlay: wired in permanently (once set up), switched on only occasionally. Not connected yet: [plans/sub8-overlay.md](plans/sub8-overlay.md).
 - Amp: SMSL A300 (class D, plenty of headroom)
   - Inputs RCA (unbalanced), Bluetooth, USB; no balanced input
   - Very sensitive input: 280 mV for full power
@@ -44,10 +44,9 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
   - Known quirks from user reviews:
     - inputs clip at ~+9.5 dBu, not the stated +12 dBu
     - clip LEDs unreliable
-    - delay shown in the vendor software is ~9% off (software assumes 44.1 kHz)
 - Sources (normal use):
   1. TV: unbalanced analog output only (3.5 mm TRS stereo jack)
-  2. Pioneer DJ mixer: balanced XLR and unbalanced RCA master outputs. Currently RCA straight into the amp (bypassing the DSP). Keeps using RCA (only ~3 m cable run, fine unbalanced)
+  2. Pioneer DJ mixer: balanced XLR and unbalanced RCA master outputs. Uses RCA (only ~3 m cable run, fine unbalanced); wiring: [current-setup.md](current-setup.md#two-modes)
 - Measuring: Behringer UMC404HD interface, Omnitronic MM-1C measurement mic (XLR), REW on macOS
 
 ## Signal chain (normal use, target)

@@ -52,8 +52,8 @@ Better evenness and headroom, but it needs two presets, and the bass disappears 
 
 ## 4. Power
 
-The 100 W is most likely the maximum rating. Class AB idle draw is probably a few tens of watts (guess). Check with a plug-in power meter.
-Use a switched power strip or smart plug, and switch the sub on after the DSP and amp (turn-on transient protection is built in, so the order isn't critical).
+The 100 W is most likely the maximum rating. Class AB idle draw is probably a few tens of watts (guess). Check with the plug-in power meter (the user has one).
+The sub is switched on and off manually at its own power switch (no switched strip or smart plug). Switch it on after the DSP and amp (turn-on transient protection is built in, so the order isn't critical).
 
 ## Order of work
 

@@ -15,7 +15,7 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 1. Acoustic re-measurement (measuring mode: DSP back on the UMC) with EQ on, both presets (v2 everyday, v1 loud): [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
 2. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 3. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md). Candidate spots A (speaker wall) and C (right wall, sofa end) to measure; model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
-4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA.
+4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
 5. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
 
 Open questions for the user: a fresh REW settings export after the calibration (optional).
