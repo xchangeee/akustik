@@ -33,8 +33,8 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | Preset | Content | Status |
 | --- | --- | --- |
 | P01 **FLAT** | routing A→1, B→2, C→3, D→4; all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring |
-| EQ v1 (flat target) | [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | imported 2026-11-18, electrically checked. **Unconfirmed:** whether it was stored in its own slot with P01 FLAT kept |
-| EQ v2 (Harman) | [eq/v2-harman/](../eq/v2-harman/), same HPF | not imported; use a separate slot for A/B with v1 |
+| P02 **EQ v1 (flat target)** | [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
+| P03 **EQ v2 (Harman)** | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked, not listened to / A/B'd yet |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 

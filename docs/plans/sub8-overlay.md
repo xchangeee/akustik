@@ -58,7 +58,7 @@ Use a switched power strip or smart plug, and switch the sub on after the DSP an
 ## Order of work
 
 1. Acoustic re-measurement with EQ v1 on (pending).
-2. EQ v2 with a moderate house curve. Listen first: it may already fix "boring". **Designed 2026-11-18 with a Harman target (+6 dB shelf, 105 Hz), see [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md); not imported/listened yet.**
+2. EQ v2 with a moderate house curve. Listen first: it may already fix "boring". **Designed 2026-11-18 with a Harman target (+6 dB shelf, 105 Hz), see [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md); imported into slot 3, not listened yet.**
 3. Sub as overlay: sub-only sweeps at candidate spots → simulate → configure Out 3.
 
 ## Open questions for the user

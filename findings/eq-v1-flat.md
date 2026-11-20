@@ -1,6 +1,6 @@
 # EQ v1: flat target (2026-11-18)
 
-**Status:** imported on the DSP 2026-11-18 and checked electrically (matches the design within 0.05 dB). Not yet confirmed whether it was stored in a new preset slot with FLAT kept. Acoustic re-measurement with EQ on: pending.
+**Status:** imported on the DSP 2026-11-18 and checked electrically (matches the design within 0.05 dB). Stored in preset slot 2; P01 FLAT untouched. Acoustic re-measurement with EQ on: pending.
 After listening: sounds "boring", low end missing → [EQ v2](eq-v2-harman.md).
 Data it's designed from: [2026-11-18-baseline.md](2026-11-18-baseline.md). Background on the method: [docs/eq-design-explained.md](../docs/eq-design-explained.md).
 

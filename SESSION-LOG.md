@@ -3,16 +3,16 @@
 Read this first. **Status** and **Next** are kept current; the **Log** gets one dated entry per session (newest at the bottom; don't edit old entries).
 Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md). What is wired/configured now: [docs/current-setup.md](docs/current-setup.md).
 
-## Status (2026-11-19)
+## Status (2026-11-20)
 
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
-- **On the DSP:** EQ v1 (flat target) + HPF BW 24 29.8 Hz, electrically verified. Unconfirmed: whether it's in its own preset slot with P01 FLAT kept.
-- EQ v1 sounds "boring" (low end missing) → **EQ v2 (Harman target) designed, not imported**: [findings/eq-v2-harman.md](findings/eq-v2-harman.md).
+- **On the DSP:** P01 FLAT untouched; EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
+- EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target), not listened to yet: [findings/eq-v2-harman.md](findings/eq-v2-harman.md).
 - Wiring may still be in the electrical-check state (DSP Out 1/2 → UMC In 3): [docs/current-setup.md](docs/current-setup.md).
 
 ## Next
 
-1. Import EQ v2 into a separate preset slot; confirm FLAT and v1 are each kept in their own slot. Listen, A/B v1/v2.
+1. Listen, A/B v1 / v2 (slot 3).
 2. Acoustic re-measurement with the chosen EQ on: [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
 3. Output limiter once the EQ is final: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 4. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md).
@@ -41,3 +41,7 @@ Open questions for the user: where the Sub8 could go physically (walkway, DJ cup
 
 - Decided: no input gate, output compressor as safety limiter, threshold measured: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 - Repo restructured: README, docs/ (context, current setup, decisions, procedures, plans), `findings/` split by topic, `measurements/<date>/<set>/`, `eq/<version>/`, `reference/`. HANDOFF.md → SESSION-LOG.md; working rules for Claude moved from Claude's memory into CLAUDE.md. Re-running `mise run analyse` reproduces all results.
+
+### 2026-11-20: presets
+
+- User: EQ v1 went into slot 2, P01 FLAT untouched; EQ v2 (Harman) in slot 3: a copy of slot 2 with only the PEQ filters replaced (same HPF). Docs updated.
