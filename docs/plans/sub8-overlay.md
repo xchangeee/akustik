@@ -63,5 +63,5 @@ Use a switched power strip or smart plug, and switch the sub on after the DSP an
 
 ## Open questions for the user
 
-- Where can the sub physically go (walkway, DJ cupboard, sofa)?
+- Where can the sub physically go? 2026-11-20: three candidate spots A/B/C sketched, model screening: [findings/2026-11-20-sub-positions-model.md](../../findings/2026-11-20-sub-positions-model.md). B dropped; measure A and C.
 - ~~How much bass rise below 100 Hz to try in v2?~~ Decided: Harman, +6 dB shelf.

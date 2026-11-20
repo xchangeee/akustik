@@ -31,6 +31,7 @@ Absolute level: fixed offset of 100.9 dB so that the L seat 1–8 kHz average is
 | `analyse_treble.py` | Seat/DJ treble (1/6 oct) vs a Harman-style tilt (−1 dB/oct above 1 kHz), slope fit | `treble.txt`, `treble.png` |
 | `build_explainer.py` | Inlines the bass spectra, IR, design stages and electrical check into [../explainer/template.html](../explainer/template.html) → interactive explainer page | `../explainer/eq-explained.html` |
 | `check_dsp_electrical.py` | DSP out → UMC In 3 (no amp/mic) vs the curve predicted from `eq/` files; fits a common frequency offset | `dsp_electrical.txt`, `dsp_electrical.png` |
+| `sub_positions_modes.py` | Rigid-box modal model (no measurement): candidate Sub8 positions A/B/C at seat, DJ and room average; validated on measured R − L at the seat | `sub_positions_modes.txt`, `sub_positions_modes.png`, `sub_positions_validation.png` |
 
 ## Known limitations
 
