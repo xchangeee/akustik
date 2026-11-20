@@ -4,6 +4,7 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
 
 ## Start and end of a session
 
+- Commits: keep them few. Don't commit after every small change; collect the session's edits and commit once at the end (or when asked), squashing unpushed small commits from the same session.
 - Start: read [SESSION-LOG.md](SESSION-LOG.md) (status, next steps, log). [README.md](README.md) maps the rest.
 - End (or when asked to hand off): update Status/Next in the session log, add a dated Log entry, keep [docs/current-setup.md](docs/current-setup.md) and [docs/decisions.md](docs/decisions.md) current, commit.
 - Where things go: one job per file, each fact in one place, link instead of copying.
@@ -18,6 +19,8 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
 - Communicates in short messages and screenshots of REW / the DSP GUI. Walk them through one step at a time, read the screenshots closely.
 - **Read what they write literally; don't infer facts they didn't state.** For physical setup changes (speaker positions, wiring, knob states), restate only what they said, and ask a short question when a needed detail is missing.
   (2026-11-17: "distance unchanged" was misread as "the left speaker didn't move", and a wrong explanation built on it caused real frustration.)
+- They're experienced with DJ gear and gain staging. Skip basic operating advice ("don't redline", "keep the meter out of the red"). Only raise a level concern when there's a specific number behind it.
+  (2026-11-20: telling them not to redline the mixer annoyed them.)
 - Watch the generator's band radio buttons in their screenshots (Full range / Sub Cal / Speaker Cal): they were left on Sub Cal several times.
 
 ## Analysis
