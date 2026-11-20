@@ -17,6 +17,7 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 3. Output limiter once the EQ is final: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 4. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md).
 5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA.
+6. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
 
 Open questions for the user: where the Sub8 could go physically (walkway, DJ cupboard, sofa); a fresh REW settings export after the calibration (optional).
 
