@@ -1,0 +1,860 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Decibels Without Tears</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Same visual language as eq-explained.html: one reading column, wider "bench" figures that are live instruments. */
+:root {
+  color-scheme: light;
+  --bg: #f4f6f8; --surface: #ffffff; --ink: #131820; --ink-2: #47505f; --muted: #7d8696;
+  --line: #dfe3ea; --grid: #edf0f4; --accent: #2f55c4; --accent-ink: #ffffff;
+  --dig: #8a4fd0; --ele: #2f55c4; --aco: #e0662f; --ok: #1baf7a;
+  --bad: #d14343; --bad-fill: rgba(209, 67, 67, 0.16);
+  --band: rgba(125, 134, 150, 0.14); --noise: rgba(125, 134, 150, 0.38); --before: #a5adba;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --col: 68ch; --wide: 1080px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1015; --surface: #151a21; --ink: #edf0f4; --ink-2: #b3bbc9; --muted: #7b8495;
+    --line: #262d38; --grid: #1c222b; --accent: #7f9df5; --accent-ink: #0d1015;
+    --dig: #b08ae8; --ele: #7f9df5; --aco: #ec8752; --ok: #2cc28c;
+    --bad: #e66767; --bad-fill: rgba(230, 103, 103, 0.20);
+    --band: rgba(123, 132, 149, 0.16); --noise: rgba(123, 132, 149, 0.40); --before: #5c6575;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1015; --surface: #151a21; --ink: #edf0f4; --ink-2: #b3bbc9; --muted: #7b8495;
+  --line: #262d38; --grid: #1c222b; --accent: #7f9df5; --accent-ink: #0d1015;
+  --dig: #b08ae8; --ele: #7f9df5; --aco: #ec8752; --ok: #2cc28c;
+  --bad: #e66767; --bad-fill: rgba(230, 103, 103, 0.20);
+  --band: rgba(123, 132, 149, 0.16); --noise: rgba(123, 132, 149, 0.40); --before: #5c6575;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+main { display: flex; flex-direction: column; align-items: center; }
+.col { width: 100%; max-width: var(--col); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.15rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); }
+.prose { display: flex; flex-direction: column; gap: 14px; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.dig { color: var(--dig); } .ele { color: var(--ele); } .aco { color: var(--aco); }
+strong { font-weight: 600; }
+section { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 22px; padding-block: 56px 8px; }
+section + section { border-top: 1px solid var(--line); margin-top: 40px; }
+header.hero { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 22px; padding-block: 48px 8px; }
+
+.fig { width: 100%; max-width: var(--wide); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 14px; display: flex; flex-direction: column; gap: 12px; }
+.fig-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.fig-title { font-weight: 600; font-size: 0.98rem; }
+.caption { font-size: 0.9rem; color: var(--ink-2); max-width: 80ch; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+svg .ann { fill: var(--ink-2); font-size: 11.5px; }
+svg .big { fill: var(--ink); font-size: 12.5px; font-weight: 500; }
+.scrollx { overflow-x: auto; width: 100%; }
+.scrollx > svg, .scrollx > .chart { min-width: 760px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.85rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid currentColor; }
+.legend i.dash { border-top-style: dashed; }
+.legend i.box { height: 10px; border: none; border-radius: 2px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); min-width: 150px; z-index: 5; }
+.tip .tf { font-family: var(--font-mono); color: var(--muted); margin-bottom: 4px; }
+.tip .row { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.tip .row b { font-family: var(--font-mono); font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tip .row span { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.tip .row i { width: 12px; border-top: 2px solid currentColor; display: inline-block; }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; flex-wrap: wrap; }
+.seg button { font: inherit; font-size: 0.85rem; padding: 6px 12px; background: transparent; color: var(--ink-2); border: none; border-right: 1px solid var(--line); cursor: pointer; }
+.seg button:last-child { border-right: none; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.btn { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 24px; }
+.slider { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; color: var(--ink-2); }
+.slider label { display: flex; justify-content: space-between; gap: 8px; }
+.slider output { font-family: var(--font-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.slider[aria-disabled="true"] { opacity: 0.4; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { font: inherit; font-size: 0.8rem; font-family: var(--font-mono); padding: 4px 9px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 0.78rem; color: var(--muted); }
+.stat .v { font-family: var(--font-mono); font-size: 1.12rem; font-variant-numeric: tabular-nums; }
+.stat .v small { font-size: 0.8rem; color: var(--muted); }
+.stat.bad { border-color: var(--bad); background: var(--bad-fill); }
+.stat.bad .v { color: var(--bad); }
+canvas { display: block; width: 100%; height: auto; }
+.note { border-left: 3px solid var(--accent); padding: 6px 0 6px 14px; color: var(--ink-2); font-size: 0.95rem; }
+table.vals { border-collapse: collapse; font-size: 0.88rem; width: 100%; }
+table.vals th, table.vals td { text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; vertical-align: top; }
+table.vals th { font-weight: 500; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+table.vals td:first-child { font-family: var(--font-mono); white-space: nowrap; }
+.tablewrap { overflow-x: auto; width: 100%; }
+
+/* the chain map */
+.chain { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 0; align-items: stretch; }
+.chain li { display: flex; align-items: center; }
+.chain li:not(:last-child)::after { content: "→"; color: var(--muted); padding: 0 8px; font-size: 1.1rem; }
+.node { border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 96px; background: var(--surface); }
+.node b { font-size: 0.86rem; font-weight: 600; }
+.node span { font-family: var(--font-mono); font-size: 0.8rem; color: var(--c); }
+.node.d { --c: var(--dig); } .node.e { --c: var(--ele); } .node.a { --c: var(--aco); }
+.dom { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.85rem; color: var(--ink-2); }
+.dom span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; background: var(--c); vertical-align: -1px; }
+.dom .d { --c: var(--dig); } .dom .e { --c: var(--ele); } .dom .a { --c: var(--aco); }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<main>
+<header class="hero">
+  <div class="col prose">
+    <span class="eyebrow">dB · dB SPL · dB(A) · dB(C) · dBu · dBV · dBFS · gain · headroom</span>
+    <h1>Decibels Without Tears</h1>
+    <p class="lede">You know each of these words on its own. This page shows how they fit together: one sound, travelling through a measuring setup, renamed at every box it passes. Every figure is interactive; nothing here is from your own measurements, the gear is a made-up but realistic example.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head"><span class="fig-title">One signal, many rulers</span></div>
+    <ol class="chain" aria-label="Signal chain of a measurement">
+      <li><div class="node d"><b>Generator / file</b><span>dBFS</span></div></li>
+      <li><div class="node e"><b>Interface out (DAC)</b><span>dBu · volts</span></div></li>
+      <li><div class="node e"><b>DSP</b><span>dBu in · <em class="dig" style="font-style:normal">dBFS inside</em> · dBu out</span></div></li>
+      <li><div class="node e"><b>Amplifier</b><span>volts · watts</span></div></li>
+      <li><div class="node a"><b>Speaker + room</b><span>dB SPL · dB(A) · dB(C)</span></div></li>
+      <li><div class="node e"><b>Microphone</b><span>mV/Pa · dBV</span></div></li>
+      <li><div class="node d"><b>Preamp + ADC</b><span>dBFS</span></div></li>
+      <li><div class="node a"><b>REW</b><span>dB SPL (calibrated)</span></div></li>
+    </ol>
+    <div class="dom"><span class="d">digital: numbers in a computer</span><span class="e">electrical: voltage in a cable</span><span class="a">acoustic: pressure in the air</span></div>
+    <p class="caption">A measurement is a loop: it starts as numbers (dBFS), becomes voltage (dBu, V), becomes air pressure (dB SPL), becomes voltage again at the mic and ends as numbers again. Each arrow is a converter, and each converter has <strong>one calibration number</strong> that links the ruler before it to the ruler after it. That's the whole secret, and section 3 lets you play with it.</p>
+  </div>
+</header>
+
+<section id="db">
+  <div class="col prose">
+    <span class="eyebrow">1 · The bare dB</span>
+    <h2>A decibel is a ratio, nothing more</h2>
+    <p>A plain "dB" never means a loudness. It compares two things: <span class="mono">dB = 20 · log₁₀(a / b)</span> for amplitudes (voltage, air pressure, sample values) and <span class="mono">10 · log₁₀(P₁ / P₂)</span> for power. Both give the same number for the same change, because power grows with amplitude squared.</p>
+    <p>Gain knobs, faders, EQ bands and "R is 2 dB louder than L" are all plain dB: they say <em>how much more or less</em>, not <em>how much</em>. 0 dB means "unchanged", not "off".</p>
+  </div>
+  <div class="fig">
+    <div class="sliders">
+      <div class="slider"><label for="db-v">Change <output id="db-v-out"></output></label><input id="db-v" type="range" min="-40" max="40" step="0.5" value="6"></div>
+      <div class="slider"><label>Rules of thumb</label><div class="chips" id="db-chips"></div></div>
+    </div>
+    <div class="chart"><svg id="db-svg" viewBox="0 0 1000 190" role="img" aria-label="Reference wave and changed wave"></svg></div>
+    <div class="stats" id="db-stats"></div>
+    <p class="caption" id="db-caption"></p>
+  </div>
+  <div class="col prose">
+    <p>Why bother with logarithms? Because the ear works that way. Going from 1 to 2 watts sounds like the same step as going from 50 to 100 watts: both are +3 dB. And it keeps the numbers small: the quietest sound you can hear and the loudest you can bear differ by a factor of about 3 million in pressure, which is just 130 dB.</p>
+    <p>Two more things fall out: <strong>dB add up where ratios multiply.</strong> A +29 dB amplifier after a −10 dB volume knob is +19 dB in total. And <strong>about 1 dB is the smallest change most people notice</strong> in music; 3 dB is clear; 10 dB sounds roughly "twice as loud".</p>
+  </div>
+</section>
+
+<section id="refs">
+  <div class="col prose">
+    <span class="eyebrow">2 · The suffix</span>
+    <h2>Add a reference, get an absolute level</h2>
+    <p>As soon as the second thing in the ratio is a <strong>fixed, agreed reference</strong>, a dB value becomes an absolute level, and the suffix tells you which reference. The formula never changes, only the "1" it is measured against:</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title" id="ru-title"></span>
+      <div class="seg" role="group" aria-label="Domain">
+        <button id="ru-e" aria-pressed="true">Electrical · dBu / dBV</button>
+        <button id="ru-a" aria-pressed="false">Acoustic · dB SPL</button>
+        <button id="ru-d" aria-pressed="false">Digital · dBFS</button>
+      </div>
+    </div>
+    <div class="scrollx"><svg id="ru-svg" viewBox="0 0 1000 250" role="img" aria-label="Level ruler with landmarks" style="touch-action:none;cursor:ew-resize"></svg></div>
+    <div class="sliders"><div class="slider"><label for="ru-v">Level <output id="ru-v-out"></output></label><input id="ru-v" type="range" step="0.5"></div></div>
+    <div class="stats" id="ru-stats"></div>
+    <p class="caption" id="ru-caption"></p>
+  </div>
+  <div class="tablewrap col">
+    <table class="vals">
+      <thead><tr><th>Unit</th><th>0 of this unit is…</th><th>Where you meet it</th></tr></thead>
+      <tbody>
+        <tr><td>dB</td><td>nothing: a ratio between two values</td><td>gain, faders, EQ, differences ("3 dB louder")</td></tr>
+        <tr><td>dBr</td><td>a reference you choose (e.g. "the mids")</td><td>frequency response plots normalised to some level</td></tr>
+        <tr><td>dB SPL</td><td>20 µPa of air pressure, about the quietest audible sound</td><td>sound level meters, REW's SPL readout</td></tr>
+        <tr><td>dB(A), dB(C), dB(Z)</td><td>also 20 µPa, but measured through a filter (section 4)</td><td>noise limits, SPL meter apps, REW's SPL meter</td></tr>
+        <tr><td>dBu</td><td>0.775 V RMS (an old telephone standard: 1 mW into 600 Ω)</td><td>pro gear specs: "+4 dBu line level", "max input +12 dBu"</td></tr>
+        <tr><td>dBV</td><td>1 V RMS</td><td>consumer gear (−10 dBV line level), mic sensitivity</td></tr>
+        <tr><td>dBFS</td><td>full scale: the largest value the converter can represent</td><td>DAW/REW meters, generator level, DSP internals. Always ≤ 0</td></tr>
+        <tr><td>dBW, dBm</td><td>1 watt, 1 milliwatt</td><td>amplifier power (rare in audio today)</td></tr>
+        <tr><td>LUFS / LKFS</td><td>full scale, measured through a loudness filter over time</td><td>streaming and broadcast loudness targets (−14 LUFS etc.)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col prose">
+    <p class="note">dBu and dBV are the same ruler shifted by 2.2 dB (<span class="mono">dBu = dBV + 2.2</span>). "Pro" line level (+4 dBu, 1.23 V) is about 12 dB hotter than "consumer" line level (−10 dBV, 0.32 V). That's why a cheap source into a pro DSP looks quiet.</p>
+  </div>
+</section>
+
+<section id="chain">
+  <div class="col prose">
+    <span class="eyebrow">3 · Putting it together</span>
+    <h2>Follow one signal through the chain</h2>
+    <p>Every box has a <strong>ceiling</strong> (it clips: the waveform gets flattened, which sounds harsh and can damage tweeters) and a <strong>floor</strong> (its own hiss and hum, the noise floor). The distance from the signal up to the ceiling is <strong>headroom</strong>; the distance down to the floor is the <strong>signal-to-noise ratio</strong>. Setting every box so the signal sits comfortably between both is called <strong>gain staging</strong>.</p>
+    <p>The chart below lines up all boxes by their ceiling, so you can compare them although each speaks a different unit. The labels on top show the level in each box's own unit. Try the scenarios, then drag the knobs.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">Gain staging, from the file to REW</span>
+      <div class="seg" role="group" aria-label="Scenario" id="ch-presets"></div>
+    </div>
+    <div class="scrollx"><svg id="ch-svg" viewBox="0 0 1000 440" role="img" aria-label="Headroom diagram of the signal chain"></svg></div>
+    <div class="legend">
+      <span style="color:var(--accent)"><i></i>signal peaks</span>
+      <span style="color:var(--accent)"><i class="dash"></i>average (RMS) level</span>
+      <span><i class="box" style="background:var(--band)"></i>usable range</span>
+      <span><i class="box" style="background:var(--noise)"></i>noise floor</span>
+      <span><i class="box" style="background:var(--bad-fill)"></i>clipping</span>
+    </div>
+    <p class="caption" id="ch-note"></p>
+    <div class="fig-head">
+      <div class="seg" role="group" aria-label="Signal type">
+        <button id="sg-sine" aria-pressed="false">Sine tone</button>
+        <button id="sg-pink" aria-pressed="true">Pink noise</button>
+        <button id="sg-music" aria-pressed="false">Music</button>
+      </div>
+      <button class="btn" id="ch-cal">Calibrate REW at this setting</button>
+    </div>
+    <div class="sliders">
+      <div class="slider"><label for="ch-lvl">Generator / file peaks <output></output></label><input id="ch-lvl" type="range" min="-60" max="0" step="0.5"></div>
+      <div class="slider"><label for="ch-knob">Interface output knob <output></output></label><input id="ch-knob" type="range" min="-40" max="0" step="0.5"></div>
+      <div class="slider"><label for="ch-dsp">DSP gain (fader + EQ boosts) <output></output></label><input id="ch-dsp" type="range" min="-24" max="12" step="0.5"></div>
+      <div class="slider"><label for="ch-vol">Amp volume <output></output></label><input id="ch-vol" type="range" min="-60" max="0" step="0.5"></div>
+      <div class="slider"><label for="ch-dist">Mic distance from speaker <output></output></label><input id="ch-dist" type="range" min="1" max="8" step="0.1"></div>
+      <div class="slider"><label for="ch-pre">Mic preamp gain <output></output></label><input id="ch-pre" type="range" min="0" max="60" step="0.5"></div>
+    </div>
+    <div class="stats" id="ch-stats"></div>
+  </div>
+  <div class="col prose">
+    <p>The example gear and its one calibration number per converter:</p>
+  </div>
+  <div class="tablewrap col">
+    <table class="vals">
+      <thead><tr><th>Converter</th><th>Calibration (example)</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Interface DAC</td><td><span class="dig">0 dBFS</span> = <span class="ele">+10 dBu</span></td><td>a full-scale sine comes out at 2.45 V. Noise floor −100 dBu</td></tr>
+        <tr><td>DSP input</td><td><span class="ele">+12 dBu</span> = <span class="dig">0 dBFS</span> inside</td><td>above +12 dBu at the input the DSP clips, whatever its faders say</td></tr>
+        <tr><td>DSP output</td><td><span class="dig">0 dBFS</span> inside = <span class="ele">+12 dBu</span></td><td>EQ boosts and faders above 0 dB eat this headroom</td></tr>
+        <tr><td>Amplifier</td><td><span class="ele">1.0 V</span> in (volume max) = 100 W into 8 Ω</td><td>"input sensitivity"; voltage gain 29 dB; 100 W = 28.3 V</td></tr>
+        <tr><td>Speaker</td><td><span class="ele">2.83 V</span> = <span class="aco">87 dB SPL</span> at 1 m</td><td>"sensitivity"; level falls 6 dB per doubling of distance (free field)</td></tr>
+        <tr><td>Microphone</td><td><span class="aco">94 dB SPL</span> (1 Pa) = <span class="ele">10 mV</span> (−40 dBV)</td><td>"sensitivity, mV/Pa"</td></tr>
+        <tr><td>Preamp + ADC</td><td><span class="ele">+10 dBu</span> after the preamp = <span class="dig">0 dBFS</span></td><td>the gain knob shifts how many dB SPL end up at 0 dBFS</td></tr>
+        <tr><td>REW calibration</td><td><span class="dig">x dBFS</span> = <span class="aco">y dB SPL</span></td><td>one offset, measured with an SPL meter or calibrator. Valid only while nothing between mic and ADC changes</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col prose">
+    <p>What to take away:</p>
+    <ul>
+      <li><strong>Turn down late, not early.</strong> Every box adds its own noise at a fixed level. If you shrink the signal at the start (output knob) and make it up later (DSP gain, amp), the early noise gets amplified with it. Run the signal fairly hot through the line-level gear and set loudness at the amp.</li>
+      <li><strong>Peaks set the ceiling, the average sets the loudness.</strong> Music peaks 10–20 dB above its average, so an amp that shows "a few watts" on average still needs tens of watts for the drum hits.</li>
+      <li><strong>dBFS is only meaningful inside one device.</strong> −20 dBFS in REW and −20 dBFS inside the DSP are different voltages, because their converters have different calibrations.</li>
+      <li><strong>Output-side changes don't break the SPL calibration; input-side changes do.</strong> Turning the amp up makes the room louder and REW correctly reads more. Touching the mic preamp gain changes the dBFS↔SPL link, so REW reads wrong until you recalibrate. Try it: change the preamp gain and watch the REW card.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="weight">
+  <div class="col prose">
+    <span class="eyebrow">4 · dB(A), dB(C), dB(Z)</span>
+    <h2>Sound level meters wear filters</h2>
+    <p>An SPL meter adds up the energy of all frequencies into one number. But your ear is much less sensitive to deep bass and very high treble than to the mids, especially at low volume. So meters usually measure through a <strong>weighting filter</strong> first; the letter in brackets says which one. The level is still dB re 20 µPa, just of a filtered signal.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head"><span class="fig-title">The three weighting curves</span></div>
+    <div class="chart" id="wt-chart"></div>
+    <div class="legend" id="wt-legend"></div>
+    <p class="caption"><strong>A</strong> models the ear at quiet levels: −30 dB at 50 Hz, so bass barely counts. <strong>C</strong> models the ear at loud levels: flat down to about 50 Hz, −3 dB at 31.5 Hz. <strong>Z</strong> ("zero") is no filter at all, the plain dB SPL. Hover for values.</p>
+  </div>
+  <div class="col prose">
+    <p>The same sound can therefore have very different numbers. Here is a sound split into third-octave bands, like a real-time analyser shows it. Push the bass slider and watch which readings move:</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">One sound, three readings</span>
+      <div class="seg" role="group" aria-label="Sound">
+        <button data-sp="music" aria-pressed="true">Bass-heavy music</button>
+        <button data-sp="pink" aria-pressed="false">Pink noise</button>
+        <button data-sp="speech" aria-pressed="false">Speech</button>
+        <button data-sp="sub" aria-pressed="false">40 Hz tone</button>
+      </div>
+    </div>
+    <div class="fig-head">
+      <div class="seg" role="group" aria-label="Weighting shown">
+        <button id="wv-a" aria-pressed="false">Show A-weighted</button>
+        <button id="wv-c" aria-pressed="true">Show C-weighted</button>
+      </div>
+    </div>
+    <div class="scrollx"><svg id="sp-svg" viewBox="0 0 1000 300" role="img" aria-label="Third-octave band levels"></svg></div>
+    <div class="sliders"><div class="slider"><label for="sp-bass">Bass below ~120 Hz <output id="sp-bass-out"></output></label><input id="sp-bass" type="range" min="-12" max="12" step="0.5" value="0"></div></div>
+    <div class="stats" id="sp-stats"></div>
+    <p class="caption" id="sp-caption"></p>
+  </div>
+  <div class="col prose">
+    <p>For bass work this matters a lot:</p>
+    <ul>
+      <li><strong>dB(A) hides bass.</strong> Doubling the bass of a song can move dB(A) by less than a decibel. A neighbour annoyed by thumping bass can be "within the dB(A) limit".</li>
+      <li><strong>A big gap between dB(C) and dB(A) means "lots of low end".</strong> Pink noise has a gap of a dB or two; bass-heavy music 5–10 dB; a pure sub tone 30+.</li>
+      <li>For calibrating a measuring setup with pink noise and for loud listening, use <strong>C</strong> (or Z). For hearing-damage guidelines (the "85 dB" rule) the numbers are in dB(A).</li>
+    </ul>
+  </div>
+</section>
+
+<section id="add">
+  <div class="col prose">
+    <span class="eyebrow">5 · Adding levels</span>
+    <h2>80 dB plus 80 dB is not 160 dB</h2>
+    <p>Because dB are logarithms, you can't add them like plain numbers. How two sounds combine depends on whether they are <strong>related</strong>. Two unrelated sounds (two people talking, two fans, two noise generators) add their power: +3 dB for two equal ones. Two copies of the <strong>same</strong> signal (both speakers playing mono bass) add their pressure wave by wave: anything from +6 dB (in step) to silence (exactly opposite).</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">Two sources at one spot</span>
+      <div class="seg" role="group" aria-label="Relation">
+        <button id="ad-u" aria-pressed="true">Unrelated signals</button>
+        <button id="ad-s" aria-pressed="false">The same signal</button>
+      </div>
+    </div>
+    <div class="sliders">
+      <div class="slider"><label for="ad-a">Source A alone <output></output></label><input id="ad-a" type="range" min="50" max="100" step="0.5" value="80"></div>
+      <div class="slider"><label for="ad-b">Source B alone <output></output></label><input id="ad-b" type="range" min="50" max="100" step="0.5" value="80"></div>
+      <div class="slider" id="ad-p-wrap"><label for="ad-p">Timing offset between them <output></output></label><input id="ad-p" type="range" min="0" max="180" step="1" value="0"></div>
+    </div>
+    <div class="chart"><svg id="ad-svg" viewBox="0 0 1000 150" role="img" aria-label="Level bars"></svg></div>
+    <p class="caption" id="ad-caption"></p>
+  </div>
+  <div class="col prose">
+    <p>Two handy consequences: a source 10 dB quieter than another adds only 0.4 dB, so <strong>background noise 10 dB below your measurement signal hardly matters</strong>. And a single number you read for "both speakers" depends on where you stand, because the timing offset changes with position. That's exactly why left + right bass measurements look so different from each speaker alone.</p>
+  </div>
+</section>
+
+<section id="crest">
+  <div class="col prose">
+    <span class="eyebrow">6 · Peak vs average</span>
+    <h2>Peaks clip, averages are heard</h2>
+    <p>A level meter can measure the <strong>peak</strong> (the single largest sample) or the <strong>RMS</strong> (a kind of average energy). The gap between them is the <strong>crest factor</strong>. Digital clipping happens at the peaks, loudness and amplifier heat come from the average.</p>
+  </div>
+  <div class="fig">
+    <div class="fig-head">
+      <span class="fig-title">A signal in a digital system</span>
+      <div class="seg" role="group" aria-label="Signal">
+        <button data-cf="sine" aria-pressed="true">Sine</button>
+        <button data-cf="square" aria-pressed="false">Square</button>
+        <button data-cf="pink" aria-pressed="false">Pink noise</button>
+        <button data-cf="music" aria-pressed="false">Drums + bass</button>
+      </div>
+    </div>
+    <canvas id="cf-canvas" width="1040" height="250" aria-label="Waveform with full-scale lines"></canvas>
+    <div class="sliders"><div class="slider"><label for="cf-g">Gain <output id="cf-g-out"></output></label><input id="cf-g" type="range" min="-30" max="12" step="0.5" value="-6"></div></div>
+    <div class="stats" id="cf-stats"></div>
+    <p class="caption" id="cf-caption"></p>
+  </div>
+  <div class="col prose">
+    <p class="note">Two RMS conventions exist for dBFS. Mathematically a full-scale sine has an RMS of −3 dBFS. Many meters (the AES-17 convention) add 3 dB so that a full-scale sine reads 0 dBFS RMS. When a generator level or a meter says "dBFS RMS", check which one it uses; it's a 3 dB difference.</p>
+  </div>
+</section>
+
+<section id="cheat">
+  <div class="col prose">
+    <span class="eyebrow">7 · Keep this</span>
+    <h2>Cheat sheet</h2>
+  </div>
+  <div class="tablewrap col">
+    <table class="vals">
+      <thead><tr><th>Rule</th><th>Why / example</th></tr></thead>
+      <tbody>
+        <tr><td>+6 dB</td><td>double the voltage or pressure (4× the power)</td></tr>
+        <tr><td>+3 dB</td><td>double the power; two equal unrelated sources</td></tr>
+        <tr><td>+10 dB</td><td>10× the power, sounds about twice as loud</td></tr>
+        <tr><td>±1 dB</td><td>about the smallest change you notice in music</td></tr>
+        <tr><td>−6 dB / 2× distance</td><td>a single source outdoors; indoors the room's reflections (and bass modes) make it fall less</td></tr>
+        <tr><td>0 dBu = 0.775 V</td><td>0 dBV = 1 V; dBu = dBV + 2.2</td></tr>
+        <tr><td>+4 dBu / −10 dBV</td><td>pro / consumer line level, ≈ 12 dB apart</td></tr>
+        <tr><td>94 dB SPL = 1 Pa</td><td>the tone of a sound calibrator; mic sensitivity is given for it</td></tr>
+        <tr><td>0 dBFS</td><td>the loudest possible; digital levels are negative; more than 0 = clipping</td></tr>
+        <tr><td>dBFS → dBu</td><td>only via a device's spec ("0 dBFS = +X dBu"); differs per device</td></tr>
+        <tr><td>dB(C) − dB(A)</td><td>large gap = bass-heavy sound</td></tr>
+        <tr><td>crest factor</td><td>sine 3 dB, pink noise ~12 dB, music 10–20 dB above the average</td></tr>
+        <tr><td>SPL calibration</td><td>holds while nothing changes between mic and ADC (mic, cable, preamp gain)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col prose">
+    <p class="muted">See also the <a href="eq-explained.html">EQ explainer</a>, which uses these units on real measurements.</p>
+  </div>
+</section>
+</main>
+
+<script>
+(() => {
+"use strict";
+const $ = (id) => document.getElementById(id);
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent, text) { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+function cssv(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+const lg = Math.log10;
+const sgn = (v, d = 1) => (v > 0.0001 ? "+" : v < -0.0001 ? "−" : "±") + Math.abs(v).toFixed(d);
+const num = (v, d = 1) => (v < 0 ? "−" : "") + Math.abs(v).toFixed(d);
+const fmtHz = (f) => (f >= 1000 ? (f / 1000).toFixed(f >= 10000 ? 0 : 1) + " kHz" : (f < 100 ? f.toFixed(1) : f.toFixed(0)) + " Hz");
+function sig3(x) { // significant-figure formatting for physical quantities
+  if (x === 0) return "0";
+  const d = Math.max(0, 2 - Math.floor(lg(Math.abs(x))));
+  return x.toFixed(Math.min(d, 6));
+}
+function fmtV(v) { return v >= 1 ? sig3(v) + " V" : v >= 1e-3 ? sig3(v * 1e3) + " mV" : sig3(v * 1e6) + " µV"; }
+function fmtPa(p) { return p >= 1 ? sig3(p) + " Pa" : p >= 1e-3 ? sig3(p * 1e3) + " mPa" : sig3(p * 1e6) + " µPa"; }
+function fmtW(w) { return w >= 1 ? sig3(w) + " W" : w >= 1e-3 ? sig3(w * 1e3) + " mW" : sig3(w * 1e6) + " µW"; }
+function stat(host, items) {
+  host.textContent = "";
+  for (const it of items) {
+    const d = document.createElement("div"); d.className = "stat" + (it.bad ? " bad" : "");
+    const k = document.createElement("span"); k.className = "k"; k.textContent = it.k;
+    const v = document.createElement("span"); v.className = "v"; v.textContent = it.v;
+    if (it.s) { const s = document.createElement("small"); s.textContent = " " + it.s; v.appendChild(s); }
+    d.appendChild(k); d.appendChild(v); host.appendChild(d);
+  }
+}
+function seg(btns, onPick) {
+  btns.forEach((b, k) => b.addEventListener("click", () => { btns.forEach((o) => o.setAttribute("aria-pressed", String(o === b))); onPick(k, b); }));
+}
+function press(btns, k) { btns.forEach((o, i) => o.setAttribute("aria-pressed", String(i === k))); }
+function legend(host, items) {
+  host.textContent = "";
+  for (const it of items) {
+    const s = document.createElement("span"); const i = document.createElement("i");
+    i.style.color = it.color; if (it.dash) i.className = "dash";
+    s.appendChild(i); s.appendChild(document.createTextNode(it.label)); host.appendChild(s);
+  }
+}
+const themeListeners = [];
+function onTheme(fn) { themeListeners.push(fn); }
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => themeListeners.forEach((f) => f()));
+new MutationObserver(() => themeListeners.forEach((f) => f())).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+/* ======================= 1 · the bare dB ======================= */
+{
+  const inp = $("db-v"), svg = $("db-svg");
+  const chips = [[1, "+1 noticeable"], [3, "+3"], [6, "+6"], [10, "+10"], [20, "+20"], [-3, "−3"], [-6, "−6"], [-20, "−20"]];
+  for (const [v, t] of chips) {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = t + " dB";
+    b.addEventListener("click", () => { inp.value = v; draw(); }); $("db-chips").appendChild(b);
+  }
+  function ratio(r) {
+    if (r >= 1) return "× " + (r >= 100 ? Math.round(r).toLocaleString("en") : r.toFixed(r >= 10 ? 1 : 2));
+    const inv = 1 / r;
+    return "× " + r.toPrecision(2) + "  (1/" + (inv >= 100 ? Math.round(inv).toLocaleString("en") : inv.toFixed(inv >= 10 ? 0 : 1)) + ")";
+  }
+  function draw() {
+    const v = +inp.value; $("db-v-out").textContent = sgn(v, 1) + " dB";
+    const amp = Math.pow(10, v / 20), pow = Math.pow(10, v / 10), loud = Math.pow(2, v / 10);
+    svg.textContent = "";
+    const W = 1000, mid = 95, A0 = 34, Amax = 88;
+    el("line", { x1: 0, x2: W, y1: mid, y2: mid, style: "stroke:var(--grid)" }, svg);
+    const a = Math.min(Amax, A0 * amp), off = A0 * amp > Amax;
+    let d0 = "", d1 = "";
+    for (let x = 0; x <= W; x += 4) {
+      const ph = (x / W) * 2 * Math.PI * 4;
+      d0 += (x ? "L" : "M") + x + "," + (mid - A0 * Math.sin(ph)).toFixed(1);
+      d1 += (x ? "L" : "M") + x + "," + (mid - a * Math.sin(ph)).toFixed(1);
+    }
+    el("path", { d: d0, style: "fill:none;stroke:var(--before);stroke-width:2" }, svg);
+    el("path", { d: d1, style: "fill:none;stroke:var(--accent);stroke-width:2.5" }, svg);
+    el("text", { x: 4, y: 14, class: "ann" }, svg, "grey: reference   blue: " + sgn(v, 1) + " dB" + (off ? "  (taller than this box: ×" + amp.toFixed(1) + ")" : ""));
+    stat($("db-stats"), [
+      { k: "Voltage / pressure / sample value", v: ratio(amp) },
+      { k: "Power", v: ratio(pow) },
+      { k: "Perceived loudness (rough)", v: ratio(loud) },
+    ]);
+    const words = { 1: "about the smallest step most people hear in music.", 3: "twice the power, a clear but modest step. Two equal unrelated sources together.", 6: "twice the voltage, four times the power. Halving the distance to a speaker outdoors.", 10: "ten times the power, and roughly twice as loud to the ear.", 20: "ten times the voltage, a hundred times the power. Like going from consumer to pro line level and then some." };
+    const k = Math.abs(v);
+    $("db-caption").textContent = words[k] ? sgn(v, 0) + " dB: " + (v < 0 ? "the same step downwards: " : "") + words[k] : "Formula: amplitude ratio = 10^(dB/20), power ratio = 10^(dB/10). Click a rule of thumb.";
+  }
+  inp.addEventListener("input", draw); draw();
+}
+
+/* ======================= 2 · rulers ======================= */
+{
+  const svg = $("ru-svg"), inp = $("ru-v");
+  const R = {
+    e: { title: "Voltage on a cable: dBu (re 0.775 V) and dBV (re 1 V)", min: -80, max: 40, val: 4, unit: "dBu", step: 10, qstep: 20,
+      q: (x) => fmtV(0.775 * Math.pow(10, x / 20)),
+      marks: [[-50, "dynamic mic signal"], [-7.8, "−10 dBV consumer line"], [0, "0 dBu = 0.775 V"], [2.2, "0 dBV = 1 V"], [4, "+4 dBu pro line"], [12, "DSP input clips (example)"], [18, "converter max, often +10…+24"], [31.2, "speaker cable at 100 W / 8 Ω"]],
+      stats: (x) => { const v = 0.775 * Math.pow(10, x / 20); return [{ k: "dBu", v: sgn(x) }, { k: "dBV", v: sgn(x - 2.218) }, { k: "Voltage (RMS)", v: fmtV(v) }, { k: "Peak of a sine at this level", v: fmtV(v * Math.SQRT2) }]; },
+      cap: "Volts are always RMS here (the 'effective' value). A sine's peak is 1.41× higher, its peak-to-peak 2.83× higher. 2.83 V into 8 Ω is exactly 1 W, which is why speaker sensitivity is quoted at 2.83 V." },
+    a: { title: "Air pressure: dB SPL (re 20 µPa)", min: 0, max: 140, val: 94, unit: "dB SPL", step: 10, qstep: 20,
+      q: (x) => fmtPa(20e-6 * Math.pow(10, x / 20)),
+      marks: [[0, "threshold of hearing (1 kHz)"], [30, "quiet room at night"], [60, "conversation at 1 m"], [85, "hearing risk if hours long"], [94, "1 Pa: calibrator tone"], [105, "loud club"], [120, "threshold of pain"]],
+      stats: (x) => { const p = 20e-6 * Math.pow(10, x / 20); return [{ k: "dB SPL", v: num(x) }, { k: "Pressure (RMS)", v: fmtPa(p) }, { k: "vs. 1 Pa", v: sgn(x - 94) + " dB" }, { k: "vs. atmospheric pressure", v: "1 : " + Math.round(101325 / p).toLocaleString("en") }]; },
+      cap: "Even the loudest sound you can bear (≈ 20 Pa) is a tiny ripple on the 101 325 Pa of the atmosphere. dB SPL is unweighted; the same reference is used for dB(A) and dB(C) in section 4." },
+    d: { title: "Numbers in a converter: dBFS (re full scale)", min: -150, max: 0, val: -24, unit: "dBFS", step: 10, qstep: 30,
+      q: (x) => { const s = Math.pow(10, x / 20); return s >= 0.01 ? s.toFixed(s >= 0.1 ? 2 : 3) : s.toExponential(0); },
+      marks: [[0, "full scale: largest possible sample"], [-1, "typical mastering ceiling"], [-18, "EBU: −18 dBFS = 0 dBu"], [-20, "SMPTE: −20 dBFS = +4 dBu"], [-24, "a sensible measurement level"], [-96, "16-bit noise floor"], [-144, "24-bit floor (theory)"]],
+      stats: (x) => { const s = Math.pow(10, x / 20); return [{ k: "dBFS", v: num(x) }, { k: "Sample value (full scale = 1)", v: s >= 1e-3 ? s.toFixed(4) : s.toExponential(2) }, { k: "As a 16-bit integer", v: Math.round(s * 32767).toLocaleString("en") + " of 32 767" }, { k: "Headroom left", v: num(-x) + " dB" }]; },
+      cap: "dBFS knows no volts or pascals: it only says how close a number is to the biggest one the converter can store. Studios agree on alignments (EBU, SMPTE) to link dBFS to dBu, but each interface and DSP has its own." },
+  };
+  let cur = "e";
+  const W = 1000, l = 30, r = 30, ybase = 170;
+  const X = (x) => l + ((x - R[cur].min) / (R[cur].max - R[cur].min)) * (W - l - r);
+  const Xi = (px) => R[cur].min + ((px - l) / (W - l - r)) * (R[cur].max - R[cur].min);
+  function draw() {
+    const c = R[cur], v = +inp.value;
+    $("ru-title").textContent = c.title;
+    $("ru-v-out").textContent = (c.unit === "dB SPL" ? num(v) : sgn(v)) + " " + c.unit;
+    svg.textContent = "";
+    el("rect", { x: X(c.min), y: ybase - 4, width: X(v) - X(c.min), height: 8, rx: 4, style: "fill:var(--accent);opacity:0.25" }, svg);
+    el("line", { x1: l, x2: W - r, y1: ybase, y2: ybase, style: "stroke:var(--ink-2);stroke-width:1.5" }, svg);
+    for (let t = Math.ceil(c.min / c.step) * c.step; t <= c.max; t += c.step) {
+      el("line", { x1: X(t), x2: X(t), y1: ybase, y2: ybase + 6, style: "stroke:var(--ink-2)" }, svg);
+      el("text", { x: X(t), y: ybase + 20, "text-anchor": "middle" }, svg, (t > 0 && c.unit !== "dB SPL" ? "+" : "") + num(t, 0).replace(".0", ""));
+      if (((t - c.min) % c.qstep) === 0) el("text", { x: X(t), y: ybase + 38, "text-anchor": "middle", style: "fill:var(--ink-2)" }, svg, c.q(t));
+    }
+    el("text", { x: W - r, y: ybase + 54, "text-anchor": "end" }, svg, "top row: " + c.unit + " · bottom row: the physical value");
+    // landmarks, assigned to rows so labels don't overlap
+    const rows = [];
+    const sorted = c.marks.slice().sort((a, b) => a[0] - b[0]);
+    for (const [x, t] of sorted) {
+      const w = t.length * 6.6 + 8; let x0 = X(x) - 3, x1 = x0 + w;
+      if (x1 > W) { x1 = X(x) + 3; x0 = x1 - w; }
+      let row = 0; while (rows[row] !== undefined && rows[row] > x0) row++;
+      rows[row] = x1;
+      const y = ybase - 22 - row * 22;
+      el("line", { x1: X(x), x2: X(x), y1: y + 4, y2: ybase, style: "stroke:var(--line);stroke-width:1" }, svg);
+      el("circle", { cx: X(x), cy: ybase, r: 3, style: "fill:var(--ink-2)" }, svg);
+      el("text", { x: x1 === X(x) + 3 ? x1 : x0 + 3, y, "text-anchor": x1 === X(x) + 3 ? "end" : "start", class: "ann" }, svg, t);
+    }
+    el("line", { x1: X(v), x2: X(v), y1: 12, y2: ybase + 8, style: "stroke:var(--accent);stroke-width:2" }, svg);
+    el("circle", { cx: X(v), cy: ybase, r: 6, style: "fill:var(--accent);stroke:var(--surface);stroke-width:2" }, svg);
+    stat($("ru-stats"), c.stats(v));
+    $("ru-caption").textContent = c.cap;
+  }
+  function pick(k) { cur = k; const c = R[k]; inp.min = c.min; inp.max = c.max; inp.value = c.val; draw(); }
+  seg([$("ru-e"), $("ru-a"), $("ru-d")], (k) => pick(["e", "a", "d"][k]));
+  inp.addEventListener("input", draw);
+  let drag = false;
+  function fromPointer(e) { const b = svg.getBoundingClientRect(); const px = (e.clientX - b.left) * (W / b.width); const c = R[cur]; inp.value = Math.max(c.min, Math.min(c.max, Math.round(Xi(px) * 2) / 2)); draw(); }
+  svg.addEventListener("pointerdown", (e) => { drag = true; svg.setPointerCapture(e.pointerId); fromPointer(e); });
+  svg.addEventListener("pointermove", (e) => { if (drag) fromPointer(e); });
+  svg.addEventListener("pointerup", () => { drag = false; });
+  pick("e");
+}
+
+/* ======================= 3 · the chain ======================= */
+{
+  const G = { dacMax: 10, dacNoise: -100, dspMax: 12, dspNoise: -95, ampSensV: 1.0, ampW: 100, ohm: 8, ampNoiseRel: -100,
+    spkSens: 87, roomNoise: 30, micSens: -40, adcMax: 10, ein: -125 };
+  const ampFullV = Math.sqrt(G.ampW * G.ohm), ampFull = 20 * lg(ampFullV), ampGain = ampFull - 20 * lg(G.ampSensV);
+  const CREST = { sine: 3, pink: 12, music: 16 };
+  const S = { sig: "pink", lvl: -12, knob: 0, dsp: 0, vol: -10, dist: 3, pre: 30, cal: null };
+  const sliders = { lvl: $("ch-lvl"), knob: $("ch-knob"), dsp: $("ch-dsp"), vol: $("ch-vol"), dist: $("ch-dist"), pre: $("ch-pre") };
+  const outs = { lvl: (v) => num(v) + " dBFS", knob: (v) => sgn(v) + " dB", dsp: (v) => sgn(v) + " dB", vol: (v) => sgn(v) + " dB", dist: (v) => v.toFixed(1) + " m", pre: (v) => "+" + v.toFixed(1) + " dB" };
+  const sigBtns = [$("sg-sine"), $("sg-pink"), $("sg-music")];
+  const PRESETS = [
+    { name: "Measuring", set: { sig: "pink", lvl: -12, knob: 0, dsp: 0, vol: -10, dist: 3, pre: 30 }, note: "Pink noise from the generator, every line-level box running with plenty of headroom (10+ dB) and far above its noise floor. The room's own background noise (30 dB SPL) is the floor that matters for the mic." },
+    { name: "Music, well staged", set: { sig: "music", lvl: -1, knob: 0, dsp: -6, vol: -14, dist: 3, pre: 30 }, note: "Music peaks at −1 dBFS. The DSP fader at −6 dB leaves room for EQ boosts; loudness is set at the amp. Noise is 100 dB below the signal everywhere: inaudible." },
+    { name: "Turned down early", set: { sig: "music", lvl: -30, knob: -20, dsp: 12, vol: 0, dist: 3, pre: 30 }, note: "Quiet file, output knob low, then everything cranked to make up for it. The signal sits close to the noise floor of the first boxes, and that noise gets amplified all the way to the speaker: audible hiss with less level at the seat." },
+    { name: "DSP clipping", set: { sig: "music", lvl: 0, knob: 0, dsp: 6, vol: -20, dist: 3, pre: 30 }, note: "The input is fine (+10 dBu, under the +12 dBu limit), but +6 dB of DSP gain (a fader, or an EQ boost) pushes the inside of the DSP past 0 dBFS. It clips, although the amp is turned well down. Turning the amp down doesn't fix clipping earlier in the chain." },
+    { name: "Mic preamp too hot", set: { sig: "pink", lvl: -12, knob: 0, dsp: 0, vol: -10, dist: 3, pre: 60 }, note: "Same sound as \"Measuring\", but the mic preamp turned up by 30 dB. The interface input clips, and REW's calibration no longer matches: it was made at the old gain." },
+  ];
+  const preBtns = PRESETS.map((p) => { const b = document.createElement("button"); b.textContent = p.name; $("ch-presets").appendChild(b); return b; });
+  function compute() {
+    const crest = CREST[S.sig];
+    const st = [];
+    // 1 file
+    const p1 = S.lvl;
+    st.push({ name: "Generator / file", unit: "dBFS", dom: "--dig", rel: p1 - 0, noise: -144, abs: num(p1) + " dBFS", sub: "", clip: p1 > 0 });
+    // 2 DAC out
+    const p2 = Math.min(p1, 0) + G.dacMax + S.knob, max2 = G.dacMax + S.knob;
+    st.push({ name: "Interface out", unit: "dBu", dom: "--ele", rel: p2 - max2, noise: G.dacNoise - max2, abs: sgn(p2) + " dBu", sub: fmtV(0.775 * Math.pow(10, p2 / 20)), clip: false });
+    // 3 DSP in
+    const p3 = p2;
+    st.push({ name: "DSP in", unit: "dBu → dBFS", dom: "--ele", rel: p3 - G.dspMax, noise: G.dspNoise - G.dspMax, abs: sgn(p3) + " dBu", sub: "= " + num(p3 - G.dspMax) + " dBFS inside", clip: p3 > G.dspMax });
+    // 4 DSP out
+    const int4 = Math.min(p3, G.dspMax) - G.dspMax + S.dsp;
+    const p4 = Math.min(int4, 0) + G.dspMax;
+    st.push({ name: "DSP out", unit: "dBFS → dBu", dom: "--ele", rel: int4, noise: G.dspNoise - G.dspMax, abs: num(int4) + " dBFS inside", sub: "= " + sgn(p4) + " dBu out", clip: int4 > 0 });
+    // 5 amp
+    const v5 = p4 + S.vol - 2.218 + ampGain; // dBV
+    const v5c = Math.min(v5, ampFull);
+    const V = Math.pow(10, v5 / 20), Wpk = Math.pow(10, v5c / 10) / G.ohm, Wavg = Wpk * Math.pow(10, -(crest - 3) / 10);
+    st.push({ name: "Amp out", unit: "V · W", dom: "--ele", rel: v5 - ampFull, noise: G.ampNoiseRel, abs: fmtV(Math.min(V, ampFullV)), sub: fmtW(Wpk) + " peak", clip: v5 > ampFull });
+    // 6 seat
+    const spkAt = (dbv) => G.spkSens + (dbv - 20 * lg(2.83)) - 20 * lg(S.dist);
+    const spl = spkAt(v5c), splMax = spkAt(ampFull);
+    st.push({ name: "At the mic", unit: "dB SPL", dom: "--aco", rel: spl - splMax, noise: G.roomNoise - splMax, abs: num(spl) + " dB SPL", sub: "peaks", clip: false, inherited: v5 > ampFull });
+    // 7 ADC
+    const toFS = (s) => s - 94 + G.micSens + 2.218 + S.pre - G.adcMax;
+    const fs = toFS(spl);
+    const nRoom = toFS(G.roomNoise), nEin = G.ein + S.pre - G.adcMax;
+    const nAdc = 10 * lg(Math.pow(10, nRoom / 10) + Math.pow(10, nEin / 10));
+    st.push({ name: "Preamp + ADC", unit: "dBFS", dom: "--dig", rel: fs, noise: nAdc, abs: num(fs) + " dBFS", sub: "", clip: fs > 0 });
+    return { st, crest, spl, fs, Wpk, Wavg, offsetNow: spl - fs };
+  }
+  const svg = $("ch-svg");
+  const W = 1000, H = 440, m = { l: 64, r: 16, t: 70, b: 92 };
+  const YMIN = -130, YMAX = 12;
+  const Y = (v) => m.t + (1 - (Math.max(YMIN, Math.min(YMAX, v)) - YMIN) / (YMAX - YMIN)) * (H - m.t - m.b);
+  function draw() {
+    for (const k in sliders) { sliders[k].value = S[k]; sliders[k].previousElementSibling.querySelector("output").textContent = outs[k](+S[k]); }
+    press(sigBtns, ["sine", "pink", "music"].indexOf(S.sig));
+    if (S.cal === null) S.cal = compute().offsetNow;
+    const R = compute(), st = R.st, n = st.length;
+    svg.textContent = "";
+    const colW = (W - m.l - m.r) / n, bw = 54;
+    const cx = (i) => m.l + colW * (i + 0.5);
+    for (let v = 0; v >= -120; v -= 20) {
+      el("line", { x1: m.l - 4, x2: W - m.r, y1: Y(v), y2: Y(v), style: `stroke:var(${v === 0 ? "--line" : "--grid"})` }, svg);
+      el("text", { x: m.l - 8, y: Y(v) + 4, "text-anchor": "end" }, svg, v === 0 ? "0" : num(v, 0));
+    }
+    const ylab = el("text", { x: 14, y: (Y(0) + Y(-120)) / 2, "text-anchor": "middle", transform: `rotate(-90 14 ${(Y(0) + Y(-120)) / 2})` }, svg, "dB below each box's maximum");
+    ylab.setAttribute("class", "ann");
+    let anyClip = -1;
+    st.forEach((s, i) => {
+      const x = cx(i);
+      el("rect", { x: x - bw / 2, y: Y(0), width: bw, height: Y(YMIN) - Y(0), rx: 3, style: "fill:var(--band)" }, svg);
+      el("rect", { x: x - bw / 2, y: Y(YMAX), width: bw, height: Y(0) - Y(YMAX), rx: 3, style: "fill:var(--bad-fill)" }, svg);
+      if (s.noise > YMIN) el("rect", { x: x - bw / 2, y: Y(s.noise), width: bw, height: Y(YMIN) - Y(s.noise), rx: 3, style: "fill:var(--noise)" }, svg);
+      el("rect", { x: x - bw / 2, y: H - m.b + 4, width: bw, height: 4, rx: 2, style: `fill:var(${s.dom})` }, svg);
+      el("text", { x, y: H - m.b + 24, "text-anchor": "middle", class: "big" }, svg, s.name);
+      el("text", { x, y: H - m.b + 40, "text-anchor": "middle", style: `fill:var(${s.dom})` }, svg, s.unit);
+      const head = -s.rel, snr = s.rel - s.noise;
+      el("text", { x, y: H - m.b + 58, "text-anchor": "middle", style: s.clip ? "fill:var(--bad);font-weight:600" : "" }, svg, s.clip ? "CLIPS by " + num(s.rel) + " dB" : "headroom " + num(head, 0));
+      el("text", { x, y: H - m.b + 74, "text-anchor": "middle" }, svg, "S/N " + num(Math.max(0, snr), 0) + " dB");
+      el("text", { x, y: 22, "text-anchor": "middle", class: "big", style: s.clip ? "fill:var(--bad)" : "" }, svg, s.abs);
+      if (s.sub) el("text", { x, y: 38, "text-anchor": "middle" }, svg, s.sub);
+      if (s.clip && anyClip < 0) anyClip = i;
+    });
+    // lines
+    const pk = st.map((s, i) => [cx(i), Y(s.rel)]);
+    const av = st.map((s, i) => [cx(i), Y(Math.min(s.rel, 0) - (R.crest - 3))]);
+    const pth = (pts) => pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
+    el("path", { d: pth(av), style: "fill:none;stroke:var(--accent);stroke-width:1.8;stroke-dasharray:6 4;opacity:0.8" }, svg);
+    el("path", { d: pth(pk), style: "fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round" }, svg);
+    st.forEach((s, i) => el("circle", { cx: pk[i][0], cy: pk[i][1], r: 6, style: `fill:var(${s.clip ? "--bad" : "--accent"});stroke:var(--surface);stroke-width:2` }, svg));
+    // stats
+    const minHead = st.reduce((a, s, i) => (-s.rel < a.v ? { v: -s.rel, i } : a), { v: 1e9, i: 0 });
+    const minSnr = st.reduce((a, s, i) => (s.rel - s.noise < a.v ? { v: s.rel - s.noise, i } : a), { v: 1e9, i: 0 });
+    const avgSpl = R.spl - (R.crest - 3);
+    const rew = Math.min(R.fs, 0) + S.cal - (R.crest - 3);
+    const err = rew - avgSpl;
+    const adcClip = R.fs > 0;
+    stat($("ch-stats"), [
+      { k: "Sound level at the mic (average)", v: num(avgSpl) + " dB SPL", s: "peaks " + num(R.spl, 0) },
+      { k: "Amp power: peaks / average", v: fmtW(R.Wpk) + " / " + fmtW(R.Wavg), s: "of " + G.ampW + " W" },
+      { k: "Tightest headroom", v: num(minHead.v) + " dB", s: st[minHead.i].name, bad: minHead.v < 0 },
+      { k: "Worst signal-to-noise", v: num(minSnr.v, 0) + " dB", s: st[minSnr.i].name, bad: minSnr.v < 40 },
+      { k: "REW's SPL meter shows", v: num(rew) + " dB", s: adcClip ? "input clipping!" : Math.abs(err) < 0.25 ? "correct" : "off by " + sgn(err) + " dB", bad: adcClip || Math.abs(err) >= 0.25 },
+    ]);
+  }
+  function applyPreset(k) { Object.assign(S, PRESETS[k].set); press(preBtns, k); $("ch-note").textContent = PRESETS[k].note; draw(); }
+  seg(preBtns, (k) => applyPreset(k));
+  seg(sigBtns, (k) => { S.sig = ["sine", "pink", "music"][k]; draw(); });
+  for (const k in sliders) sliders[k].addEventListener("input", () => { S[k] = +sliders[k].value; press(preBtns, -1); $("ch-note").textContent = "Your own setting. Pick a scenario above to compare."; draw(); });
+  $("ch-cal").addEventListener("click", () => { S.cal = compute().offsetNow; draw(); });
+  applyPreset(0);
+  S.cal = compute().offsetNow; draw();
+}
+
+/* ======================= 4 · weighting ======================= */
+function aW(f) { const f2 = f * f; const ra = (12194 ** 2 * f2 * f2) / ((f2 + 20.6 ** 2) * Math.sqrt((f2 + 107.7 ** 2) * (f2 + 737.9 ** 2)) * (f2 + 12194 ** 2)); return 20 * lg(ra) + 2.0; }
+function cW(f) { const f2 = f * f; const rc = (12194 ** 2 * f2) / ((f2 + 20.6 ** 2) * (f2 + 12194 ** 2)); return 20 * lg(rc) + 0.06; }
+{
+  // curve chart (log x, hover)
+  const host = $("wt-chart");
+  const Wd = 1000, Hd = 300, m = { l: 46, r: 14, t: 12, b: 28 }, fmin = 10, fmax = 20000, ymin = -50, ymax = 6;
+  const svg = el("svg", { viewBox: `0 0 ${Wd} ${Hd}`, role: "img", "aria-label": "A, C and Z weighting curves" }, host);
+  const cp = el("clipPath", { id: "wtclip" }, el("defs", {}, svg)); el("rect", { x: m.l, y: m.t, width: Wd - m.l - m.r, height: Hd - m.t - m.b }, cp);
+  const X = (f) => m.l + (Math.log(f / fmin) / Math.log(fmax / fmin)) * (Wd - m.l - m.r);
+  const Xi = (px) => fmin * Math.pow(fmax / fmin, (px - m.l) / (Wd - m.l - m.r));
+  const Y = (v) => m.t + (1 - (Math.max(ymin - 5, Math.min(ymax, v)) - ymin) / (ymax - ymin)) * (Hd - m.t - m.b);
+  for (let v = 0; v >= ymin; v -= 10) { el("line", { x1: m.l, x2: Wd - m.r, y1: Y(v), y2: Y(v), style: `stroke:var(${v === 0 ? "--line" : "--grid"})` }, svg); el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end" }, svg, v === 0 ? "0 dB" : num(v, 0)); }
+  for (const f of [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]) { el("line", { x1: X(f), x2: X(f), y1: m.t, y2: Hd - m.b, style: "stroke:var(--grid)" }, svg); el("text", { x: X(f), y: Hd - m.b + 16, "text-anchor": "middle" }, svg, f >= 1000 ? f / 1000 + "k" : f); }
+  el("rect", { x: X(fmin), y: m.t, width: X(200) - X(fmin), height: Hd - m.t - m.b, style: "fill:var(--band)" }, svg);
+  el("text", { x: X(14), y: Hd - m.b - 8, class: "ann" }, svg, "bass");
+  const fs = []; for (let i = 0; i <= 300; i++) fs.push(fmin * Math.pow(fmax / fmin, i / 300));
+  const curves = [{ label: "Z (none)", color: "var(--before)", f: () => 0, dash: "5 4" }, { label: "C", color: "var(--aco)", f: cW }, { label: "A", color: "var(--accent)", f: aW }];
+  for (const c of curves) el("path", { d: fs.map((f, i) => (i ? "L" : "M") + X(f).toFixed(1) + "," + Y(c.f(f)).toFixed(1)).join(""), "clip-path": "url(#wtclip)", style: `fill:none;stroke:${c.color};stroke-width:2.5;${c.dash ? "stroke-dasharray:" + c.dash : ""}` }, svg);
+  legend($("wt-legend"), curves.map((c) => ({ label: c.label, color: c.color, dash: !!c.dash })));
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; host.appendChild(tip);
+  const cur = el("line", { y1: m.t, y2: Hd - m.b, style: "stroke:var(--muted);stroke-dasharray:3 3", visibility: "hidden" }, svg);
+  const hit = el("rect", { x: m.l, y: m.t, width: Wd - m.l - m.r, height: Hd - m.t - m.b, style: "fill:transparent", tabindex: "0" }, svg);
+  function show(px) {
+    const f = Math.max(fmin, Math.min(fmax, Xi(px)));
+    cur.setAttribute("x1", X(f)); cur.setAttribute("x2", X(f)); cur.setAttribute("visibility", "visible");
+    tip.textContent = "";
+    const tf = document.createElement("div"); tf.className = "tf"; tf.textContent = fmtHz(f); tip.appendChild(tf);
+    for (const c of curves) { const row = document.createElement("div"); row.className = "row"; const sp = document.createElement("span"); const ik = document.createElement("i"); ik.style.color = c.color; sp.appendChild(ik); sp.appendChild(document.createTextNode(c.label)); const b = document.createElement("b"); b.textContent = sgn(c.f(f)) + " dB"; row.appendChild(sp); row.appendChild(b); tip.appendChild(row); }
+    tip.hidden = false;
+    const rect = host.getBoundingClientRect(), sc = rect.width / Wd;
+    let left = X(f) * sc + 14; if (left + 170 > rect.width) left = X(f) * sc - 14 - tip.offsetWidth;
+    tip.style.left = Math.max(0, left) + "px"; tip.style.top = m.t * sc + 6 + "px";
+  }
+  hit.addEventListener("pointermove", (e) => { const r = svg.getBoundingClientRect(); show((e.clientX - r.left) * (Wd / r.width)); });
+  hit.addEventListener("pointerleave", () => { tip.hidden = true; cur.setAttribute("visibility", "hidden"); });
+  hit.addEventListener("focus", () => show(X(50)));
+  hit.addEventListener("blur", () => { tip.hidden = true; cur.setAttribute("visibility", "hidden"); });
+}
+{
+  const B = [20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000, 20000];
+  const SP = {
+    pink: () => 0,
+    music: (f) => 9 * Math.exp(-((Math.log2(f / 60)) ** 2) / (2 * 0.9 ** 2)) - Math.max(0, Math.log2(f / 2000)) * 3 - (f < 30 ? 8 * Math.log2(30 / f) : 0),
+    speech: (f) => Math.max(-45, -5 * Math.log2(f / 600) ** 2),
+    sub: (f) => (f === 40 ? 0 : -45),
+  };
+  const NAMES = { pink: "Pink noise: equal energy per band, the usual measurement signal.", music: "Bass-heavy music (electronic, hip-hop): a big hump around 40–100 Hz.", speech: "Speech: energy between 200 Hz and 3 kHz, almost no bass.", sub: "A pure 40 Hz tone: all energy in one bass band." };
+  let sp = "music", wv = "c";
+  const svg = $("sp-svg"), inp = $("sp-bass");
+  const W = 1000, H = 300, m = { l: 46, r: 10, t: 14, b: 32 }, ymin = 20, ymax = 95;
+  const Y = (v) => m.t + (1 - (Math.max(ymin, Math.min(ymax, v)) - ymin) / (ymax - ymin)) * (H - m.t - m.b);
+  const pw = (arr) => 10 * lg(arr.reduce((a, v) => a + Math.pow(10, v / 10), 0));
+  function draw() {
+    const g = +inp.value; $("sp-bass-out").textContent = sgn(g) + " dB";
+    const base = B.map((f) => SP[sp](f));
+    const norm = 85 - pw(base);
+    const lv = B.map((f, i) => base[i] + norm + g / (1 + (f / 120) ** 2));
+    const lA = lv.map((v, i) => v + aW(B[i])), lC = lv.map((v, i) => v + cW(B[i]));
+    const Z = pw(lv), A = pw(lA), C = pw(lC);
+    svg.textContent = "";
+    for (let v = 30; v <= 90; v += 10) { el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)" }, svg); el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end" }, svg, v); }
+    const bw = (W - m.l - m.r) / B.length;
+    const shown = wv === "a" ? lA : lC, col = wv === "a" ? "var(--accent)" : "var(--aco)";
+    B.forEach((f, i) => {
+      const x = m.l + i * bw;
+      el("rect", { x: x + 2, y: Y(lv[i]), width: bw - 4, height: Y(ymin) - Y(lv[i]), rx: 2, style: "fill:var(--before);opacity:0.45" }, svg);
+      el("rect", { x: x + bw * 0.22, y: Y(shown[i]), width: bw * 0.56, height: Y(ymin) - Y(shown[i]), rx: 2, style: `fill:${col}` }, svg);
+      if (i % 3 === 0) el("text", { x: x + bw / 2, y: H - m.b + 16, "text-anchor": "middle" }, svg, f >= 1000 ? f / 1000 + "k" : f);
+    });
+    el("text", { x: W - m.r, y: m.t + 10, "text-anchor": "end", class: "ann" }, svg, "grey: band level (Z)   colour: after the " + wv.toUpperCase() + " filter   (dB SPL per third-octave band)");
+    stat($("sp-stats"), [{ k: "dB(Z): plain dB SPL", v: num(Z) }, { k: "dB(C)", v: num(C) }, { k: "dB(A)", v: num(A) }, { k: "C − A gap", v: num(C - A) + " dB", s: C - A > 5 ? "bass-heavy" : "little bass" }]);
+    $("sp-caption").textContent = NAMES[sp] + (g !== 0 ? ` With the bass ${g > 0 ? "up" : "down"} ${Math.abs(g)} dB, dB(C) moves ${num(C - pw(lv.map((v, i) => base[i] + norm + cW(B[i]))))} dB and dB(A) only ${num(A - pw(lv.map((v, i) => base[i] + norm + aW(B[i]))))} dB.` : " Move the bass slider to compare how much each reading reacts.");
+  }
+  const spBtns = [...document.querySelectorAll("[data-sp]")];
+  seg(spBtns, (k, b) => { sp = b.dataset.sp; draw(); });
+  seg([$("wv-a"), $("wv-c")], (k) => { wv = k ? "c" : "a"; draw(); });
+  inp.addEventListener("input", draw); draw();
+}
+
+/* ======================= 5 · adding ======================= */
+{
+  const a = $("ad-a"), b = $("ad-b"), p = $("ad-p"), wrap = $("ad-p-wrap"), svg = $("ad-svg");
+  let same = false;
+  function draw() {
+    const A = +a.value, Bv = +b.value, ph = +p.value;
+    a.previousElementSibling.querySelector("output").textContent = num(A) + " dB";
+    b.previousElementSibling.querySelector("output").textContent = num(Bv) + " dB";
+    p.previousElementSibling.querySelector("output").textContent = ph + "° of a cycle";
+    p.disabled = !same; wrap.setAttribute("aria-disabled", String(!same));
+    let S;
+    if (!same) S = 10 * lg(Math.pow(10, A / 10) + Math.pow(10, Bv / 10));
+    else { const pa = Math.pow(10, A / 20), pb = Math.pow(10, Bv / 20); const m2 = pa * pa + pb * pb + 2 * pa * pb * Math.cos(ph * Math.PI / 180); S = m2 > 1e-12 ? 10 * lg(m2) : -Infinity; }
+    svg.textContent = "";
+    const W = 1000, l = 140, r = 70, x0 = 40, x1 = 110;
+    const X = (v) => l + ((Math.max(x0, Math.min(x1, v)) - x0) / (x1 - x0)) * (W - l - r);
+    for (let v = x0; v <= x1; v += 10) { el("line", { x1: X(v), x2: X(v), y1: 4, y2: 126, style: "stroke:var(--grid)" }, svg); el("text", { x: X(v), y: 144, "text-anchor": "middle" }, svg, v + " dB"); }
+    const rows = [["Source A", A, "var(--before)"], ["Source B", Bv, "var(--before)"], ["Together", S, "var(--accent)"]];
+    rows.forEach(([t, v, c], i) => {
+      const y = 10 + i * 40;
+      el("text", { x: 0, y: y + 18, class: "ann" }, svg, t);
+      if (isFinite(v) && v > x0) el("rect", { x: l, y, width: X(v) - l, height: 26, rx: 3, style: `fill:${c}` }, svg);
+      el("text", { x: (isFinite(v) && v > x0 ? X(v) : l) + 8, y: y + 18, class: "big" }, svg, isFinite(v) ? num(v) + " dB" : "silence");
+    });
+    const d = S - Math.max(A, Bv);
+    let cap;
+    if (!same) cap = `Unrelated: the powers add. ${num(A)} + ${num(Bv)} dB → ${num(S)} dB, that is ${sgn(d)} dB over the louder one alone. ` + (Math.abs(A - Bv) >= 10 ? "One is 10+ dB quieter, so it barely counts." : A === Bv ? "Two equal sources: +3 dB." : "");
+    else cap = `Same signal: the pressure waves add up wave by wave. ` + (ph === 0 ? `In step: +6 dB for two equal ones.` : ph === 180 ? (A === Bv ? "Exactly opposite and equally loud: they cancel completely. EQ can't fix that: boosting makes both waves bigger, and they still cancel." : "Opposite: the quieter one subtracts from the louder.") : `${ph}° apart: ${isFinite(d) ? sgn(d) : "−∞"} dB compared with the louder one alone.`) + " At 50 Hz, 180° is a path difference of 3.4 m; at 100 Hz, 1.7 m.";
+    $("ad-caption").textContent = cap;
+  }
+  seg([$("ad-u"), $("ad-s")], (k) => { same = k === 1; draw(); });
+  [a, b, p].forEach((x) => x.addEventListener("input", draw)); draw();
+}
+
+/* ======================= 6 · crest factor ======================= */
+{
+  const N = 24000, SRc = 48000;
+  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647 * 2 - 1; };
+  function gen(kind) {
+    const x = new Float32Array(N);
+    if (kind === "sine") for (let i = 0; i < N; i++) x[i] = Math.sin(2 * Math.PI * 80 * i / SRc);
+    else if (kind === "square") for (let i = 0; i < N; i++) x[i] = Math.sin(2 * Math.PI * 80 * i / SRc) >= 0 ? 1 : -1;
+    else if (kind === "pink") { seed = 7; let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0; for (let i = 0; i < N; i++) { const w = rnd(); b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759; b2 = 0.96900 * b2 + w * 0.1538520; b3 = 0.86650 * b3 + w * 0.3104856; b4 = 0.55000 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.0168980; x[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362; b6 = w * 0.115926; } }
+    else { seed = 11; for (let i = 0; i < N; i++) { const t = i / SRc; const tk = t % 0.25; const kick = Math.exp(-tk * 22) * Math.sin(2 * Math.PI * (50 + 90 * Math.exp(-tk * 40)) * tk); const th = (t + 0.125) % 0.25; const hat = Math.exp(-th * 90) * rnd() * 0.35; const bass = 0.22 * Math.sin(2 * Math.PI * 55 * t) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 2 * t)); x[i] = kick + hat + bass; } }
+    let pk = 0; for (let i = 0; i < N; i++) pk = Math.max(pk, Math.abs(x[i]));
+    for (let i = 0; i < N; i++) x[i] /= pk;
+    return x;
+  }
+  const SIGS = {}; for (const k of ["sine", "square", "pink", "music"]) SIGS[k] = gen(k);
+  const NOTES = { sine: "A sine's peak is 3 dB above its RMS. That's why a sine is the reference for most specs.", square: "A square wave is 'all peak': crest factor 0 dB. Heavily clipped or over-compressed audio approaches this, and so does its heat in the tweeter.", pink: "Pink noise peaks about 12 dB above its average. A generator set to an RMS level needs that much headroom above it.", music: "Drums make sharp peaks with little energy between them: a crest factor of 15–20 dB. Meters watching only the average would miss the clipping." };
+  let kind = "sine";
+  const cv = $("cf-canvas"), ctx = cv.getContext("2d"), g = $("cf-g");
+  function draw() {
+    const gain = +g.value, k = Math.pow(10, gain / 20); $("cf-g-out").textContent = "peaks at " + sgn(gain) + " dBFS";
+    const x = SIGS[kind];
+    let sq = 0, clipped = 0, pk = 0;
+    for (let i = 0; i < N; i++) { const v = x[i] * k; const c = Math.max(-1, Math.min(1, v)); if (c !== v) clipped++; sq += c * c; pk = Math.max(pk, Math.abs(c)); }
+    const rms = Math.sqrt(sq / N), pkDb = 20 * lg(pk), rmsDb = 20 * lg(rms);
+    const Wc = cv.width, Hc = cv.height, mid = Hc / 2, fsY = Hc * 0.36;
+    ctx.clearRect(0, 0, Wc, Hc);
+    ctx.fillStyle = cssv("--bad-fill"); ctx.fillRect(0, 0, Wc, mid - fsY); ctx.fillRect(0, mid + fsY, Wc, Hc - mid - fsY);
+    ctx.strokeStyle = cssv("--grid"); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(Wc, mid); ctx.stroke();
+    const visN = kind === "sine" || kind === "square" ? 2400 : N;
+    const per = visN / Wc;
+    for (const pass of ["raw", "clip"]) {
+      ctx.strokeStyle = pass === "raw" ? cssv("--bad") : cssv("--accent"); ctx.lineWidth = pass === "raw" ? 1 : 1.4; ctx.beginPath();
+      for (let px = 0; px < Wc; px++) {
+        let lo = 1e9, hi = -1e9; const s0 = Math.floor(px * per), s1 = Math.max(s0 + 1, Math.floor((px + 1) * per));
+        for (let i = s0; i < s1 && i < N; i++) { let v = x[i] * k; if (pass === "clip") v = Math.max(-1, Math.min(1, v)); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+        const yl = Math.max(0, Math.min(Hc, mid - hi * fsY)), yh = Math.max(0, Math.min(Hc, mid - lo * fsY));
+        if (per <= 1.5) { if (px === 0) ctx.moveTo(px, yl); else ctx.lineTo(px, yl); } else { ctx.moveTo(px + 0.5, yl); ctx.lineTo(px + 0.5, Math.max(yh, yl + 1)); }
+      }
+      ctx.stroke();
+    }
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = cssv("--ink-2"); ctx.lineWidth = 1;
+    for (const s of [1, -1]) { ctx.beginPath(); ctx.moveTo(0, mid - s * rms * fsY); ctx.lineTo(Wc, mid - s * rms * fsY); ctx.stroke(); }
+    ctx.setLineDash([]); ctx.strokeStyle = cssv("--bad"); ctx.lineWidth = 1.5;
+    for (const s of [1, -1]) { ctx.beginPath(); ctx.moveTo(0, mid - s * fsY); ctx.lineTo(Wc, mid - s * fsY); ctx.stroke(); }
+    ctx.fillStyle = cssv("--muted"); ctx.font = "12px " + cssv("--font-mono");
+    ctx.fillText("0 dBFS (full scale)", 8, mid - fsY - 6); ctx.textAlign = "right"; ctx.fillText("RMS level (dashed)", Wc - 8, mid - rms * fsY - 6); ctx.textAlign = "left";
+    ctx.fillText(kind === "sine" || kind === "square" ? "50 ms" : "0.5 s", Wc - 60, Hc - 8);
+    stat($("cf-stats"), [
+      { k: "Sample peak", v: num(pkDb) + " dBFS", bad: clipped > 0 },
+      { k: "RMS", v: num(rmsDb) + " dBFS", s: "AES: " + num(rmsDb + 3.01) },
+      { k: "Crest factor (peak − RMS)", v: num(pkDb - rmsDb) + " dB" },
+      { k: "Clipped samples", v: clipped ? (100 * clipped / N).toFixed(clipped / N < 0.01 ? 2 : 1) + " %" : "none", bad: clipped > 0 },
+    ]);
+    $("cf-caption").textContent = NOTES[kind] + (clipped ? " Above 0 dBFS the peaks are cut off (red: what's lost). The peak meter stays at 0 dBFS, but the RMS keeps rising and the crest factor shrinks: that's distortion, and why 'louder' by clipping sounds worse." : "");
+  }
+  seg([...document.querySelectorAll("[data-cf]")], (i, b) => { kind = b.dataset.cf; draw(); });
+  g.addEventListener("input", draw); onTheme(draw); draw();
+}
+})();
+</script>
