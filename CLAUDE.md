@@ -12,6 +12,7 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
   - New decision → a row in [docs/decisions.md](docs/decisions.md).
   - Rewiring / reconfiguring → [docs/current-setup.md](docs/current-setup.md).
   - New measurements → `measurements/<date>/<set>/`, conventions in [measurements/README.md](measurements/README.md).
+  - Anything still to be done (next session, later ideas) → [docs/plans/](docs/plans/). [docs/procedures/](docs/procedures/) holds only the static how-to (setup, checklist, what a measurement set contains), no "next" or "done" status.
   - New or changed working rules for Claude → this file.
 
 ## Working with the user

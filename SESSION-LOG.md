@@ -3,7 +3,7 @@
 Read this first. **Status** and **Next** are kept current; the **Log** gets one dated entry per session (newest at the bottom; don't edit old entries).
 Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md). What is wired/configured now: [docs/current-setup.md](docs/current-setup.md).
 
-## Status (2026-11-20)
+## Status (2026-11-21)
 
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
 - **Live mode wired** (TV → In A/B, mixer → In C/D, summed A+C → 1, B+D → 2 in all presets; UMC disconnected; no hum/hiss with the mixer on but idle): [docs/current-setup.md](docs/current-setup.md#two-modes).
@@ -12,9 +12,9 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 
 ## Next
 
-1. Acoustic re-measurement (measuring mode: DSP back on the UMC) with EQ on, both presets (v2 everyday, v1 loud): [docs/procedures/measurement-plan.md](docs/procedures/measurement-plan.md#with-eq-on-next).
+1. Next measuring session, run sheet: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). v2 electrical check, then v1/v2 in the room interleaved per mic position, then Sub8 sub-only passes at spots C and A. Sub8 not wired yet; check the TRS cable length first.
 2. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
-3. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md). Candidate spots A (speaker wall) and C (right wall, sofa end) to measure; model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
+3. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
 4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
 5. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
 6. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
@@ -62,3 +62,11 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - Planned as a last nice-to-have: one concrete slab per speaker on Sylomer pads, sized after weighing a speaker: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
 - Levels explainer, section 4: equal-loudness contours (ISO 226 table) explain why A and C differ; note separating the Harman preference target from loudness compensation. "Music, well staged": a cut-only EQ needs no −6 dB DSP output headroom (v1 and v2 are cut-only, faders stay at 0 dB).
 - User: at loud levels (amp 50–60) EQ v1 really matches their taste ([findings/2026-11-20-listening.md](findings/2026-11-20-listening.md)).
+
+### 2026-11-21: next measuring session planned
+
+- Run sheet for the next session: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). Order: EQ v2 electrical check, then mains v1/v2 interleaved at each mic position (exact comparison; mic re-placement only ±5 cm), then Sub8 sub-only passes at spots C and A.
+- User: amp volume for measuring = 50 ([docs/current-setup.md](docs/current-setup.md#levels-fixed-dont-touch)).
+- Sub8 (not wired yet): gain 0 dB, low-pass 130 Hz, high-pass off, polarity 0°; level and all filtering on DSP Out 3, via a new preset P04 SUB MEAS (In A → Out 3, Out 1/2 muted). Decision row in [docs/decisions.md](docs/decisions.md).
+- Naming extended: `eq-` sets hold v1 and v2 (tag `eq1`/`eq2`), sub sweeps `3 S <position> subC|subA` ([measurements/README.md](measurements/README.md)).
+- Docs: `procedures/measurement-plan.md` → [procedures/measurement-sets.md](docs/procedures/measurement-sets.md) (static method only); later ideas → [docs/plans/later-measurements.md](docs/plans/later-measurements.md). Rule in CLAUDE.md: plans in `docs/plans/`, how-to in `docs/procedures/`.

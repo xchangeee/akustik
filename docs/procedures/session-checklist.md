@@ -1,13 +1,13 @@
 # Measurement session checklist
 
-Use every time before measuring. First-time setup: [measurement-setup.md](measurement-setup.md). What to measure: [measurement-plan.md](measurement-plan.md).
+Use every time before measuring. First-time setup: [measurement-setup.md](measurement-setup.md). What a set contains: [measurement-sets.md](measurement-sets.md); what to measure this time: the session plan in [plans/](../plans/).
 
 ## Checklist
 
 - [ ] macOS sound output = Mac speakers, not the UMC
 - [ ] Audio MIDI Setup: UMC404HD 48 kHz in/out
 - [ ] Amp volume down, amp switched on last
-- [ ] DSP flat preset loaded, amp EQ/high-pass off
+- [ ] DSP preset as the session plan says (FLAT for a baseline), amp EQ/high-pass off
 - [ ] +48 V on, PAD off on in 1, MIX at PLAYBACK
 - [ ] REW: in 1 / out 1 or 2, loopback in 2 / out 3, 48 kHz
 - [ ] Correct cal file loaded (90° up at seat, 0° for close-up)

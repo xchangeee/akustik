@@ -17,8 +17,10 @@ All 2026-11-18 sets: 512k sweep, −24 dBFS (close-ups −40), loopback timing r
 
 ## Conventions for new measurements
 
-- Folder: `measurements/<YYYY-MM-DD>/<set>/`, with the REW project saved in it as `<YYYY-MM-DD>-<set>.mdat`. Sets measured with an EQ loaded get a prefix, e.g. `eq1-seat`, `eq2-dj`.
+- Folder: `measurements/<YYYY-MM-DD>/<set>/`, with the REW project saved in it as `<YYYY-MM-DD>-<set>.mdat`. Sets measured with an EQ loaded get a prefix, e.g. `eq1-seat`, `eq2-dj` (`eq-seat` for v1 and v2 interleaved in one set); sub-only sets `subC-seat`, `subA-dj`.
 - REW measurement names (they become the WAV names): `<n> <L|R> <position> <date>`, e.g. `1 L pos1 left30 Nov 18`. Same position names as above, so the scripts can pair them across sets.
+  - Sub: `3 S <position> <subA|subC> <date>` (n = DSP Out 3).
+  - Sets holding several presets measured interleaved at the same mic spot (prefix `eq-`, e.g. `eq-seat`): preset tag before the date, `1 L pos1 left30 eq1 Nov 22`.
 - **IR export** (impulse response as WAV): 32-bit float, measured IR, **t=0 at sample 256**, no normalise, no window. 48 kHz.
 - Add a row to the table above.
 

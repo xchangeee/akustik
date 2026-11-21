@@ -41,7 +41,7 @@ The DSP is moved between two setups:
 
 ## Levels (fixed; don't touch)
 
-Amp volume and UMC In 1 gain were set in setup Phase D (2026-11-17) and must stay where they are; the user has a photo of both knobs.
+Amp volume and UMC In 1 gain were set in setup Phase D (2026-11-17) and must stay where they are; the user has a photo of both knobs. **Amp volume for measuring: 50** (user, 2026-11-21).
 REW is SPL-calibrated for this gain (2026-11-18, within 1 dB of the iPhone; input clips at ~105 dB SPL).
 REW output level for pink noise and sweeps: **−24 dBFS**, fixed (close-ups −40 dBFS). Amp volume sets loudness.
 Level numbers per speaker: [findings/2026-11-17-setup-checks.md](../findings/2026-11-17-setup-checks.md#phase-d-levels-and-the-lr-difference-2026-11-17).

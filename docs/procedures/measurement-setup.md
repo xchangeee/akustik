@@ -176,7 +176,7 @@ This is the part that answers "what level where". Work from the source forward.
 
 - [x] Room quiet: windows closed, fridge/fans/dishwasher off if possible, phone on silent, you sitting still (or out of the room).
 - [x] Measure **L only** at the main seat. Then **R only**.
-- [x] Sanity checks (see [measurement-plan.md](measurement-plan.md), step 1):
+- [x] Sanity checks (see [measurement-sets.md](measurement-sets.md), step 1):
   - [x] Timing reference works: the peak sits at the acoustic delay (not t = 0); L/R arrivals within 0.2 ms, or add delay.
   - [x] Same polarity: L and R impulses have the main spike in the same direction.
   - [x] Levels similar from 1 to 8 kHz.
@@ -184,5 +184,5 @@ This is the part that answers "what level where". Work from the source forward.
   - [x] No clipping.
 - [ ] If something's off: compare with the troubleshooting table below before measuring more.
 
-Once this works, you are ready for the [measurement plan](measurement-plan.md).
+Once this works, you are ready to measure: [measurement-sets.md](measurement-sets.md), and the session plan in [plans/](../plans/).
 
