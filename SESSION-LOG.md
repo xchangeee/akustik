@@ -17,6 +17,7 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 3. Optional: Sub8 overlay: [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md). Candidate spots A (speaker wall) and C (right wall, sofa end) to measure; model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
 4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
 5. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
+6. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
 
 Open questions for the user: a fresh REW settings export after the calibration (optional).
 
@@ -53,3 +54,9 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - Source levels: TV out 80/100, mixer master +3 dB, both set by ear; no loudness difference noticed.
 - Sub8 spots: user sketched A (speaker wall, L–TV), B (in front of the KALLAX), C (right wall, sofa end, 0.40 m off the wall, 2.50 m from the speaker wall). Rigid-box modal model (validated on measured R − L, r = 0.61): C adds 25–40 Hz (28.6 Hz mode) without more 44 Hz; A mainly adds 44 Hz; B weak and leak-prone → dropped: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
 - Seat confirmed at ~4.4 m along the speaker wall (the sketch's ~3.9 m is a drawing inaccuracy).
+
+### 2026-11-21: TV settings, speaker isolation plan
+
+- User: all TV sound processing off, TV analog out fixed at 80/100 ([docs/current-setup.md](docs/current-setup.md)).
+- Floor is wooden parquet (underneath unknown); speakers on spikes → base plates → felt.
+- Planned as a last nice-to-have: one concrete slab per speaker on Sylomer pads, sized after weighing a speaker: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).

@@ -21,6 +21,7 @@ The DSP is moved between two setups:
 - Routing in **all presets**: A+C → Out 1, B+D → Out 2 (summed, so whichever source plays is heard).
 - Usually only one source plays at a time. The mixer is usually switched off completely. TV and mixer are on the same power line.
 - Checked 2026-11-20: TV playing with the mixer on but idle, no hum or hiss.
+- TV settings (confirmed 2026-11-21): all TV sound processing off, analog output level fixed at 80/100.
 - Source levels (2026-11-20): TV analog output volume 80/100, mixer master +3 dB on the master level meter. Both set by ear, no difference in loudness noticed. The amp volume positions per EQ ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq)) assume these source levels.
 
 ## Wiring: measuring

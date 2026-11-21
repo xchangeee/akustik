@@ -70,13 +70,14 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
   - Use the DSP output gain for fine level matching.
   - If it hisses, lower the amp gain and raise the signal earlier in the chain.
 - **TV settings:** turn off all TV sound processing (bass boost, clear voice, virtual surround, auto volume, TV EQ).
-  Choose a fixed or variable analog out and stay with it.
+  Choose a fixed or variable analog out and stay with it. Done, see [current-setup.md](current-setup.md).
 - **Level safety net:** a DSP output limiter so the system can't go louder than a sensible maximum,
   regardless of TV or amp volume: [procedures/output-limiter.md](procedures/output-limiter.md).
 
 ## Room
 
 - 6.0 m × 3.9 m × 2.8 m (L × W × H)
+- Floor: wooden parquet (user 2026-11-21; what's underneath not known yet). Speakers on spikes → base plates → felt → parquet.
 - Existing treatment: large sofa, shelf, lots of molton flat on the walls (absorbs highs only). No bass traps (no space).
 
 Layout (user's sketch 2026-11-18, positions approximate): [img/room-layout-sketch.png](img/room-layout-sketch.png)
@@ -132,7 +133,7 @@ Axial modes in Hz (c = 343 m/s):
 - Sound also travels through the floor into the building. Floorstanding speakers on a wooden or
   floating floor pass vibration on directly.
   Try decoupling: a heavy slab (stone/concrete) on soft pads, or dedicated isolation feet.
-  Spikes couple more, not less.
+  Spikes couple more, not less. Plan: [plans/speaker-isolation.md](plans/speaker-isolation.md).
 - Overall level: the low end decides it. An EQ that removes the mode peaks often lets you play at
   the same perceived loudness with less bass energy.
 
