@@ -10,7 +10,7 @@ Tools: measurements in REW and per-channel EQ in a 4-ch DSP. Absorbers maybe lat
 
 Problems at the start:
 
-- bass is audible in the staircase
+- bass is audible in the staircase; neighbours above hear loud sessions (user 2026-11-21)
 - bass is very uneven across the room ("full on or nothing at all")
 - worst at the **DJ position**: turntables on a cupboard to the left of L, along the speaker wall (can't be moved)
 
@@ -77,7 +77,7 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
 ## Room
 
 - 6.0 m × 3.9 m × 2.8 m (L × W × H)
-- Floor: wooden parquet (user 2026-11-21; what's underneath not known yet). Speakers on spikes → base plates → felt → parquet.
+- Floor: wooden parquet, probably on concrete (user 2026-11-21: "we think it's a concrete floor"; not confirmed). Below: only a cellar, no flat. Above: neighbours. Speakers on spikes → base plates → felt → parquet.
 - Existing treatment: large sofa, shelf, lots of molton flat on the walls (absorbs highs only). No bass traps (no space).
 
 Layout (user's sketch 2026-11-18, positions approximate): [img/room-layout-sketch.png](img/room-layout-sketch.png)

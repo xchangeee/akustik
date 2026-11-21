@@ -58,5 +58,5 @@ Open questions for the user: a fresh REW settings export after the calibration (
 ### 2026-11-21: TV settings, speaker isolation plan
 
 - User: all TV sound processing off, TV analog out fixed at 80/100 ([docs/current-setup.md](docs/current-setup.md)).
-- Floor is wooden parquet (underneath unknown); speakers on spikes → base plates → felt.
+- Floor is wooden parquet, probably on concrete (not confirmed); speakers on spikes → base plates → felt.
 - Planned as a last nice-to-have: one concrete slab per speaker on Sylomer pads, sized after weighing a speaker: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).

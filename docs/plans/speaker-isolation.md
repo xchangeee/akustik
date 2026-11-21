@@ -3,9 +3,14 @@
 Nice-to-have, done last. Goal: **less bass leaking into the building through the floor**.
 The in-room sound is handled by the EQ and absorbers, not by this.
 
+Who hears it (user 2026-11-21): no flat below (only a cellar); the **neighbours above** hear loud sessions.
+So the floor path only counts as structure-borne sound running through the concrete into walls and up.
+The direct path (room pressure pushing on the ceiling) is likely at least as strong and isn't touched by this plan.
+Cheap test before buying: see [Check that it worked](#check-that-it-worked).
+
 ## Now
 
-Speaker on spikes → base plates → felt → wooden parquet (what's under the parquet: not known).
+Speaker on spikes → base plates → felt → wooden parquet, probably on concrete (user thinks so, 2026-11-21; not confirmed).
 Felt is thin and stiff: it probably compresses so little that its resonance sits in the bass, so it does little where the leakage is.
 
 ## Decided (user 2026-11-21)
@@ -35,4 +40,7 @@ f0 ≈ 15.8 / √(static deflection in mm) Hz → the pads must compress **≈ 1
 
 ## Check that it worked
 
-Same track, same amp volume, listen in the staircase / below, before vs after.
+Same track, same amp volume, listen in the staircase / upstairs, before vs after.
+
+Test before buying (rough): play loud, someone listens upstairs. Then stand the speakers temporarily on something very soft
+(thick foam, folded mattress) and repeat. If upstairs barely changes, the floor path isn't the main one and the slabs are not worth it.
