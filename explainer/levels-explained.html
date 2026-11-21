@@ -117,9 +117,21 @@ table.vals td:first-child { font-family: var(--font-mono); white-space: nowrap; 
 .tablewrap { overflow-x: auto; width: 100%; }
 
 /* the chain map */
-.chain { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 0; align-items: stretch; }
-.chain li { display: flex; align-items: center; }
-.chain li:not(:last-child)::after { content: "→"; color: var(--muted); padding: 0 8px; font-size: 1.1rem; }
+.chain { list-style: none; margin: 0; padding: 0; display: flex; align-items: stretch; }
+.chain { --arrow: 24px; }
+.chain li { flex: 0 0 calc((100% - 7 * var(--arrow)) / 8 + var(--arrow)); min-width: 0; display: flex; align-items: center; }
+.chain li:last-child { flex-basis: calc((100% - 7 * var(--arrow)) / 8); }
+.chain li:not(:last-child)::after { content: "→"; color: var(--muted); width: var(--arrow); flex: none; text-align: center; font-size: 1rem; }
+.chain .node { flex: 1; align-self: stretch; min-width: 0; gap: 4px; padding: 8px; }
+.chain .node b { line-height: 1.25; }
+.chain .node span { display: block; line-height: 1.35; font-size: 0.76rem; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .chain { flex-direction: column; }
+  .chain li, .chain li:last-child { flex: none; flex-direction: column; align-items: stretch; }
+  .chain li:not(:last-child)::after { content: "↓"; width: auto; text-align: left; padding: 2px 0 2px 16px; line-height: 1.2; }
+  .chain .node span { display: inline; }
+  .chain .node span + span::before { content: " · "; }
+}
 .node { border: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 96px; background: var(--surface); }
 .node b { font-size: 0.86rem; font-weight: 600; }
 .node span { font-family: var(--font-mono); font-size: 0.8rem; color: var(--c); }
@@ -141,13 +153,13 @@ table.vals td:first-child { font-family: var(--font-mono); white-space: nowrap; 
     <div class="fig-head"><span class="fig-title">One signal, many rulers</span></div>
     <ol class="chain" aria-label="Signal chain of a measurement">
       <li><div class="node d"><b>Generator / file</b><span>dBFS</span></div></li>
-      <li><div class="node e"><b>Interface out (DAC)</b><span>dBu · volts</span></div></li>
-      <li><div class="node e"><b>DSP</b><span>dBu in · <em class="dig" style="font-style:normal">dBFS inside</em> · dBu out</span></div></li>
-      <li><div class="node e"><b>Amplifier</b><span>volts · watts</span></div></li>
-      <li><div class="node a"><b>Speaker + room</b><span>dB SPL · dB(A) · dB(C)</span></div></li>
-      <li><div class="node e"><b>Microphone</b><span>mV/Pa · dBV</span></div></li>
+      <li><div class="node e"><b>Interface out (DAC)</b><span>dBu</span><span>volts</span></div></li>
+      <li><div class="node e"><b>DSP</b><span>dBu in</span><span><em class="dig" style="font-style:normal">dBFS inside</em></span><span>dBu out</span></div></li>
+      <li><div class="node e"><b>Amplifier</b><span>volts</span><span>watts</span></div></li>
+      <li><div class="node a"><b>Speaker + room</b><span>dB SPL</span><span>dB(A)</span><span>dB(C)</span></div></li>
+      <li><div class="node e"><b>Microphone</b><span>mV/Pa</span><span>dBV</span></div></li>
       <li><div class="node d"><b>Preamp + ADC</b><span>dBFS</span></div></li>
-      <li><div class="node a"><b>REW</b><span>dB SPL (calibrated)</span></div></li>
+      <li><div class="node a"><b>REW</b><span>dB SPL</span><span>(calibrated)</span></div></li>
     </ol>
     <div class="dom"><span class="d">digital: numbers in a computer</span><span class="e">electrical: voltage in a cable</span><span class="a">acoustic: pressure in the air</span></div>
     <p class="caption">A measurement is a loop: it starts as numbers (dBFS), becomes voltage (dBu, V), becomes air pressure (dB SPL), becomes voltage again at the mic and ends as numbers again. Each arrow is a converter, and each converter has <strong>one calibration number</strong> that links the ruler before it to the ruler after it. That's the whole secret, and section 3 lets you play with it.</p>
@@ -159,6 +171,7 @@ table.vals td:first-child { font-family: var(--font-mono); white-space: nowrap; 
     <span class="eyebrow">1 · The bare dB</span>
     <h2>A decibel is a ratio, nothing more</h2>
     <p>A plain "dB" never means a loudness. It compares two things: <span class="mono">dB = 20 · log₁₀(a / b)</span> for amplitudes (voltage, air pressure, sample values) and <span class="mono">10 · log₁₀(P₁ / P₂)</span> for power. Both give the same number for the same change, because power grows with amplitude squared.</p>
+    <p class="note">Where the rules of thumb come from. log₁₀(2) = 0.301, so twice the power is 10 · 0.301 = <strong>3 dB</strong>. Power goes with amplitude squared (P = V²/R, and the same for pressure), and a logarithm turns a square into a factor of 2: <span class="mono">10 · log₁₀(V₁²/V₂²) = 20 · log₁₀(V₁/V₂)</span>. So twice the voltage is 20 · 0.301 = <strong>6 dB</strong>, which is the same as 4× the power (10 · log₁₀ 4 = 6). Two sounds add wave by wave, and the power goes with the square of the sum: (p₁ + p₂)² = p₁² + p₂² + 2·p₁·p₂. For two unrelated sounds the cross term 2·p₁·p₂ averages to zero over time, so the powers add: two equal ones give twice the power, +3 dB. For the same signal in step, p₁ = p₂, the pressure doubles: +6 dB. Exactly opposite, p₂ = −p₁: silence (section 5).</p>
     <p>Gain knobs, faders, EQ bands and "R is 2 dB louder than L" are all plain dB: they say <em>how much more or less</em>, not <em>how much</em>. 0 dB means "unchanged", not "off".</p>
   </div>
   <div class="fig">
@@ -296,6 +309,24 @@ table.vals td:first-child { font-family: var(--font-mono); white-space: nowrap; 
     <div class="chart" id="wt-chart"></div>
     <div class="legend" id="wt-legend"></div>
     <p class="caption"><strong>A</strong> models the ear at quiet levels: −30 dB at 50 Hz, so bass barely counts. <strong>C</strong> models the ear at loud levels: flat down to about 50 Hz, −3 dB at 31.5 Hz. <strong>Z</strong> ("zero") is no filter at all, the plain dB SPL. Hover for values.</p>
+  </div>
+  <div class="col prose">
+    <h3>Why two curves: the ear's bass sensitivity depends on level</h3>
+    <p>Play a 1 kHz tone, then ask listeners to set a 50 Hz tone so it sounds equally loud. The 50 Hz tone always needs more SPL, but how much more depends on how loud the reference is. These matches are the <strong>equal-loudness contours</strong> (ISO 226); one contour per loudness level, measured in <strong>phon</strong> (n phon = as loud as n dB SPL at 1 kHz).</p>
+    <div class="scrollx"><table class="vals">
+      <thead><tr><th>Loudness</th><th>SPL needed at 1 kHz</th><th>at 100 Hz</th><th>at 50 Hz</th><th>at 31.5 Hz</th></tr></thead>
+      <tbody>
+        <tr><td>20 phon</td><td>20 dB</td><td>48 dB (+28)</td><td>64 dB (+44)</td><td>76 dB (+56)</td></tr>
+        <tr><td>40 phon</td><td>40 dB</td><td>64 dB (+24)</td><td>78 dB (+38)</td><td>88 dB (+48)</td></tr>
+        <tr><td>60 phon</td><td>60 dB</td><td>79 dB (+19)</td><td>90 dB (+30)</td><td>99 dB (+39)</td></tr>
+        <tr><td>80 phon</td><td>80 dB</td><td>93 dB (+13)</td><td>102 dB (+22)</td><td>110 dB (+30)</td></tr>
+        <tr><td>90 phon</td><td>90 dB</td><td>99 dB (+9)</td><td>108 dB (+18)</td><td>115 dB (+25)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="caption">ISO 226:2003, computed from the standard's formula and rounded to 1 dB.</p>
+    <p>The bass penalty shrinks as the level rises: at 50 Hz from +38 dB (quiet) to +18 dB (loud). Put the other way, bass loudness grows faster than midrange loudness. At 50 Hz, going from 40 to 90 phon takes only about 30 dB more SPL, so every 10 dB turned up adds about 17 phon of bass loudness and 10 phon in the mids. That's why music sounds thin when it's quiet and much bassier when it's loud, and why old hi-fi amps had a "loudness" button.</p>
+    <p>No single filter can follow a moving target, so the standard defines several. A was derived from a quiet (40 phon) contour and C from a very loud (100 phon) one. Both are simplified fits to the 1930s contour data, so neither matches the modern table exactly. A's −30 dB at 50 Hz sits near today's 60 phon contour. C is flatter than even the 90 phon row, so it's better described as "nearly unweighted" than as an accurate model of loud listening.</p>
+    <p class="note">The same effect shows up in EQ target curves, but don't mix the two ideas up. A preference target like the Harman in-room curve (a bass rise of several dB below ~100 Hz) comes from listening tests at a normal listening level. It's what people liked, not a correction for one loudness level, and listeners still preferred some bass rise at higher levels. Level-dependent correction is a separate feature, <em>loudness compensation</em> (Audyssey Dynamic EQ, Dirac Live's loudness option, the old loudness button). It adds bass as the volume goes down, by roughly the difference between the contour rows above. In practice the two combine: a quiet room benefits from more bass rise, and at loud levels less bass rise sounds balanced, and less bass rise also means less leaking out of the room and more headroom.</p>
   </div>
   <div class="col prose">
     <p>The same sound can therefore have very different numbers. Here is a sound split into third-octave bands, like a real-time analyser shows it. Push the bass slider and watch which readings move:</p>
@@ -580,7 +611,7 @@ new MutationObserver(() => themeListeners.forEach((f) => f())).observe(document.
   const sigBtns = [$("sg-sine"), $("sg-pink"), $("sg-music")];
   const PRESETS = [
     { name: "Measuring", set: { sig: "pink", lvl: -12, knob: 0, dsp: 0, vol: -10, dist: 3, pre: 30 }, note: "Pink noise from the generator, every line-level box running with plenty of headroom (10+ dB) and far above its noise floor. The room's own background noise (30 dB SPL) is the floor that matters for the mic." },
-    { name: "Music, well staged", set: { sig: "music", lvl: -1, knob: 0, dsp: -6, vol: -14, dist: 3, pre: 30 }, note: "Music peaks at −1 dBFS. The DSP fader at −6 dB leaves room for EQ boosts; loudness is set at the amp. Noise is 100 dB below the signal everywhere: inaudible." },
+    { name: "Music, well staged", set: { sig: "music", lvl: -1, knob: 0, dsp: -6, vol: -14, dist: 3, pre: 30 }, note: "Music peaks at −1 dBFS. The DSP fader at −6 dB leaves room for EQ boosts; loudness is set at the amp. With a cut-only EQ (every band negative) nothing gets louder inside the DSP, so the fader can stay at 0 dB; with boosts, lower it by about the largest boost. Noise is 100 dB below the signal everywhere: inaudible." },
     { name: "Turned down early", set: { sig: "music", lvl: -30, knob: -20, dsp: 12, vol: 0, dist: 3, pre: 30 }, note: "Quiet file, output knob low, then everything cranked to make up for it. The signal sits close to the noise floor of the first boxes, and that noise gets amplified all the way to the speaker: audible hiss with less level at the seat." },
     { name: "DSP clipping", set: { sig: "music", lvl: 0, knob: 0, dsp: 6, vol: -20, dist: 3, pre: 30 }, note: "The input is fine (+10 dBu, under the +12 dBu limit), but +6 dB of DSP gain (a fader, or an EQ boost) pushes the inside of the DSP past 0 dBFS. It clips, although the amp is turned well down. Turning the amp down doesn't fix clipping earlier in the chain." },
     { name: "Mic preamp too hot", set: { sig: "pink", lvl: -12, knob: 0, dsp: 0, vol: -10, dist: 3, pre: 60 }, note: "Same sound as \"Measuring\", but the mic preamp turned up by 30 dB. The interface input clips, and REW's calibration no longer matches: it was made at the old gain." },

@@ -23,4 +23,9 @@ All as reported by the user; SPL is dB(C) at the listening position (iPhone).
 - At lower volumes: bass also a bit better.
 - Outside the room: bass can be heard, depending on where you stand. Not much in the staircase.
 
+## How v1 sounds at loud levels
+
+- At loud levels (amp 50–60) v1 really matches the user's taste. So v1 is the loud-session EQ by preference, not only because it leaks less bass and can go louder.
+- This fits the equal-loudness contours: the louder it gets, the less bass rise is needed ([levels explainer, section 4](../explainer/levels-explained.html)).
+
 Not done yet: acoustic re-measurement with the EQ on ([measurement plan](../docs/procedures/measurement-plan.md#with-eq-on-next)).
