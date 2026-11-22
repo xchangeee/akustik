@@ -4,7 +4,7 @@
   "sweep": {"length_samples": 524288, "f_start_hz": 10, "f_end_hz": 22050, "level_dbfs": -24,
             "fade_in_ms": 20, "fade_out_ms": 5, "pre_s": 0.5, "silence_s": 3},
   "ir": {"t0_sample": 256, "after_peak_samples": 83072},
-  "checks": {"clip_dbfs": -1.0, "loopback_min_dbfs": -30, "snr_min_db": 35, "delay_tol_cm": 10},
+  "checks": {"clip_dbfs": -1.0, "loopback_min_dbfs": -30, "snr_min_db": 50, "delay_tol_cm": 10},
   "dsp": {"probe": "~/WPlay/tracks/tools/probe/probe"},
   "rew": {"import": true, "api": "http://127.0.0.1:4735", "dbfs_at_94db_spl": -22.99},
   "presets": {
@@ -33,6 +33,11 @@
       "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P01", "py"]], "sweep": {"pre_s": 2.0},
       "eq": "flat", "tolerance_db": 0.2, "check_band_hz": [20, 20000],
       "before": "As sweep-check-electrical-flat, but 2 s silence before the sweep (UMC settling test)."
+    },
+    "sweep-check-seat2": {
+      "kind": "room", "positions": "seat-only", "channels": "L", "presets": [["P03", "py"], ["P03", "py2"]],
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt",
+      "before": "Mic lowered ~5 cm (sweep-check-seat was too high). REW sweep 1 L seat rew taken first, mic untouched since."
     },
     "sweep-check-seat": {
       "kind": "room", "positions": "seat-only", "channels": "mains", "presets": [["P03", "py"]],

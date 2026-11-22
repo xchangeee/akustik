@@ -229,5 +229,12 @@ prominence = peak over the median of 60-100 Hz (dB); lev = peak re the IR's earl
    2 R seat eq2 Nov 22.wav                   90.00 Hz  prominence  +7.2  lev  -22.8
 -- 2026-11-22/nosub-seat
    1 L seat eq1 nosub.wav                    77.91 Hz  prominence +16.8  lev   -7.0
+-- 2026-11-22/sweep-check-seat
+   1 L seat py.wav                           78.14 Hz  prominence +24.9  lev  -10.3
+   2 R seat py.wav                           90.00 Hz  prominence  +8.9  lev  -30.6
+-- 2026-11-22/sweep-check-seat2
+   1 L seat py.wav                           78.28 Hz  prominence +23.0  lev  -11.1
+   1 L seat py2.wav                          78.14 Hz  prominence +21.5  lev  -11.4
+   1 L seat rew.wav                          78.19 Hz  prominence +22.3  lev  -10.5
 
 plot: analysis/output/nosub.png

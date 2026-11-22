@@ -1,6 +1,6 @@
 # Plan: measure with a Python script instead of REW (sweep, IR, preset recall)
 
-Written 2026-11-22. **Parts 1–5 implemented 2026-11-22; electrical validation passed the same day** ([finding](../../findings/2026-11-22-sweep-validation.md)). Left: the seat check in the run sheet below.
+Written 2026-11-22. **Done 2026-11-22: implemented and validated** (electrical and seat, [finding](../../findings/2026-11-22-sweep-validation.md)). Nothing left in this plan.
 
 How it was built, where it differs from the text below:
 - Preset recall is its own probe mode `--recall N` (slot 1..30), not `--write 20 N`: it sends `0x20 N` and `0x39 00 00` and reads back `0x14`, `0x29 30` (live name) and `0x29 N−1` (slot name; `0x29` takes slot − 1). tracks commit, `tools/probe/README.md`.
@@ -139,7 +139,7 @@ Takes pairs of IR WAVs (REW, Python) as arguments, no file names in the code: le
 
 ## Validation run sheet (before switching)
 
-Electrical part **done, passed** (result: [findings/2026-11-22-sweep-validation.md](../../findings/2026-11-22-sweep-validation.md)). The seat check is left.
+**Done, passed** (result: [findings/2026-11-22-sweep-validation.md](../../findings/2026-11-22-sweep-validation.md)).
 
 Plan file: [sweep-check.json](sweep-check.json). Run each set with `mise run measure docs/plans/sweep-check.json <set>`, REW running.
 
@@ -153,12 +153,12 @@ Plan file: [sweep-check.json](sweep-check.json). Run each set with `mise run mea
 
 Sanity check: the mic is re-placed (±5 cm), so only 30–300 Hz and no t=0 test, against REW's `eq-seat` (P03).
 
-- [ ] Rewire: DSP Out 1 → amp L, DSP Out 2 → amp R, amp on, volume 50
+- [x] Rewire: DSP Out 1 → amp L, DSP Out 2 → amp R, amp on, volume 50
 
 **seat**: seat spot, placed by the loopback delays ([session checklist](../procedures/session-checklist.md))
-- [ ] Script recalls P03, reads it back
-- [ ] #1 `1 L seat py`
-- [ ] #2 `2 R seat py`
+- [x] Script recalls P03, reads it back
+- [x] #1 `1 L seat py`, #2 `2 R seat py` (mic ~5 cm too high, found afterwards)
+- [x] `sweep-check-seat2`, mic lowered: REW sweep `1 L seat rew`, then `1 L seat py`, `1 L seat py2`, mic untouched
 
 Compare:
 
@@ -169,7 +169,7 @@ uv run python analysis/check_sweep_vs_rew.py --t0-info analysis/output/sweep_vs_
   > analysis/output/sweep_vs_rew_seat.txt
 ```
 
-Pass: within ±1 dB from 30 to 300 Hz. Then add it to `mise run analyse` and to the finding.
+Planned pass criterion was ±1 dB at 30–300 Hz vs `eq-seat`; with a re-placed mic that's too tight (see the finding). The same-spot REW comparison in `sweep-check-seat2` replaced it.
 
 ## Open questions
 

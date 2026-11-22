@@ -27,7 +27,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rew_api import Rew, RewError  # noqa: E402
 
-SCRIPT_VERSION = 2  # 2: low-end regularisation fixed (2026-11-22)
+SCRIPT_VERSION = 3  # 2: low-end regularisation fixed; 3: SNR from the IR (2026-11-22)
 C_CM_PER_MS = 34.3  # speed of sound, for delay -> cm
 # Sweep level as REW states it = the sweep's peak level (a sine of peak 1.0 = 0 dBFS). Measured 2026-11-22: with
 # +3.01 dB here (an RMS guess) the IR came out +3.04 dB above REW's of the same electrical path, flat 200 Hz-20 kHz.
@@ -184,7 +184,11 @@ def process(rec, unit, cfg, L):
         input_peak_dbfs=round(db(np.max(np.abs(rec[:, 0]))), 2),
         loopback_peak_dbfs=round(db(np.max(np.abs(rec[:, 1]))), 2),
         noise_dbfs=round(db(np.sqrt(np.mean(noise ** 2))), 1),
-        snr_db=round(db(np.sqrt(np.mean(sweep_part ** 2))) - db(np.sqrt(np.mean(noise ** 2))), 1),
+        # SNR of the IR: peak vs the noise in its last 200 ms. Not the recording's sweep vs pre-roll level: room
+        # rumble (20-45 Hz at the seat) dominates that, while the deconvolution packs the sweep's energy into the IR.
+        # 2026-11-22: REW room IRs 66-86 dB, electrical 105-113 dB; recording-based values were 22-56 dB.
+        snr_db=round(db(np.max(np.abs(ir))) - db(np.sqrt(np.mean(ir[-int(0.2 * sr):] ** 2))), 1),
+        rec_snr_db=round(db(np.sqrt(np.mean(sweep_part ** 2))) - db(np.sqrt(np.mean(noise ** 2))), 1),
         ir_peak_dbfs=round(db(np.max(np.abs(ir))), 2),
         t0_buffer_sample=t0,
         delay_ms=round((peak - t0) / sr * 1000, 3),
@@ -204,7 +208,7 @@ def run_checks(m, st, cfg):
     if m["loopback_peak_dbfs"] < c["loopback_min_dbfs"]:
         bad.append(f"loopback only {m['loopback_peak_dbfs']:+.1f} dBFS < {c['loopback_min_dbfs']} (cable / UMC Out {cfg['loop_out']} -> In {cfg['loop_in']}?)")
     if m["snr_db"] < c["snr_min_db"]:
-        bad.append(f"SNR {m['snr_db']:.0f} dB < {c['snr_min_db']}")
+        bad.append(f"IR SNR {m['snr_db']:.0f} dB < {c['snr_min_db']} (noise during the sweep? mic connected?)")
     base = (st["pos"].get("delay_ms") or {}) if cfg["kind"] == "room" else {}
     own = base.get(st["ch"]["side"])
     if own is not None:

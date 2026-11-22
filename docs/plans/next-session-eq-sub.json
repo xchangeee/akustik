@@ -24,7 +24,7 @@
   "checks": {
     "clip_dbfs": -1.0,
     "loopback_min_dbfs": -30,
-    "snr_min_db": 35,
+    "snr_min_db": 50,
     "delay_tol_cm": 10
   },
   "dsp": {

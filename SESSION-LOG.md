@@ -13,7 +13,7 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 ## Next
 
 1. Next measuring session, run sheet: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). v2 electrical check, then v1/v2 in the room interleaved per mic position, then Sub8 sub-only passes at spots C and A. Sub8 not wired yet; check the TRS cable length first.
-2. Python measuring script: electrical validation passed ([finding](findings/2026-11-22-sweep-validation.md)). Left: seat check, room wiring ([run sheet](docs/plans/python-sweep.md#validation-run-sheet-before-switching)). **Right now:** DSP Out 1 → UMC In 3 (electrical), DSP live on P01.
+2. Python measuring script **validated** (electrical and seat, [finding](findings/2026-11-22-sweep-validation.md)): use `mise run measure <plan.json> <set>` from now on. Now: room wiring, DSP on P03, Sub8 still out of the room.
 3. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 4. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
 5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
@@ -80,4 +80,5 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - REW's "−24 dBFS" is probably RMS (sweep peak −21 dBFS); the script plays it so; the validation checks it.
 - `check_dsp_electrical.py`, `analyse_closeups.py` take the set folder as an argument now (output unchanged). `rew_measure.py` deleted.
 - Electrical validation on the hardware: matches REW within 0.016 dB (P01). Found: REW's level is peak; a low-end bug in sweep.py (fixed, all sets reprocessed); P03's PEQ makes 2–12 Hz noise at −59 dBFS on the DSP output (cables, ground, USB ruled out). [Finding](findings/2026-11-22-sweep-validation.md).
+- Seat check: REW vs Python at the same spot within the room's own sweep-to-sweep scatter (Python vs Python differs more). SNR check now on the IR (room rumble made the old one fire).
 - CLAUDE.md: write user docs short, agent docs dense; delete superseded scripts.

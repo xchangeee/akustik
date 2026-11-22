@@ -27,7 +27,7 @@ One JSON file per session (e.g. [../docs/plans/sweep-check.json](../docs/plans/s
   "sweep":   {"length_samples": 524288, "f_start_hz": 10, "f_end_hz": 22050, "level_dbfs": -24,
               "fade_in_ms": 20, "fade_out_ms": 5, "pre_s": 0.5, "silence_s": 3},
   "ir":      {"t0_sample": 256, "after_peak_samples": 83072},
-  "checks":  {"clip_dbfs": -1.0, "loopback_min_dbfs": -30, "snr_min_db": 35, "delay_tol_cm": 10},
+  "checks":  {"clip_dbfs": -1.0, "loopback_min_dbfs": -30, "snr_min_db": 50, "delay_tol_cm": 10},
   "dsp":     {"probe": "~/WPlay/tracks/tools/probe/probe"},
   "rew":     {"import": true, "api": "http://127.0.0.1:4735", "dbfs_at_94db_spl": -22.99},
   "presets": {"P03": {"slot": 3, "name": "EQ v2 Harmann"}},
@@ -43,7 +43,7 @@ One JSON file per session (e.g. [../docs/plans/sweep-check.json](../docs/plans/s
 - `audio`: device name (substring), sample rate, UMC channels (1-based). The sweep output per sweep is the channel's `out`.
 - `sweep`: `level_dbfs` = peak level, same number as in REW (REW's level is peak: checked 2026-11-22 against `dsp-electrical-v2`). `pre_s` of silence before the sweep gives the noise floor, `silence_s` after it records the decay.
 - `ir`: t=0 sample in the WAV, and how far the WAV goes past the IR peak (83072 = REW's 512k export, measured on all 2026-11-18/22 exports).
-- `checks`: after every sweep; on a failure the script offers a redo (`k` keeps it, the failure is logged). `delay_tol_cm` only applies to positions with `delay_ms`.
+- `checks`: `snr_min_db` is the IR's SNR (peak vs its last 200 ms; room 66–86 dB, electrical 105–113 dB on 2026-11-22). After every sweep; on a failure the script offers a redo (`k` keeps it, the failure is logged). `delay_tol_cm` only applies to positions with `delay_ms`.
 - `rew`: `import` false measures without REW. `dbfs_at_94db_spl` is used when REW isn't running; with REW, its own value is used (and a difference printed). SPL offset for the import = 94 − that value; 0 for electrical sets.
 - `presets`: DSP slot and the name the DSP must report after the recall (else the script stops).
 - `position_groups`: `mic` is the instruction printed before moving; `delay_ms` (optional) the baseline loopback delay per speaker.

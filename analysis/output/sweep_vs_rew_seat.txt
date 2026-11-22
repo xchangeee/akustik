@@ -1,0 +1,24 @@
+=== 1 L seat eq2 Nov 22.wav  vs  1 L seat py.wav
+  lengths 83773 / 83772 samples; IR peak -36.15 / -36.25 dBFS
+  py - rew, 30-300 Hz (1/24 oct): mean -0.032 dB, max |5.316| dB at 76.7 Hz  -> FAIL (tol 1.0 dB)
+  after removing the mean offset: max |5.348| dB
+       20-50    Hz: mean -0.440  max |8.987| dB
+       50-200   Hz: mean +0.686  max |5.316| dB
+      200-1000  Hz: mean +0.276  max |12.718| dB
+     1000-5000  Hz: mean +0.140  max |8.432| dB
+     5000-20000 Hz: mean +0.249  max |4.894| dB
+  t=0: IR peak py - rew = -1.12 samples -> info only
+  noise before t=0: -120.1 / -115.7 dBFS; last 200 ms: -121.6 / -121.9 dBFS (rew / py)
+=== 2 R seat eq2 Nov 22.wav  vs  2 R seat py.wav
+  lengths 83770 / 83767 samples; IR peak -37.66 / -39.59 dBFS
+  py - rew, 30-300 Hz (1/24 oct): mean +0.006 dB, max |8.889| dB at 242.9 Hz  -> FAIL (tol 1.0 dB)
+  after removing the mean offset: max |8.883| dB
+       20-50    Hz: mean +0.900  max |13.097| dB
+       50-200   Hz: mean +0.632  max |7.928| dB
+      200-1000  Hz: mean +0.238  max |8.889| dB
+     1000-5000  Hz: mean -0.017  max |8.329| dB
+     5000-20000 Hz: mean +0.372  max |4.860| dB
+  t=0: IR peak py - rew = -1.70 samples -> info only
+  noise before t=0: -120.4 / -111.1 dBFS; last 200 ms: -120.8 / -122.9 dBFS (rew / py)
+plot: analysis/output/sweep_vs_rew_seat.png
+NOT ALL PASS
