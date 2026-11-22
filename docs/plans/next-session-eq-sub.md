@@ -155,68 +155,68 @@ The sub can already stand at spot C during this part. Without routing to Out 3 i
 
 **DJ pos**: mic DJ spot, as on 2026-11-18
 
-- [ ] recall **P02**
-- [ ] #37 output 1: `L DJ pos eq1`
-- [ ] #38 output 2: `R DJ pos eq1`
-- [ ] recall **P03**
-- [ ] #39 output 1: `L DJ pos eq2`
-- [ ] #40 output 2: `R DJ pos eq2`
+- [x] recall **P02**
+- [x] #37 output 1: `L DJ pos eq1`
+- [x] #38 output 2: `R DJ pos eq1`
+- [x] recall **P03**
+- [x] #39 output 1: `L DJ pos eq2`
+- [x] #40 output 2: `R DJ pos eq2`
 
 **DJ left30**: mic 30 cm left of DJ pos
 
-- [ ] recall **P02**
-- [ ] #41 output 1: `L DJ left30 eq1`
-- [ ] #42 output 2: `R DJ left30 eq1`
-- [ ] recall **P03**
-- [ ] #43 output 1: `L DJ left30 eq2`
-- [ ] #44 output 2: `R DJ left30 eq2`
+- [x] recall **P02**
+- [x] #41 output 1: `L DJ left30 eq1`
+- [x] #42 output 2: `R DJ left30 eq1`
+- [x] recall **P03**
+- [x] #43 output 1: `L DJ left30 eq2`
+- [x] #44 output 2: `R DJ left30 eq2`
 
 **DJ right30**: mic 30 cm right of DJ pos
 
-- [ ] recall **P02**
-- [ ] #45 output 1: `L DJ right30 eq1`
-- [ ] #46 output 2: `R DJ right30 eq1`
-- [ ] recall **P03**
-- [ ] #47 output 1: `L DJ right30 eq2`
-- [ ] #48 output 2: `R DJ right30 eq2`
+- [x] recall **P02**
+- [x] #45 output 1: `L DJ right30 eq1`
+- [x] #46 output 2: `R DJ right30 eq1`
+- [x] recall **P03**
+- [x] #47 output 1: `L DJ right30 eq2`
+- [x] #48 output 2: `R DJ right30 eq2`
 
 **DJ fwd30**: mic 30 cm forward
 
-- [ ] recall **P02**
-- [ ] #49 output 1: `L DJ fwd30 eq1`
-- [ ] #50 output 2: `R DJ fwd30 eq1`
-- [ ] recall **P03**
-- [ ] #51 output 1: `L DJ fwd30 eq2`
-- [ ] #52 output 2: `R DJ fwd30 eq2`
+- [x] recall **P02**
+- [x] #49 output 1: `L DJ fwd30 eq1`
+- [x] #50 output 2: `R DJ fwd30 eq1`
+- [x] recall **P03**
+- [x] #51 output 1: `L DJ fwd30 eq2`
+- [x] #52 output 2: `R DJ fwd30 eq2`
 
 **DJ back30**: mic 30 cm back
 
-- [ ] recall **P02**
-- [ ] #53 output 1: `L DJ back30 eq1`
-- [ ] #54 output 2: `R DJ back30 eq1`
-- [ ] recall **P03**
-- [ ] #55 output 1: `L DJ back30 eq2`
-- [ ] #56 output 2: `R DJ back30 eq2`
+- [x] recall **P02**
+- [x] #53 output 1: `L DJ back30 eq1`
+- [x] #54 output 2: `R DJ back30 eq1`
+- [x] recall **P03**
+- [x] #55 output 1: `L DJ back30 eq2`
+- [x] #56 output 2: `R DJ back30 eq2`
 
 **DJ up30**: mic 30 cm up
 
-- [ ] recall **P02**
-- [ ] #57 output 1: `L DJ up30 eq1`
-- [ ] #58 output 2: `R DJ up30 eq1`
-- [ ] recall **P03**
-- [ ] #59 output 1: `L DJ up30 eq2`
-- [ ] #60 output 2: `R DJ up30 eq2`
+- [x] recall **P02**
+- [x] #57 output 1: `L DJ up30 eq1`
+- [x] #58 output 2: `R DJ up30 eq1`
+- [x] recall **P03**
+- [x] #59 output 1: `L DJ up30 eq2`
+- [x] #60 output 2: `R DJ up30 eq2`
 
 **DJ down30**: mic 30 cm down
 
-- [ ] recall **P02**
-- [ ] #61 output 1: `L DJ down30 eq1`
-- [ ] #62 output 2: `R DJ down30 eq1`
-- [ ] recall **P03**
-- [ ] #63 output 1: `L DJ down30 eq2`
-- [ ] #64 output 2: `R DJ down30 eq2`
+- [x] recall **P02**
+- [x] #61 output 1: `L DJ down30 eq1`
+- [x] #62 output 2: `R DJ down30 eq1`
+- [x] recall **P03**
+- [x] #63 output 1: `L DJ down30 eq2`
+- [x] #64 output 2: `R DJ down30 eq2`
 
-- [ ] Save `eq-dj.mdat` in `eq-dj/`, export the IRs there, then REW **Remove all**
+- [x] Save `eq-dj.mdat` in `eq-dj/`, export the IRs there, then REW **Remove all**
 
 REW adds the output number in front ("Prefix with output", "Use as entered"): `L seat eq1` becomes `1 L seat eq1`. v1 = P02 = `eq1`, v2 = P03 = `eq2`.
 
