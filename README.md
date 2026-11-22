@@ -2,12 +2,15 @@
 
 Living-room bass: measure the room with REW, design a room EQ for the t.racks DSP 4x4 Mini, keep bass from leaking into the building.
 
+**New here? Read the write-up: [WRITEUP.md](WRITEUP.md)** (the whole project on one page, with plots).
+
 **Current state and next steps: [SESSION-LOG.md](SESSION-LOG.md).**
 
 ## Where things are
 
 | Path | What |
 | --- | --- |
+| [WRITEUP.md](WRITEUP.md) | The project as a case study for other audio people: room, method, before/after, sub, glossary |
 | [SESSION-LOG.md](SESSION-LOG.md) | Status, next steps, dated log of every session |
 | [CLAUDE.md](CLAUDE.md) | Working rules for Claude in this repo |
 | [docs/context.md](docs/context.md) | Goal, gear, room, predicted problems (stable facts) |

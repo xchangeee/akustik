@@ -92,3 +92,9 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - `analysis/analyse_sub_c.py`: Out 3 designed per preset → `eq/v3-flat-sub/`, `eq/v4-harman-sub/` (LPF BW24 38.5 / LR24 52 Hz, 180°, ~6 ms, one PEQ band at 46–47 Hz). Every seat and DJ position gets better: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md).
 - User: v3/v4 = new versions with the sub as the 3rd output; real 2.1 maybe later.
 - P05/P06 written to the DSP by a new tracks probe mode `--make-preset` (and `--set-out3-gain`), read back. Problem found: the amp knob doesn't move the sub. Decided: sub for fun sessions at the preset's fun amp position (v3 50, v4 45; A300 = 1 dB/step), P06 Out 3 lowered to −4.5 dB. TV out can't be variable; slight hiss at amp 50.
+
+### 2026-11-22: write-up for other audio nerds
+
+- [WRITEUP.md](WRITEUP.md): the whole project on one GitHub page (room, method, before/after, sub, tool checks, glossary), linking into the findings.
+- Plots from the new `analysis/build_writeup.py` (one style, plots only); `analyse_eq_room.py` / `analyse_sub_c.py` now also export their curves as `.npz`. Re-run changed no numbers.
+- User's updated room sketch with Sub spots A/B/C: [docs/img/room-layout-sketch.svg](docs/img/room-layout-sketch.svg) (replaces the PNG).

@@ -64,7 +64,7 @@ Below about 150–200 Hz the modes are far enough apart that each one stands out
 
 ### Why it matters here
 
-- **The head position on the sofa varies.** Sitting upright at the front (where we measured), the head is about 1.2 m in front of the back wall: the 44 Hz width mode is still strong there, the 88 Hz width mode close to a null. Lying back, the head is about 0.4 m from the wall, near the loud spot of every width mode, so 44 and 88 Hz boom more. Layout sketch: [img/room-layout-sketch.png](img/room-layout-sketch.png).
+- **The head position on the sofa varies.** Sitting upright at the front (where we measured), the head is about 1.2 m in front of the back wall: the 44 Hz width mode is still strong there, the 88 Hz width mode close to a null. Lying back, the head is about 0.4 m from the wall, near the loud spot of every width mode, so 44 and 88 Hz boom more. Layout sketch: [img/room-layout-sketch.svg](img/room-layout-sketch.svg).
 - **L and R sit in different places.** L is in the middle of the 6 m wall, which is the null of the odd length modes (29 Hz, 86 Hz), so it hardly excites them. R is near the side wall, so it excites all of them. That is why R measured with much more bass than L, even though the two speakers are identical (confirmed by the close-up measurement).
 - **Bass leaking into the staircase** is the room's mode energy. A mode that rings throughout the room pushes on the walls, doors and floor everywhere, not only at the seat.
 

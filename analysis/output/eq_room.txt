@@ -482,3 +482,4 @@ flat 11-18 IR, 1/48 oct, 30-200 Hz. new = min(v1, v2) - flat. Listed: peaks wher
 -- dj R: none
 
 plots: analysis/output/eq_room_v1.png, analysis/output/eq_room_v2.png, analysis/output/eq_room_v2_minus_v1.png, analysis/output/eq_room_waterfall.png
+curves for the write-up: analysis/output/eq_room_curves.npz

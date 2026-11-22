@@ -385,3 +385,24 @@ fig.colorbar(m, ax=axs, shrink=0.6, label="dB")
 fig.suptitle("Waterfall at the main seat (300 ms window, 1/24 oct); 0 dB = flat's peak 20-300 Hz at t=0, per speaker")
 plt.savefig(os.path.join(out, "eq_room_waterfall.png"), dpi=100); plt.close()
 print("\nplots:", ", ".join(os.path.join(out, f) for f in ("eq_room_v1.png", "eq_room_v2.png", "eq_room_v2_minus_v1.png", "eq_room_waterfall.png")))
+
+# ---------- curves for analysis/build_writeup.py (same processing as above, nothing recomputed there) ----------
+exp = {"grid": GRID, "target_eq2": TARGET["eq2"]}
+for k in ("seat", "dj"):
+    for w in ("L", "R", "L+R"):
+        for tag in ("flat", "eq1", "eq2"):
+            exp[f"{k}|{w}|{tag}|meas"] = REL[(k, tag, "meas", 6)][w]
+        for tag in ("eq1", "eq2"):
+            exp[f"{k}|{w}|{tag}|sim"] = REL[(k, tag, "sim", 6)][w]
+for tag in ("eq1", "eq2"):
+    for s in "LR":
+        exp[f"filter|{tag}|{s}"] = 10 * np.log10(smooth(EQH[(tag, s)], 48))
+DEC_T = np.arange(0, 501, 5)
+exp["decay_t"] = DEC_T
+for s, f0 in (("L", 43), ("R", 84)):
+    ps = [p for p in POS["seat"] if not any(("seat", p, t, s) in NOISY for t in ("flat", "eq1", "eq2"))]
+    E = {tag: np.mean([remaining(X[("seat", p, tag, s)], f0, DEC_T) for p in ps], axis=0) for tag in ("flat", "eq1", "eq2")}
+    for tag in ("flat", "eq1", "eq2"):
+        exp[f"decay|{s}|{f0}|{tag}"] = 10 * np.log10(E[tag] / E["flat"][0] + 1e-30)
+np.savez(os.path.join(out, "eq_room_curves.npz"), **exp)
+print("curves for the write-up:", os.path.join(out, "eq_room_curves.npz"))

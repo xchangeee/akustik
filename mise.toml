@@ -28,6 +28,7 @@ uv run python analysis/check_sweep_vs_rew.py --t0-info analysis/output/sweep_vs_
 uv run python analysis/check_sweep_vs_rew.py analysis/output/sweep_vs_rew_seat2.png "$W/sweep-check-seat2/1 L seat rew.wav" "$W/sweep-check-seat2/1 L seat py.wav" 25 20000 0.2 "$W/sweep-check-seat2/1 L seat rew.wav" "$W/sweep-check-seat2/1 L seat py2.wav" 25 20000 0.2 "$W/sweep-check-seat2/1 L seat py.wav" "$W/sweep-check-seat2/1 L seat py2.wav" 25 20000 0.2 > analysis/output/sweep_vs_rew_seat2.txt
 uv run python tools/lf_check.py "$W/tone-check/P01 DSP Out1 to In3.txt" $W/sweep-check-electrical-flat $W/sweep-check-electrical-flat-pre2 > analysis/output/lf_check_electrical_flat.txt
 uv run python analysis/build_explainer.py .
+uv run python analysis/build_writeup.py . analysis/output
 """
 
 [tasks.measure]

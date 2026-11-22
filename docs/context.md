@@ -80,7 +80,7 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
 - Floor: wooden parquet, probably on concrete (user 2026-11-21: "we think it's a concrete floor"; not confirmed). Below: only a cellar, no flat. Above: neighbours. Speakers on spikes → base plates → felt → parquet.
 - Existing treatment: large sofa, shelf, lots of molton flat on the walls (absorbs highs only). No bass traps (no space).
 
-Layout (user's sketch 2026-11-18, positions approximate): [img/room-layout-sketch.png](img/room-layout-sketch.png)
+Layout (user's sketch, updated 2026-11-22 with the Sub8 spots A/B/C; positions approximate, not to scale): [img/room-layout-sketch.svg](img/room-layout-sketch.svg)
 
 - Speaker wall = the 6 m wall with (left to right) door at the corner, DJ cupboard, L, TV, R. Speakers fire across the 3.9 m width toward the sofa.
 - Speakers: L roughly centred on the 6 m wall (~3.0 m from the left wall), R near the right wall. Speakers can move only a few cm (walkway). Toed in: stereo triangle to the middle of the sofa.

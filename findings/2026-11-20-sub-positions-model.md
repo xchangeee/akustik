@@ -1,6 +1,6 @@
 # Sub8 candidate positions: modal model screening (2026-11-20)
 
-The user's sketch of 2026-11-20 (given in chat, not in the repo) shows three possible Sub8 spots. This is a **model**, not a measurement: a first screening before the sub-only sweeps in [docs/plans/sub8-overlay.md](../docs/plans/sub8-overlay.md).
+The user's sketch of 2026-11-20 shows three possible Sub8 spots (now in the repo: [room-layout-sketch.svg](../docs/img/room-layout-sketch.svg); C was later measured at 0.73 m / 2.40 m, see [sub-c](2026-11-22-sub-c.md)). This is a **model**, not a measurement: a first screening before the sub-only sweeps in [docs/plans/sub8-overlay.md](../docs/plans/sub8-overlay.md).
 Script: [analysis/sub_positions_modes.py](../analysis/sub_positions_modes.py). Output: [sub_positions_modes.txt](../analysis/output/sub_positions_modes.txt), [plot](../analysis/output/sub_positions_modes.png), [validation plot](../analysis/output/sub_positions_validation.png).
 
 ## Positions (read off the sketch, ±0.2 m; the sketch isn't to scale, x and y scaled separately)

@@ -350,3 +350,7 @@ for r, tag in enumerate(TAGS):
 axs[0, 0].legend(fontsize=8); axs[1, 1].set_xlabel("Hz"); axs[0, 0].set_ylabel("dB rel. mid level"); axs[1, 0].set_ylabel("dB rel. mid level")
 fig.suptitle("Sub8 at spot C + mains (measured 2026-11-22), 1/6 oct power average; designed on seat 2/3 + DJ 1/3")
 fig.tight_layout(); fig.savefig(os.path.join(out, "sub_c.png"), dpi=110)
+
+# curves for analysis/build_writeup.py
+np.savez(os.path.join(out, "sub_c_curves.npz"), fit=FIT, **{f"target|{t}": TGT[t] for t in TAGS},
+         **{f"{t}|{g}|{w}": CUR[(t, g)][i] for t in TAGS for g in GROUP_ALL for i, w in enumerate(("mains", "with_sub", "sub"))})

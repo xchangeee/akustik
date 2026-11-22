@@ -7,6 +7,7 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
 - Commits: keep them few. Don't commit after every small change; collect the session's edits and commit once at the end (or when asked), squashing unpushed small commits from the same session.
 - Start: read [SESSION-LOG.md](SESSION-LOG.md) (status, next steps, log). [README.md](README.md) maps the rest.
 - End (or when asked to hand off): update Status/Next in the session log, add a dated Log entry, keep [docs/current-setup.md](docs/current-setup.md) and [docs/decisions.md](docs/decisions.md) current, commit.
+- [WRITEUP.md](WRITEUP.md) is the public summary for other audio nerds (GitHub-rendered). When a result changes or a new one lands (new EQ, sub listening, absorbers), update its section; it summarises and links, the facts stay in findings. Its plots come from `analysis/build_writeup.py` (plots only; curves exported as `.npz` by the analysis scripts).
 - Where things go: one job per file, each fact in one place, link instead of copying.
   - New results → a new file per topic in [findings/](findings/) (don't append to old ones).
   - New decision → a row in [docs/decisions.md](docs/decisions.md).
