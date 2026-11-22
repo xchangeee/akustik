@@ -1,0 +1,9 @@
+ok   1 L seat eq2 Nov 22.wav  hd2 0.00 latency 437: len 83773/83773, peak 701/701, max |dB diff| 20-20k 0.0150 (20-20k 0.0150), delay 9.271 ms, THD 0.003 %, SNR 89 dB, loopback -9.0 dBFS
+ok   1 L seat eq2 Nov 22.wav  hd2 0.01 latency 151: len 83773/83773, peak 701/701, max |dB diff| 40-20k 0.0078 (20-20k 0.1393), delay 9.271 ms, THD 1.001 %, SNR 89 dB, loopback -9.0 dBFS
+ok   1 L dsp electrical v2 Nov 22.wav  hd2 0.00 latency 437: len 83373/83373, peak 301/301, max |dB diff| 20-20k 0.0106 (20-20k 0.0106), delay 0.938 ms, THD 0.001 %, SNR 94 dB, loopback -9.0 dBFS
+ok   1 L dsp electrical v2 Nov 22.wav  hd2 0.01 latency 151: len 83373/83373, peak 301/301, max |dB diff| 40-20k 0.0049 (20-20k 0.0104), delay 0.938 ms, THD 1.009 %, SNR 94 dB, loopback -9.0 dBFS
+ok   2 R corner front left Nov 18.wav  hd2 0.00 latency 437: len 84824/84824, peak 1752/1752, max |dB diff| 20-20k 0.0019 (20-20k 0.0019), delay 31.167 ms, THD 0.006 %, SNR 97 dB, loopback -9.0 dBFS
+ok   2 R corner front left Nov 18.wav  hd2 0.01 latency 151: len 84824/84824, peak 1752/1752, max |dB diff| 40-20k 0.0018 (20-20k 0.0048), delay 31.167 ms, THD 1.127 %, SNR 97 dB, loopback -9.0 dBFS
+ok   1 L close up port Nov 18.wav  hd2 0.00 latency 437: len 83438/83438, peak 366/366, max |dB diff| 20-20k 0.0040 (20-20k 0.0040), delay 2.292 ms, THD 0.006 %, SNR 105 dB, loopback -9.0 dBFS
+ok   1 L close up port Nov 18.wav  hd2 0.01 latency 151: len 83438/83438, peak 366/366, max |dB diff| 40-20k 0.0013 (20-20k 0.0036), delay 2.292 ms, THD 1.000 %, SNR 105 dB, loopback -9.0 dBFS
+selftest PASSED

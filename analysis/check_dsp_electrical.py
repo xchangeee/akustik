@@ -1,31 +1,36 @@
 """Electrical check: DSP out -> UMC In 3 (no amp, no mic) vs the predicted HPF + PEQ curve.
 
-Usage: check_dsp_electrical.py <repo> <out_dir> [v1|v2]   (default v1; v1 writes dsp_electrical.png, v2 dsp_electrical_v2.png)
-Predicted curve: the filter files in eq/ (RBJ values that the configurator import maps onto the device grid, so
+Usage: check_dsp_electrical.py <set folder> <eq folder | flat> <plot.png> [--tol DB --band LO HI] [--files WAV ...]
+  e.g. check_dsp_electrical.py measurements/2026-11-22/dsp-electrical-v2 eq/v2-harman analysis/output/dsp_electrical_v2.png
+One column per side (L/R) found in the set folder; --files picks the WAVs by name (else the one `* L *.wav` / `* R *.wav`).
+`flat` predicts a flat line (no PEQ, no HPF), e.g. for P01 FLAT.
+With --tol: prints PASS/FAIL for max |measured - predicted| within LO..HI Hz and exits 1 on FAIL (used by tools/sweep.py).
+Predicted curve: the filter files in the eq folder (RBJ values that the configurator import maps onto the device grid, so
 RBJ peaking with these exact values is the device filter, protocol §6.2) + Butterworth 24 HPF from the Notes line.
 Measured: IR export, no mic cal, normalised to its 1-5 kHz level (the EQ is flat there).
 Also fits one frequency scale factor (in cents) for all filters, to see the tracks "low-frequency offset".
 """
-import sys, os, re, glob
+import argparse, sys, os, re, glob
 import numpy as np
 from scipy.io import wavfile
 from scipy.signal import butter, sosfreqz
 from scipy.optimize import minimize_scalar
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 
-repo, out = sys.argv[1], sys.argv[2]
-version = sys.argv[3] if len(sys.argv) > 3 else "v1"
+ap = argparse.ArgumentParser()
+ap.add_argument("folder"), ap.add_argument("eq"), ap.add_argument("plot")
+ap.add_argument("--tol", type=float), ap.add_argument("--band", type=float, nargs=2, default=(20, 20000))
+ap.add_argument("--files", nargs="+")
+a = ap.parse_args()
+folder, plotname = a.folder, a.plot
+eqname = "flat" if a.eq == "flat" else os.path.basename(os.path.normpath(a.eq))
 T0, SR, NFFT = 256, 48000, 1 << 18
-VERSIONS = {  # measurement folder, eq folder, plot name
-    "v1": (("2026-11-18", "dsp-electrical"), "v1-flat", "dsp_electrical.png"),
-    "v2": (("2026-11-22", "dsp-electrical-v2"), "v2-harman", "dsp_electrical_v2.png"),
-}
-(day, setname), eqdir, plotname = VERSIONS[version]
-folder = os.path.join(repo, "measurements", day, setname)
 
 
 def read_eq(s):
-    txt = open(os.path.join(repo, "eq", eqdir, f"{s}.txt")).read()
+    if a.eq == "flat":
+        return [], None
+    txt = open(os.path.join(a.eq, f"{s}.txt")).read()
     bands = [(float(f), float(g), float(q)) for f, g, q in
              re.findall(r"ON\s+PK\s+Fc\s+([\d.]+)\s*Hz\s+Gain\s+([-\d.]+)\s*dB\s+Q\s+([\d.]+)", txt)]
     hp = float(re.search(r"Butterworth 24 dB/oct ([\d.]+) Hz", txt).group(1))
@@ -34,7 +39,7 @@ def read_eq(s):
 
 def predicted(f, bands, hp, scale=1.0):
     z = np.exp(-1j * 2 * np.pi * f / SR)
-    H = sosfreqz(butter(4, hp * scale, btype="high", fs=SR, output="sos"), worN=f, fs=SR)[1]
+    H = np.ones(len(f), complex) if hp is None else sosfreqz(butter(4, hp * scale, btype="high", fs=SR, output="sos"), worN=f, fs=SR)[1]
     for fc, g, q in bands:
         A = 10 ** (g / 40); w = 2 * np.pi * fc * scale / SR; al = np.sin(w) / (2 * q); c = np.cos(w)
         H = H * ((1 + al * A) - 2 * c * z + (1 - al * A) * z ** 2) / ((1 + al / A) - 2 * c * z + (1 - al / A) * z ** 2)
@@ -58,10 +63,22 @@ def smooth(f, db, grid, frac=48):
     return 10 * np.log10((cs[hi] - cs[lo]) / (hi - lo))
 
 
+def pick(side):
+    names = a.files if a.files else [os.path.basename(p) for p in glob.glob(os.path.join(folder, "*.wav"))]
+    hits = sorted(n for n in names if re.match(rf"\d+ {side} ", n))
+    if len(hits) > 1:
+        sys.exit(f"{len(hits)} WAVs for {side} in {folder}: {hits}; pick one with --files")
+    return os.path.join(folder, hits[0]) if hits else None
+
+
+sides = [s for s in "LR" if pick(s)]
+if not sides:
+    sys.exit(f"no L/R WAVs in {folder}")
 grid = np.geomspace(15, 20000, 1500)
-fig, axs = plt.subplots(2, 2, figsize=(14, 8), gridspec_kw=dict(height_ratios=[2.2, 1]), sharex=True)
-for col, s in enumerate("LR"):
-    path = glob.glob(os.path.join(folder, f"* {s} *.wav"))[0]
+fig, axs = plt.subplots(2, len(sides), figsize=(7 * len(sides), 8), gridspec_kw=dict(height_ratios=[2.2, 1]), sharex=True, squeeze=False)
+worst = (0.0, None, None)
+for col, s in enumerate(sides):
+    path = pick(s)
     f, db, pk = measured(path)
     m = smooth(f, db, grid)
     m -= m[(grid > 1000) & (grid < 5000)].mean()
@@ -73,7 +90,7 @@ for col, s in enumerate("LR"):
     cents = 1200 * np.log2(best.x)
     d = m - p
     print(f"=== {s}: {os.path.basename(path)}  (IR peak {pk:.1f} dBFS, 1-5 kHz normalised)")
-    print(f"  bands: " + ", ".join(f"{fc:.1f}/{g:.1f}/{q:.3f}" for fc, g, q in bands) + f"; HPF BW24 {hp} Hz")
+    print(f"  bands: " + (", ".join(f"{fc:.1f}/{g:.1f}/{q:.3f}" for fc, g, q in bands) or "none") + f"; HPF " + (f"BW24 {hp} Hz" if hp else "off"))
     for lo, hi in [(20, 30), (30, 60), (60, 150), (150, 1000), (1000, 20000)]:
         b = (grid >= lo) & (grid < hi)
         print(f"  {lo:>5}-{hi:<5} Hz: measured - predicted  mean {d[b].mean():+5.2f}  rms {np.sqrt(np.mean(d[b]**2)):4.2f}  max |{np.abs(d[b]).max():4.2f}| dB")
@@ -86,12 +103,21 @@ for col, s in enumerate("LR"):
     ax.semilogx(grid, m, "k", lw=2, label="measured (DSP out, electrical)")
     ax.semilogx(grid, p, "tab:orange", lw=1.2, ls="--", label="predicted (design)")
     ax.set_ylim(-30, 5); ax.grid(True, which="both", alpha=0.3); ax.legend(fontsize=8)
-    ax.set_title(f"EQ {version}, {s} (Out {col+1}): electrical response, 1/48 oct, 0 dB = 1-5 kHz"); ax.set_ylabel("dB")
+    inb = (grid >= a.band[0]) & (grid <= a.band[1])
+    k = np.argmax(np.abs(d[inb]))
+    print(f"  max |measured - predicted| {a.band[0]:.0f}-{a.band[1]:.0f} Hz: {abs(d[inb][k]):.2f} dB at {grid[inb][k]:.1f} Hz")
+    if abs(d[inb][k]) >= worst[0]:
+        worst = (abs(d[inb][k]), grid[inb][k], s)
+    ax.set_title(f"EQ {eqname}, {s} (Out {"LR".index(s)+1}): electrical response, 1/48 oct, 0 dB = 1-5 kHz"); ax.set_ylabel("dB")
     axs[1, col].semilogx(grid, d, "k", lw=1); axs[1, col].axhline(0, color="grey", lw=0.5)
     axs[1, col].set_ylim(-3, 3); axs[1, col].grid(True, which="both", alpha=0.3); axs[1, col].set_ylabel("measured - predicted (dB)")
     axs[1, col].set_xlabel("Hz")
 ticks = [20, 30, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 for ax in axs.flat:
     ax.set_xlim(15, 20000); ax.set_xticks(ticks); ax.set_xticklabels(["20", "30", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"])
-plt.tight_layout(); plt.savefig(os.path.join(out, plotname), dpi=110)
-print("plot:", os.path.join(out, plotname))
+plt.tight_layout(); plt.savefig(plotname, dpi=110)
+print("plot:", plotname)
+if a.tol is not None:
+    ok = worst[0] <= a.tol
+    print(f"{'PASS' if ok else 'FAIL'}: largest deviation {worst[0]:.2f} dB at {worst[1]:.1f} Hz ({worst[2]}), tolerance {a.tol} dB in {a.band[0]:.0f}-{a.band[1]:.0f} Hz")
+    sys.exit(0 if ok else 1)

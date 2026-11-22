@@ -1,0 +1,32 @@
+{
+  "_comment": "Plan for tools/sweep.py: first real run = validation (run sheet: python-sweep.md, 'Validation run sheet'). Compared with REW's 2026-11-22 sets dsp-electrical-v2 and eq-seat (P03). Format: tools/README.md.",
+  "audio": {"device": "UMC404HD", "samplerate": 48000, "mic_in": 1, "loopback_out": 3, "loopback_in": 2},
+  "sweep": {"length_samples": 524288, "f_start_hz": 10, "f_end_hz": 22050, "level_dbfs": -24,
+            "fade_in_ms": 20, "fade_out_ms": 5, "pre_s": 0.5, "silence_s": 3},
+  "ir": {"t0_sample": 256, "after_peak_samples": 83072},
+  "checks": {"clip_dbfs": -1.0, "loopback_min_dbfs": -30, "snr_min_db": 35, "delay_tol_cm": 10},
+  "dsp": {"probe": "~/WPlay/tracks/tools/probe/probe"},
+  "rew": {"import": true, "api": "http://127.0.0.1:4735", "dbfs_at_94db_spl": -22.99},
+  "presets": {
+    "P03": {"slot": 3, "name": "EQ v2 Harmann"}
+  },
+  "channel_groups": {
+    "mains": [{"n": 1, "side": "L", "out": 1}, {"n": 2, "side": "R", "out": 2}],
+    "L": [{"n": 1, "side": "L", "out": 1}]
+  },
+  "position_groups": {
+    "seat-only": [{"name": "seat", "mic": "seat spot, placed by the loopback delays", "delay_ms": {"L": 9.29, "R": 9.15}}]
+  },
+  "sets": {
+    "sweep-check-electrical": {
+      "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P03", "py"]],
+      "eq": "eq/v2-harman", "tolerance_db": 1.0, "check_band_hz": [20, 20000],
+      "before": "Electrical wiring as for dsp-electrical-v2: DSP Out 1 -> UMC In 3 (TRS-TRS) instead of the amp, In 3 knobs untouched."
+    },
+    "sweep-check-seat": {
+      "kind": "room", "positions": "seat-only", "channels": "mains", "presets": [["P03", "py"]],
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt",
+      "before": "Room wiring again (DSP Out 1/2 -> amp L/R), amp 50, mic on the seat spot."
+    }
+  }
+}

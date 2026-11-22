@@ -1,6 +1,15 @@
 # Plan: measure with a Python script instead of REW (sweep, IR, preset recall)
 
-Written 2026-11-22. Not implemented yet.
+Written 2026-11-22. **Parts 1–5 implemented 2026-11-22, not yet run on the hardware.** What's left: the validation run sheet below (with it the first real `probe --recall` on the DSP and the first real sweep), then the steps under "After the validation".
+
+How it was built, where it differs from the text below:
+- Preset recall is its own probe mode `--recall N` (slot 1..30), not `--write 20 N`: it sends `0x20 N` and `0x39 00 00` and reads back `0x14`, `0x29 30` (live name) and `0x29 N−1` (slot name; `0x29` takes slot − 1). tracks commit, `tools/probe/README.md`.
+- REW import scale checked on the free API: it takes the IR in full scale (as the WAVs), returns percent. No conversion.
+- IR length: REW's exports all end 83072 samples after the IR peak (`ir.after_peak_samples` in the plan).
+- No new REW sweeps for the validation (user, 2026-11-22): the Python sweeps are compared with REW's sets from the same morning (`dsp-electrical-v2`, `eq-seat`, both P03).
+- Electrical sets name their sweeps by `label` (e.g. `dsp`) and carry `tolerance_db` and `check_band_hz`; `eq` may be `flat`.
+- `tools/sweep_selftest.py` (`mise run sweep-selftest`, also in `mise run analyse`): REW IRs → simulated recordings → sweep.py's processing → same length, same t=0 and peak sample, spectrum within 0.02 dB from 20 Hz, THD 1.0 % found where 1 % was simulated. Passes on seat, electrical, corner and close-up IRs.
+- Plan file format: [tools/README.md](../../tools/README.md#plan-file). `next-session-eq-sub.json` converted.
 
 **Goal:** you run one command per set and do only two things: move the mic and press Enter. The script plays and records the sweeps, recalls the DSP presets, checks each sweep, and writes everything into `measurements/<date>/<set>/`. It also loads the set into REW, so REW stays available for analysis.
 
@@ -39,7 +48,7 @@ Written 2026-11-22. Not implemented yet.
   - sweep parameters (length, range, level, silence tail);
   - check thresholds, SPL offset, REW import on/off.
 
-  The code has no defaults for these. A missing key is an error that names the key. The file format is documented once in [measurements/README.md](../../measurements/README.md), with a minimal example. `docs/plans/next-session-eq-sub.json` gets converted to it, and every future session writes its own plan JSON. The output folder is `measurements/<date>/<set>/`, with the date from `--date` (default today).
+  The code has no defaults for these. A missing key is an error that names the key. The file format is documented once in [tools/README.md](../../tools/README.md#plan-file), with a minimal example. `docs/plans/next-session-eq-sub.json` gets converted to it, and every future session writes its own plan JSON. The output folder is `measurements/<date>/<set>/`, with the date from `--date` (default today).
 - **Audio:** one full-duplex sounddevice stream on the UMC404HD (CoreAudio, 48 kHz), so mic and loopback share one clock.
   - Out 1 or 2 plays the sweep (to DSP In A/B).
   - Out 3 plays the same sweep (loopback).
@@ -114,9 +123,7 @@ Generic too: works on any set folder written by `sweep.py`, reads only that fold
 
 ### 4. `analysis/check_sweep_vs_rew.py`
 
-Takes pairs of IR WAVs as arguments, with no file names in the code. Compares REW and Python sweeps of the same setup: level difference vs frequency (1/24 oct), t=0 offset in samples, noise floor. Output into `analysis/output/`, added to `mise run analyse`.
-
-**Pass criteria:** within ±0.1 dB from 20 Hz to 20 kHz (electrical) and within ±0.2 dB from 20 Hz to 5 kHz at the seat (mic not touched). t=0 within ±1 sample.
+Takes pairs of IR WAVs (REW, Python) as arguments, no file names in the code: level difference vs frequency (1/24 oct), t=0 offset, noise. Pass criteria: in the validation run sheet.
 
 ### 5. Dependencies and docs
 
@@ -125,35 +132,58 @@ Takes pairs of IR WAVs as arguments, with no file names in the code. Compares RE
 - [measurements/README.md](../../measurements/README.md): new files (`raw/`, `<set>.json`), measuring section.
 - [current-setup.md](../current-setup.md): DSP USB to the Mac in measuring mode.
 - [decisions.md](../decisions.md): a row.
-- Retire `rew_measure.py` after the validation passes.
+- `rew_measure.py` deleted 2026-11-22.
 
 ## Validation run sheet (before switching)
 
-The two sets below go into their own plan file, `docs/plans/sweep-check.json`. That file is also the first test that the script really is generic.
+No new REW sweeps: the Python sweeps are compared with REW's from 2026-11-22 (same P03, same knobs).
+- Electrical is the real test: the path doesn't change, so level, t=0 and curve must match REW's `dsp-electrical-v2`.
+- Seat is a sanity check: the mic is re-placed (±5 cm), so only 30–300 Hz and no t=0 test.
 
-The SPL offset comes from REW's calibration (`dBFSAt94dBSPL`, see above). It's only used for the REW import; the analysis uses its own approximate offset.
+Plan file: [sweep-check.json](sweep-check.json). Run each set with `mise run measure docs/plans/sweep-check.json <set>`, REW running.
 
-### Set `sweep-check-electrical` (`kind: "electrical"`, DSP Out 1 → UMC In 3 as in [dsp-electrical-v2](../../measurements/2026-11-22/dsp-electrical-v2/), no amp, no mic; P01 FLAT, so the design check expects a flat line)
+### Set `sweep-check-electrical` (DSP Out 1 → UMC In 3 instead of the amp, In 3 knobs untouched)
 
-- [ ] Script recalls P01 FLAT, reads it back
-- [ ] #1 REW (as today, `rew_measure.py`): `1 L dsp rew`
-- [ ] #2 Python: `1 L dsp py`
-- [ ] Save `sweep-check-electrical.mdat`, export the IRs, then REW **Remove all**
-
-### Set `sweep-check-seat` (room wiring, amp 50, mic on the seat spot, mic not touched between sweeps)
-
-**seat**: seat spot, placed by the loopback delay ([session checklist](../procedures/session-checklist.md))
+- [ ] Rewire: DSP Out 1 → UMC In 3
 - [ ] Script recalls P03, reads it back
-- [ ] #1 REW: `1 L seat rew`
-- [ ] #2 Python: `1 L seat py`
-- [ ] #3 REW: `2 R seat rew`
-- [ ] #4 Python: `2 R seat py`
-- [ ] Save `sweep-check-seat.mdat`, export the IRs, then REW **Remove all**
+- [ ] #1 `1 L dsp py`
+- [ ] Script's design check (eq/v2-harman, ±1 dB) says PASS
 
-Then `mise run analyse` and check the pass criteria. If they fail, fix the script before measuring anything else with it.
+### Set `sweep-check-seat` (room wiring, amp 50)
+
+- [ ] Rewire: DSP Out 1 → amp L
+
+**seat**: seat spot, placed by the loopback delays ([session checklist](../procedures/session-checklist.md))
+- [ ] Script recalls P03, reads it back
+- [ ] #1 `1 L seat py`
+- [ ] #2 `2 R seat py`
+
+### Compare (date = the day of the run)
+
+```sh
+uv run python analysis/check_sweep_vs_rew.py analysis/output/sweep_vs_rew_electrical.png \
+  "measurements/2026-11-22/dsp-electrical-v2/1 L dsp electrical v2 Nov 22.wav" "measurements/<date>/sweep-check-electrical/1 L dsp py.wav" 20 20000 0.1 \
+  > analysis/output/sweep_vs_rew_electrical.txt
+uv run python analysis/check_sweep_vs_rew.py --t0-info analysis/output/sweep_vs_rew_seat.png \
+  "measurements/2026-11-22/eq-seat/1 L seat eq2 Nov 22.wav" "measurements/<date>/sweep-check-seat/1 L seat py.wav" 30 300 1.0 \
+  "measurements/2026-11-22/eq-seat/2 R seat eq2 Nov 22.wav" "measurements/<date>/sweep-check-seat/2 R seat py.wav" 30 300 1.0 \
+  > analysis/output/sweep_vs_rew_seat.txt
+```
+
+Pass:
+- Electrical: within ±0.1 dB from 20 Hz to 20 kHz, t=0 within ±1 sample.
+- Seat: within ±1 dB from 30 to 300 Hz.
+
+If they fail, fix the script before measuring anything else with it.
+
+### After the validation
+
+- Add both lines to `mise run analyse` (real date), write the result into `findings/`.
+- Level off by a constant: the mean offset shows which convention differs (`REW_LEVEL_TO_PEAK_DB` in sweep.py); fix it there, not in the data.
 
 ## Open questions
 
 - The REW sweep level "−24 dBFS": peak or RMS? The electrical validation set shows it (agreed 2026-11-22). The script then matches REW's level exactly.
+  - Likely answer from existing data (2026-11-22): **RMS**, with a full-scale sine at −3.01 dBFS, so REW's "−24 dBFS" sweep peaks at −20.99 dBFS. The v2 electrical IR reads −21.6 dB at 1–5 kHz through a −0.6 dB path (In 3 read −24.6 for −24 out): −24 + 3.01 − 0.6 = −21.6. sweep.py plays it that way (`REW_LEVEL_TO_PEAK_DB`); the electrical validation pair confirms it if the mean offset is ~0.
 
 Answered 2026-11-22: in measuring mode the DSP and the UMC are both on USB to the Mac (seen in `ioreg`: "Dsp Process" VID 0x0168 PID 0x0821, "UMC404HD 192k"). Chrome (configurator) is closed while measuring, so only the script talks to the DSP. The script still checks at the start that the probe can connect, and stops with a hint if not.

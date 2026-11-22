@@ -13,6 +13,7 @@
       125.0 Hz:  -4.34 /  -4.34   min of measured within +-1/6 oct at 114.3 Hz
       185.1 Hz:  -1.16 /  -1.17   min of measured within +-1/6 oct at 185.6 Hz
       227.9 Hz:  -1.24 /  -1.26   min of measured within +-1/6 oct at 227.0 Hz
+  max |measured - predicted| 20-20000 Hz: 0.59 dB at 27.1 Hz
 === R: 2 R dsp electrical v2 Nov 22.wav  (IR peak -22.6 dBFS, 1-5 kHz normalised)
   bands: 43.2/-5.1/7.962, 53.2/-7.6/8.199, 84.4/-12.0/8.019, 125.0/-8.2/7.921; HPF BW24 29.8 Hz
      20-30    Hz: measured - predicted  mean -0.67  rms 0.68  max |0.84| dB
@@ -26,4 +27,5 @@
        53.2 Hz:  -8.32 /  -8.37   min of measured within +-1/6 oct at 53.0 Hz
        84.4 Hz: -12.32 / -12.39   min of measured within +-1/6 oct at 84.4 Hz
       125.0 Hz:  -8.59 /  -8.61   min of measured within +-1/6 oct at 125.2 Hz
+  max |measured - predicted| 20-20000 Hz: 0.84 dB at 22.1 Hz
 plot: analysis/output/dsp_electrical_v2.png

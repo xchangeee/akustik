@@ -13,7 +13,7 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 ## Next
 
 1. Next measuring session, run sheet: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). v2 electrical check, then v1/v2 in the room interleaved per mic position, then Sub8 sub-only passes at spots C and A. Sub8 not wired yet; check the TRS cable length first.
-2. Python measuring script (sweep + preset recall, REW only for analysis), not built yet; validate against REW first: [docs/plans/python-sweep.md](docs/plans/python-sweep.md).
+2. Python measuring script is built, not yet run on the hardware. Next: validation against REW (run sheet in [docs/plans/python-sweep.md](docs/plans/python-sweep.md#validation-run-sheet-before-switching)), which also tries `probe --recall` on the DSP for the first time.
 3. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 4. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
 5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
@@ -71,3 +71,13 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - Sub8 (not wired yet): gain 0 dB, low-pass 130 Hz, high-pass off, polarity 0°; level and all filtering on DSP Out 3, via a new preset P04 SUB MEAS (In A → Out 3, Out 1/2 muted). Decision row in [docs/decisions.md](docs/decisions.md).
 - Naming extended: `eq-` sets hold v1 and v2 (tag `eq1`/`eq2`), sub sweeps `3 S <position> subC|subA` ([measurements/README.md](measurements/README.md)).
 - Docs: `procedures/measurement-plan.md` → [procedures/measurement-sets.md](docs/procedures/measurement-sets.md) (static method only); later ideas → [docs/plans/later-measurements.md](docs/plans/later-measurements.md). Rule in CLAUDE.md: plans in `docs/plans/`, how-to in `docs/procedures/`.
+
+### 2026-11-22: Python measuring script
+
+- `mise run measure <plan.json> <set>` = [tools/sweep.py](tools/sweep.py): sweep + loopback on the UMC, DSP preset recall, checks, IR/raw/JSON, REW import. Spec: [tools/README.md](tools/README.md).
+- tracks probe: new `--recall N` (slot 1..30, tone off, reads back current preset and name).
+- Tested offline only: REW IRs → simulated recordings → same IRs back (within 0.02 dB, same t=0). No real sweep yet.
+- REW's "−24 dBFS" is probably RMS (sweep peak −21 dBFS); the script plays it so; the validation checks it.
+- `check_dsp_electrical.py`, `analyse_closeups.py` take the set folder as an argument now (output unchanged). `rew_measure.py` deleted.
+- Validation without new REW sweeps: compare with the morning's REW sets ([decisions](docs/decisions.md)).
+- CLAUDE.md: write user docs short, agent docs dense; delete superseded scripts.

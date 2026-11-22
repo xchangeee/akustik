@@ -1,68 +1,331 @@
 {
-  "_comment": "Measurement sets for tools/rew_measure.py. Run sheet and context: next-session-eq-sub.md. One set = one REW project = measurements/<date>/<set>/. At each position, for each preset, every channel is swept; the script asks before every mic move and preset recall.",
-  "rew": {
+  "_comment": "Plan for tools/sweep.py (mise run measure docs/plans/next-session-eq-sub.json <set>). Run sheet and context: next-session-eq-sub.md. Format: tools/README.md. One set = measurements/<date>/<set>/. The eq-* and nosub-seat sets were measured on 2026-11-22 with the old REW-driven script (deleted; this file's earlier format is in git).",
+  "audio": {
+    "device": "UMC404HD",
+    "samplerate": 48000,
+    "mic_in": 1,
+    "loopback_out": 3,
+    "loopback_in": 2
+  },
+  "sweep": {
+    "length_samples": 524288,
+    "f_start_hz": 10,
+    "f_end_hz": 22050,
     "level_dbfs": -24,
-    "sweep": {"startFrequency": 10, "endFrequency": 22050, "length": "512k"},
-    "timing_reference": "Loopback",
-    "input_channel": 1,
-    "ref_input_channel": 2,
-    "ref_output_channel": "3",
-    "cal_file_contains": "MM-1C_90deg"
+    "fade_in_ms": 20,
+    "fade_out_ms": 5,
+    "pre_s": 0.5,
+    "silence_s": 3
+  },
+  "ir": {
+    "t0_sample": 256,
+    "after_peak_samples": 83072
+  },
+  "checks": {
+    "clip_dbfs": -1.0,
+    "loopback_min_dbfs": -30,
+    "snr_min_db": 35,
+    "delay_tol_cm": 10
+  },
+  "dsp": {
+    "probe": "~/WPlay/tracks/tools/probe/probe"
+  },
+  "rew": {
+    "import": true,
+    "api": "http://127.0.0.1:4735",
+    "dbfs_at_94db_spl": -22.99
   },
   "presets": {
-    "P02": "EQ v1",
-    "P03": "EQ v2 Harmann",
-    "P04": "SUB MEAS"
+    "P02": {
+      "slot": 2,
+      "name": "EQ v1"
+    },
+    "P03": {
+      "slot": 3,
+      "name": "EQ v2 Harmann"
+    },
+    "P04": {
+      "slot": 4,
+      "name": "SUB MEAS"
+    }
   },
   "channel_groups": {
     "mains": [
-      {"n": 1, "side": "L", "rew_output": "1"},
-      {"n": 2, "side": "R", "rew_output": "2"}
+      {
+        "n": 1,
+        "side": "L",
+        "out": 1
+      },
+      {
+        "n": 2,
+        "side": "R",
+        "out": 2
+      }
     ],
     "sub": [
-      {"n": 3, "side": "S", "rew_output": "1"}
+      {
+        "n": 3,
+        "side": "S",
+        "out": 1
+      }
     ],
     "L": [
-      {"n": 1, "side": "L", "rew_output": "1"}
+      {
+        "n": 1,
+        "side": "L",
+        "out": 1
+      }
     ]
   },
   "position_groups": {
     "seat": [
-      {"name": "seat", "mic": "seat spot", "delay_ms": {"L": 9.29, "R": 9.15}},
-      {"name": "pos1 left30", "mic": "30 cm left of seat", "delay_ms": {"L": 9.12, "R": 9.85}},
-      {"name": "pos2 right30", "mic": "30 cm right of seat", "delay_ms": {"L": 9.83, "R": 8.79}},
-      {"name": "pos3 fwd20", "mic": "20 cm forward of seat (towards speakers)", "delay_ms": {"L": 8.33, "R": 8.25}},
-      {"name": "pos4 back20", "mic": "20 cm back from seat", "delay_ms": {"L": 10.12, "R": 10.06}},
-      {"name": "pos5 up10", "mic": "10 cm above seat spot", "delay_ms": {"L": 9.52, "R": 9.44}},
-      {"name": "pos6 down10", "mic": "10 cm below seat spot", "delay_ms": {"L": 9.23, "R": 9.19}}
+      {
+        "name": "seat",
+        "mic": "seat spot",
+        "delay_ms": {
+          "L": 9.29,
+          "R": 9.15
+        }
+      },
+      {
+        "name": "pos1 left30",
+        "mic": "30 cm left of seat",
+        "delay_ms": {
+          "L": 9.12,
+          "R": 9.85
+        }
+      },
+      {
+        "name": "pos2 right30",
+        "mic": "30 cm right of seat",
+        "delay_ms": {
+          "L": 9.83,
+          "R": 8.79
+        }
+      },
+      {
+        "name": "pos3 fwd20",
+        "mic": "20 cm forward of seat (towards speakers)",
+        "delay_ms": {
+          "L": 8.33,
+          "R": 8.25
+        }
+      },
+      {
+        "name": "pos4 back20",
+        "mic": "20 cm back from seat",
+        "delay_ms": {
+          "L": 10.12,
+          "R": 10.06
+        }
+      },
+      {
+        "name": "pos5 up10",
+        "mic": "10 cm above seat spot",
+        "delay_ms": {
+          "L": 9.52,
+          "R": 9.44
+        }
+      },
+      {
+        "name": "pos6 down10",
+        "mic": "10 cm below seat spot",
+        "delay_ms": {
+          "L": 9.23,
+          "R": 9.19
+        }
+      }
     ],
     "corners": [
-      {"name": "corner front left", "mic": "floor corner, front left"},
-      {"name": "corner front right", "mic": "floor corner, front right"}
+      {
+        "name": "corner front left",
+        "mic": "floor corner, front left"
+      },
+      {
+        "name": "corner front right",
+        "mic": "floor corner, front right"
+      }
     ],
     "dj": [
-      {"name": "DJ pos", "mic": "DJ spot, as on 2026-11-18"},
-      {"name": "DJ left30", "mic": "30 cm left of DJ pos"},
-      {"name": "DJ right30", "mic": "30 cm right of DJ pos"},
-      {"name": "DJ fwd30", "mic": "30 cm forward of DJ pos"},
-      {"name": "DJ back30", "mic": "30 cm back from DJ pos"},
-      {"name": "DJ up30", "mic": "30 cm above DJ pos"},
-      {"name": "DJ down30", "mic": "30 cm below DJ pos"}
+      {
+        "name": "DJ pos",
+        "mic": "DJ spot, as on 2026-11-18"
+      },
+      {
+        "name": "DJ left30",
+        "mic": "30 cm left of DJ pos"
+      },
+      {
+        "name": "DJ right30",
+        "mic": "30 cm right of DJ pos"
+      },
+      {
+        "name": "DJ fwd30",
+        "mic": "30 cm forward of DJ pos"
+      },
+      {
+        "name": "DJ back30",
+        "mic": "30 cm back from DJ pos"
+      },
+      {
+        "name": "DJ up30",
+        "mic": "30 cm above DJ pos"
+      },
+      {
+        "name": "DJ down30",
+        "mic": "30 cm below DJ pos"
+      }
     ],
     "seat-only": [
-      {"name": "seat", "mic": "seat spot", "delay_ms": {"L": 9.29, "R": 9.15}}
+      {
+        "name": "seat",
+        "mic": "seat spot",
+        "delay_ms": {
+          "L": 9.29,
+          "R": 9.15
+        }
+      }
     ]
   },
   "sets": {
-    "eq-seat":      {"positions": "seat",    "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
-    "eq-corners":   {"positions": "corners", "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
-    "eq-dj":        {"positions": "dj",      "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
-    "nosub-seat":   {"positions": "seat-only", "channels": "L", "presets": [["P02", "eq1 nosub"]], "before": "Resonance test: Sub8 carried out of the room. Mic back at the seat spot, placed by the loopback delays."},
-    "subC-seat":    {"positions": "seat",    "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, Sub8 gain 0 dB, LP 130 Hz, HP off, 0°. Mains muted in P04."},
-    "subC-corners": {"positions": "corners", "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},
-    "subC-dj":      {"positions": "dj",      "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},
-    "subA-seat":    {"positions": "seat",    "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub moved to spot A, knobs unchanged (compare with the photo)."},
-    "subA-corners": {"positions": "corners", "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub at spot A, knobs unchanged."},
-    "subA-dj":      {"positions": "dj",      "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub at spot A, knobs unchanged."}
+    "eq-seat": {
+      "kind": "room",
+      "positions": "seat",
+      "channels": "mains",
+      "presets": [
+        [
+          "P02",
+          "eq1"
+        ],
+        [
+          "P03",
+          "eq2"
+        ]
+      ],
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "eq-corners": {
+      "kind": "room",
+      "positions": "corners",
+      "channels": "mains",
+      "presets": [
+        [
+          "P02",
+          "eq1"
+        ],
+        [
+          "P03",
+          "eq2"
+        ]
+      ],
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "eq-dj": {
+      "kind": "room",
+      "positions": "dj",
+      "channels": "mains",
+      "presets": [
+        [
+          "P02",
+          "eq1"
+        ],
+        [
+          "P03",
+          "eq2"
+        ]
+      ],
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "nosub-seat": {
+      "kind": "room",
+      "positions": "seat-only",
+      "channels": "L",
+      "presets": [
+        [
+          "P02",
+          "eq1 nosub"
+        ]
+      ],
+      "before": "Resonance test: Sub8 carried out of the room. Mic back at the seat spot, placed by the loopback delays.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subC-seat": {
+      "kind": "room",
+      "positions": "seat",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subC"
+        ]
+      ],
+      "before": "Sub at spot C, Sub8 gain 0 dB, LP 130 Hz, HP off, 0\u00b0. Mains muted in P04.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subC-corners": {
+      "kind": "room",
+      "positions": "corners",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subC"
+        ]
+      ],
+      "before": "Sub at spot C, knobs as in the photo.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subC-dj": {
+      "kind": "room",
+      "positions": "dj",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subC"
+        ]
+      ],
+      "before": "Sub at spot C, knobs as in the photo.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subA-seat": {
+      "kind": "room",
+      "positions": "seat",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subA"
+        ]
+      ],
+      "before": "Sub moved to spot A, knobs unchanged (compare with the photo).",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subA-corners": {
+      "kind": "room",
+      "positions": "corners",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subA"
+        ]
+      ],
+      "before": "Sub at spot A, knobs unchanged.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    },
+    "subA-dj": {
+      "kind": "room",
+      "positions": "dj",
+      "channels": "sub",
+      "presets": [
+        [
+          "P04",
+          "subA"
+        ]
+      ],
+      "before": "Sub at spot A, knobs unchanged.",
+      "mic_cal": "reference/mic-cal/MM-1C_90deg.txt"
+    }
   }
 }

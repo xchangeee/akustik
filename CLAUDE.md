@@ -14,6 +14,9 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
   - New measurements → `measurements/<date>/<set>/`, conventions in [measurements/README.md](measurements/README.md).
   - Anything still to be done (next session, later ideas) → [docs/plans/](docs/plans/). [docs/procedures/](docs/procedures/) holds only the static how-to (setup, checklist, what a measurement set contains), no "next" or "done" status.
   - New or changed working rules for Claude → this file.
+- Before writing a doc, decide who reads it: **the user** (READMEs they open, findings, run sheets, session-log Status/Next) → short bullets, one fact per line, no walls of text; **an agent** (specs like [tools/README.md](tools/README.md), script docstrings, implementation notes in plans) → dense is fine, bandwidth first. If a topic needs both, write a short user version and link to the dense one.
+  (2026-11-22: a long plan-format spec in measurements/README.md was too much to read.)
+- Delete superseded scripts and code paths instead of keeping them "for later"; git has the history.
 
 ## Working with the user
 

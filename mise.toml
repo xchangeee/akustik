@@ -10,12 +10,13 @@ uv run python analysis/inspect_irs.py measurements/2026-11-18/*/*.wav > analysis
 uv run python analysis/analyse_positions.py . analysis/output > analysis/output/positions.txt
 uv run python analysis/analyse_corners.py . analysis/output > analysis/output/corners.txt
 uv run python analysis/analyse_dj_sum.py . analysis/output > analysis/output/dj_sum.txt
-uv run python analysis/analyse_closeups.py . analysis/output > analysis/output/closeups.txt
+uv run python analysis/analyse_closeups.py measurements/2026-11-18/closeups analysis/output/closeups.png reference/mic-cal/MM-1C_0deg.txt > analysis/output/closeups.txt
 uv run python analysis/design_eq.py . analysis/output eq > analysis/output/eq_design.log
 uv run python analysis/design_eq.py . analysis/output eq harman > analysis/output/eq_design_harman.log
 uv run python analysis/analyse_treble.py . analysis/output > analysis/output/treble.txt
-uv run python analysis/check_dsp_electrical.py . analysis/output > analysis/output/dsp_electrical.txt
-uv run python analysis/check_dsp_electrical.py . analysis/output v2 > analysis/output/dsp_electrical_v2.txt
+uv run python analysis/check_dsp_electrical.py measurements/2026-11-18/dsp-electrical eq/v1-flat analysis/output/dsp_electrical.png > analysis/output/dsp_electrical.txt
+uv run python analysis/check_dsp_electrical.py measurements/2026-11-22/dsp-electrical-v2 eq/v2-harman analysis/output/dsp_electrical_v2.png > analysis/output/dsp_electrical_v2.txt
+uv run python tools/sweep_selftest.py docs/plans/sweep-check.json sweep-check-seat "measurements/2026-11-22/eq-seat/1 L seat eq2 Nov 22.wav" "measurements/2026-11-22/dsp-electrical-v2/1 L dsp electrical v2 Nov 22.wav" "measurements/2026-11-18/corners/2 R corner front left Nov 18.wav" "measurements/2026-11-18/closeups/1 L close up port Nov 18.wav" > analysis/output/sweep_selftest.txt
 uv run python analysis/sub_positions_modes.py . analysis/output > analysis/output/sub_positions_modes.txt
 uv run python analysis/analyse_eq_room.py . analysis/output > analysis/output/eq_room.txt
 uv run python analysis/check_nosub.py . analysis/output > analysis/output/nosub.txt
@@ -23,5 +24,13 @@ uv run python analysis/build_explainer.py .
 """
 
 [tasks.measure]
-description = "Measure one set with REW (semi-automatic): mise run measure <set>; sets in docs/plans/next-session-eq-sub.json"
-run = "uv run python tools/rew_measure.py"
+description = "Measure one set: mise run measure <plan.json> <set> [--date D] [--dry-run] (tools/sweep.py; plan format in measurements/README.md)"
+run = "uv run python tools/sweep.py"
+
+[tasks.rew-load]
+description = "Load a set measured by sweep.py into REW and save <set>.mdat: mise run rew-load <set folder>"
+run = "uv run python tools/rew_load.py"
+
+[tasks.sweep-selftest]
+description = "Offline check of sweep.py's processing on simulated recordings (no audio/DSP/REW)"
+run = "uv sync -q && uv run python tools/sweep_selftest.py docs/plans/sweep-check.json sweep-check-seat \"measurements/2026-11-22/eq-seat/1 L seat eq2 Nov 22.wav\" \"measurements/2026-11-22/dsp-electrical-v2/1 L dsp electrical v2 Nov 22.wav\""
