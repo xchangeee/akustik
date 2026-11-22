@@ -19,3 +19,7 @@ uv run python analysis/check_dsp_electrical.py . analysis/output v2 > analysis/o
 uv run python analysis/sub_positions_modes.py . analysis/output > analysis/output/sub_positions_modes.txt
 uv run python analysis/build_explainer.py .
 """
+
+[tasks.measure]
+description = "Measure one set with REW (semi-automatic): mise run measure <set>; sets in docs/plans/next-session-eq-sub.json"
+run = "uv run python tools/rew_measure.py"

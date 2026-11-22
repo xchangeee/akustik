@@ -22,6 +22,7 @@ All 2026-11-18 sets: 512k sweep, −24 dBFS (close-ups −40), loopback timing r
 - REW measurement names (they become the WAV names): `<n> <L|R> <position>`, e.g. `1 L pos1 left30` (REW: "Prefix with output" on, "Use as entered"). Until 2026-11-22 the date was appended (`1 L pos1 left30 Nov 18`); the scripts don't depend on it. Same position names as above, so the scripts can pair them across sets.
   - Sub: `3 S <position> <subA|subC>` (n = DSP Out 3).
   - Sets holding several presets measured interleaved at the same mic spot (prefix `eq-`, e.g. `eq-seat`): preset tag at the end, `1 L pos1 left30 eq1`.
+- **Measuring a set:** `mise run measure <set>` ([tools/rew_measure.py](../tools/rew_measure.py), sets in [docs/plans/next-session-eq-sub.json](../docs/plans/next-session-eq-sub.json)). It names, exports and saves via the REW API (REW 5.40 beta); you only click Start in REW's Measure dialog. The free API can't start sweeps or set level/sweep/timing (needs REW Pro), so those stay set in REW and the script checks them.
 - **One REW project per set:** REW is cleared (Remove all) before each set, so the `.mdat` holds exactly that set's measurements. Save it and export the IRs into the set folder before clearing for the next set.
 - **IR export** (impulse response as WAV): 32-bit float, measured IR, **t=0 at sample 256**, no normalise, no window. 48 kHz.
 - Add a row to the table above.

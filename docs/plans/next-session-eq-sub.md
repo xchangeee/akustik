@@ -60,6 +60,8 @@ Naming: REW "Prefix with output" on, "Use as entered"; type `<L|R> <position> <e
 One REW project per group (set), holding both presets, saved as `measurements/2026-11-22/<set>/<set>.mdat`. Before starting a set, REW is empty (Remove all); after it, save the project and export its IRs before clearing.
 The sub can already stand at spot C during this part. Without routing to Out 3 it stays silent.
 
+**From `eq-dj` on: `mise run measure <set>`** (e.g. `mise run measure eq-dj`). The script tells you each mic move and preset recall; you click Start in REW for each sweep; naming, output channel, WAV export and saving the project are automatic. Same sets as below, in [next-session-eq-sub.json](next-session-eq-sub.json). Try `--dry-run` to see the order.
+
 #### Set `eq-seat`
 
 **seat**: mic seat spot (delays L 9.29 / R 9.15 ms)

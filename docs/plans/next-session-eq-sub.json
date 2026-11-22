@@ -1,0 +1,61 @@
+{
+  "_comment": "Measurement sets for tools/rew_measure.py. Run sheet and context: next-session-eq-sub.md. One set = one REW project = measurements/<date>/<set>/. At each position, for each preset, every channel is swept; the script asks before every mic move and preset recall.",
+  "rew": {
+    "level_dbfs": -24,
+    "sweep": {"startFrequency": 10, "endFrequency": 22050, "length": "512k"},
+    "timing_reference": "Loopback",
+    "input_channel": 1,
+    "ref_input_channel": 2,
+    "ref_output_channel": "3",
+    "cal_file_contains": "MM-1C_90deg"
+  },
+  "presets": {
+    "P02": "EQ v1",
+    "P03": "EQ v2 Harmann",
+    "P04": "SUB MEAS"
+  },
+  "channel_groups": {
+    "mains": [
+      {"n": 1, "side": "L", "rew_output": "1"},
+      {"n": 2, "side": "R", "rew_output": "2"}
+    ],
+    "sub": [
+      {"n": 3, "side": "S", "rew_output": "1"}
+    ]
+  },
+  "position_groups": {
+    "seat": [
+      {"name": "seat", "mic": "seat spot", "delay_ms": {"L": 9.29, "R": 9.15}},
+      {"name": "pos1 left30", "mic": "30 cm left of seat", "delay_ms": {"L": 9.12, "R": 9.85}},
+      {"name": "pos2 right30", "mic": "30 cm right of seat", "delay_ms": {"L": 9.83, "R": 8.79}},
+      {"name": "pos3 fwd20", "mic": "20 cm forward of seat (towards speakers)", "delay_ms": {"L": 8.33, "R": 8.25}},
+      {"name": "pos4 back20", "mic": "20 cm back from seat", "delay_ms": {"L": 10.12, "R": 10.06}},
+      {"name": "pos5 up10", "mic": "10 cm above seat spot", "delay_ms": {"L": 9.52, "R": 9.44}},
+      {"name": "pos6 down10", "mic": "10 cm below seat spot", "delay_ms": {"L": 9.23, "R": 9.19}}
+    ],
+    "corners": [
+      {"name": "corner front left", "mic": "floor corner, front left"},
+      {"name": "corner front right", "mic": "floor corner, front right"}
+    ],
+    "dj": [
+      {"name": "DJ pos", "mic": "DJ spot, as on 2026-11-18"},
+      {"name": "DJ left30", "mic": "30 cm left of DJ pos"},
+      {"name": "DJ right30", "mic": "30 cm right of DJ pos"},
+      {"name": "DJ fwd30", "mic": "30 cm forward of DJ pos"},
+      {"name": "DJ back30", "mic": "30 cm back from DJ pos"},
+      {"name": "DJ up30", "mic": "30 cm above DJ pos"},
+      {"name": "DJ down30", "mic": "30 cm below DJ pos"}
+    ]
+  },
+  "sets": {
+    "eq-seat":      {"positions": "seat",    "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
+    "eq-corners":   {"positions": "corners", "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
+    "eq-dj":        {"positions": "dj",      "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
+    "subC-seat":    {"positions": "seat",    "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, Sub8 gain 0 dB, LP 130 Hz, HP off, 0°. Mains muted in P04."},
+    "subC-corners": {"positions": "corners", "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},
+    "subC-dj":      {"positions": "dj",      "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},
+    "subA-seat":    {"positions": "seat",    "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub moved to spot A, knobs unchanged (compare with the photo)."},
+    "subA-corners": {"positions": "corners", "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub at spot A, knobs unchanged."},
+    "subA-dj":      {"positions": "dj",      "channels": "sub",   "presets": [["P04", "subA"]], "before": "Sub at spot A, knobs unchanged."}
+  }
+}
