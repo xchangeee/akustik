@@ -20,6 +20,10 @@ uv run python tools/sweep_selftest.py docs/plans/sweep-check.json sweep-check-se
 uv run python analysis/sub_positions_modes.py . analysis/output > analysis/output/sub_positions_modes.txt
 uv run python analysis/analyse_eq_room.py . analysis/output > analysis/output/eq_room.txt
 uv run python analysis/check_nosub.py . analysis/output > analysis/output/nosub.txt
+W=measurements/2026-11-22
+uv run python analysis/check_sweep_vs_rew.py analysis/output/sweep_vs_rew_electrical_flat.png "$W/sweep-check-electrical-flat/1 L dsp rew.wav" "$W/sweep-check-electrical-flat/1 L dsp py.wav" 20 20000 0.1 "$W/sweep-check-electrical-flat/1 L dsp rew.wav" "$W/sweep-check-electrical-flat/1 L dsp py2.wav" 20 20000 0.1 "$W/sweep-check-electrical-flat/1 L dsp rew.wav" "$W/sweep-check-electrical-flat-pre2/1 L dsp py.wav" 20 20000 0.1 > analysis/output/sweep_vs_rew_electrical_flat.txt
+uv run python analysis/check_sweep_vs_rew.py analysis/output/sweep_vs_rew_electrical.png "$W/dsp-electrical-v2/1 L dsp electrical v2 Nov 22.wav" "$W/sweep-check-electrical/1 L dsp py.wav" 20 20000 0.1 "$W/dsp-electrical-v2/1 L dsp electrical v2 Nov 22.wav" "$W/sweep-check-electrical/1 L dsp py2.wav" 20 20000 0.1 > analysis/output/sweep_vs_rew_electrical.txt
+uv run python tools/lf_check.py "$W/tone-check/P01 DSP Out1 to In3.txt" $W/sweep-check-electrical-flat $W/sweep-check-electrical-flat-pre2 > analysis/output/lf_check_electrical_flat.txt
 uv run python analysis/build_explainer.py .
 """
 

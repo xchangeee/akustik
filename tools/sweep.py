@@ -27,12 +27,12 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rew_api import Rew, RewError  # noqa: E402
 
-SCRIPT_VERSION = 1
+SCRIPT_VERSION = 2  # 2: low-end regularisation fixed (2026-11-22)
 C_CM_PER_MS = 34.3  # speed of sound, for delay -> cm
-# Sweep level as REW states it: dBFS RMS with a full-scale sine at -3.01 dBFS, so the sweep's peak is 3.01 dB
-# above the number. Evidence (2026-11-22): the v2 electrical IR reads -21.6 dB at 1-5 kHz for REW's "-24 dBFS"
-# through a -0.6 dB path (In 3 read -24.6 for -24 out): -24 + 3.01 - 0.6 = -21.6. The validation against REW checks it.
-REW_LEVEL_TO_PEAK_DB = 3.01
+# Sweep level as REW states it = the sweep's peak level (a sine of peak 1.0 = 0 dBFS). Measured 2026-11-22: with
+# +3.01 dB here (an RMS guess) the IR came out +3.04 dB above REW's of the same electrical path, flat 200 Hz-20 kHz.
+REW_LEVEL_TO_PEAK_DB = 0.0
+RECALL_SETTLE_S = 2.0  # pause after a preset recall; the first sweep after a recall had SNR 27-32 dB instead of 52-56
 
 
 def peak_amplitude(level_dbfs):
@@ -66,6 +66,10 @@ def resolve_set(plan, set_name):
         need(sweep, k, "sweep")
     if "level_dbfs" in s:
         sweep["level_dbfs"] = s["level_dbfs"]
+    for k, v in s.get("sweep", {}).items():  # per-set override of any sweep key
+        if k not in sweep:
+            raise PlanError(f"{w}.sweep.{k}: not a sweep key")
+        sweep[k] = v
     checks = dict(need(plan, "checks", "plan"))
     checks.update(s.get("checks", {}))
     for k in ("clip_dbfs", "loopback_min_dbfs", "snr_min_db", "delay_tol_cm"):
@@ -134,9 +138,12 @@ def deconvolve(rec, unit, sr, f1, f2):
     nfft = 1 << int(math.ceil(math.log2(len(rec) + len(unit))))
     X = np.fft.rfft(unit, nfft)
     f = np.fft.rfftfreq(nfft, 1 / sr)
-    # outside f1..f2 the sweep has (almost) no energy: regularise there, fading in over 1/3 octave
+    # Regularise only above f2 (fading in over 1/3 octave), where the sweep really has no energy. Not at the low end:
+    # the sweep's start spreads energy far below f1 (at f1/2 still at the 1 kHz level), and any low-end cut rings into
+    # the analysis window (-0.3 dB at 20 Hz with a cut from f1, -0.2 dB from f1/4; found 2026-11-22 against steady
+    # tones). sweep_selftest.py checks a flat and a 2 Hz high-pass path against the exact truth.
     lf = np.log2(np.maximum(f, 1e-3))
-    out = np.clip(np.maximum(math.log2(f1) - lf, lf - math.log2(f2)) / (1 / 3), 0, 1)
+    out = np.clip((lf - math.log2(f2)) / (1 / 3), 0, 1)
     eps = np.max(np.abs(X)) ** 2 * (1e-10 + np.sin(out * math.pi / 2) ** 2)
     G = np.conj(X) / (np.abs(X) ** 2 + eps)
     return [np.fft.irfft(np.fft.rfft(r, nfft) * G, nfft) for r in rec]
@@ -360,7 +367,7 @@ def main():
     unit, played, L = make_stimulus(cfg["sweep"], cfg["sr"])
     sw = cfg["sweep"]
     print(f"  sweep {sw['length_samples']} samples ({sw['length_samples'] / cfg['sr']:.1f} s) {sw['f_start_hz']}-{sw['f_end_hz']} Hz "
-          f"at {sw['level_dbfs']} dBFS (REW's convention, peak {sw['level_dbfs'] + REW_LEVEL_TO_PEAK_DB:+.2f} dBFS), + {sw['silence_s']} s silence")
+          f"at {sw['level_dbfs']} dBFS peak (as REW), + {sw['silence_s']} s silence")
 
     rew = None
     dbfs94 = cfg["dbfs_at_94"]
@@ -409,8 +416,9 @@ def main():
         return rew.measurements() if rew else {}
 
     if rew:
-        planned = {st["title"] for st in steps}
-        foreign = [t for t in rew_titles() if t not in planned]
+        # REW measurements are this set's only if their REW id is in <set>.json (names can repeat across sets)
+        own = {e.get("rew_uuid") for e in log.entries().values()}
+        foreign = [t for t, v in rew_titles().items() if v["uuid"] not in own]
         if foreign:
             print(f"\nREW holds {len(foreign)} measurement(s) that aren't part of {a.set}:")
             for t in foreign[:10]:
@@ -418,11 +426,12 @@ def main():
             if prompt("  Save them first if you need them. Type 'clear' to remove ALL measurements from REW: ") != "clear":
                 sys.exit("Nothing changed.")
             rew.delete_all()
-        have = rew_titles()
-        missing = [st for st, d in zip(steps, done) if d and st["title"] not in have]
+        have = {v["uuid"] for v in rew_titles().values()}
+        missing = [st for st, d in zip(steps, done) if d and log.entries()[st["title"]].get("rew_uuid") not in have]
         for st in missing:  # resume after REW was closed: bring the finished sweeps back in
             sr_, x = wavfile.read(wav(st))
-            rew.import_ir(st["title"], x, sr_, cfg["t0"], spl_offset, cfg["mic_cal"] is not None)
+            v = rew.import_ir(st["title"], x, sr_, cfg["t0"], spl_offset, cfg["mic_cal"] is not None)
+            log.add(dict(log.entries()[st["title"]], rew_uuid=v["uuid"]))
         if missing:
             rew.save_all(mdat)
             print(f"  imported {len(missing)} finished sweep(s) into REW")
@@ -461,9 +470,10 @@ def main():
                 for p in (wav(pst), raw(pst)):
                     if os.path.exists(p):
                         os.remove(p)
+                uuid = log.entries().get(pst["title"], {}).get("rew_uuid")
                 log.remove(pst["title"])
-                if rew and pst["title"] in rew_titles():
-                    rew.delete(rew_titles()[pst["title"]]["uuid"])
+                if rew and uuid in {v["uuid"] for v in rew_titles().values()}:
+                    rew.delete(uuid)
                     rew.save_all(mdat)
                 done[last] = False
                 mic = pst["pos"]["name"]  # the redo happens where the mic still is
@@ -473,6 +483,7 @@ def main():
 
             if st["preset"] != preset:
                 preset_read = recall(cfg, st)
+                time.sleep(RECALL_SETTLE_S)  # a recall disturbs the output for a moment (low SNR on the next sweep otherwise)
                 preset = st["preset"]
                 print(f"  recalled {st['preset']}: current preset {preset_read[0]}, live name {preset_read[1]!r}")
             mic = st["pos"]["name"]
@@ -503,7 +514,7 @@ def main():
             write_ir(wav(st), ir, cfg["sr"])
             write_flac(raw(st), rec, cfg["sr"])
             if rew:
-                rew.import_ir(st["title"], ir, cfg["sr"], cfg["t0"], spl_offset, cfg["mic_cal"] is not None)
+                entry["rew_uuid"] = rew.import_ir(st["title"], ir, cfg["sr"], cfg["t0"], spl_offset, cfg["mic_cal"] is not None)["uuid"]
             log.add(entry)
             if rew:
                 rew.save_all(mdat)
@@ -530,25 +541,32 @@ def main():
 
 
 def after_set(cfg, folder, steps):
-    """Electrical: compare with the design. Close-up: tuning per speaker."""
+    """Electrical: compare with the design (one run per preset/tag, so one WAV per side). Close-up: tuning per speaker."""
     out = os.path.join(REPO, "analysis", "output")
-    py = [f"{st['title']}.wav" for st in steps]
+    runs = []  # (name, cmd)
     if cfg["kind"] == "electrical":
         lo, hi = cfg["check_band_hz"]
-        cmd = [sys.executable, os.path.join(REPO, "analysis", "check_dsp_electrical.py"), folder, cfg["eq"],
-               os.path.join(out, f"{cfg['set']}.png"), "--tol", str(cfg["tolerance_db"]), "--band", str(lo), str(hi), "--files", *py]
+        groups = {}
+        for st in steps:
+            groups.setdefault((st["preset"], st["tag"]), []).append(f"{st['title']}.wav")
+        for (preset, tag), files in groups.items():
+            name = cfg["set"] + (f"_{tag}" if len(groups) > 1 and tag else f"_{preset}" if len(groups) > 1 else "")
+            runs.append((name, [sys.executable, os.path.join(REPO, "analysis", "check_dsp_electrical.py"), folder, cfg["eq"],
+                                os.path.join(out, f"{name}.png"), "--tol", str(cfg["tolerance_db"]), "--band", str(lo), str(hi),
+                                "--files", *files]))
     elif cfg["kind"] == "closeup":
-        cmd = [sys.executable, os.path.join(REPO, "analysis", "analyse_closeups.py"), folder, os.path.join(out, f"{cfg['set']}.png")]
-    else:
-        return
-    print(f"\n  running {os.path.basename(cmd[1])} -> analysis/output/{cfg['set']}.txt/.png")
-    r = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
-    with open(os.path.join(out, f"{cfg['set']}.txt"), "w") as f:
-        f.write(r.stdout + r.stderr)
-    print("    " + (r.stdout + r.stderr).strip().replace("\n", "\n    "))
-    if cfg["kind"] == "electrical":
-        print("  ELECTRICAL CHECK " + ("PASSED" if r.returncode == 0 else "FAILED: re-measure or look at the import before using this EQ in the room"))
-    print("  Add the analysis line to mise.toml's analyse task so it stays reproducible.")
+        runs.append((cfg["set"], [sys.executable, os.path.join(REPO, "analysis", "analyse_closeups.py"), folder,
+                                  os.path.join(out, f"{cfg['set']}.png")]))
+    for name, cmd in runs:
+        print(f"\n  running {os.path.basename(cmd[1])} -> analysis/output/{name}.txt/.png")
+        r = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
+        with open(os.path.join(out, f"{name}.txt"), "w") as f:
+            f.write(r.stdout + r.stderr)
+        print("    " + (r.stdout + r.stderr).strip().replace("\n", "\n    "))
+        if cfg["kind"] == "electrical":
+            print(f"  ELECTRICAL CHECK {name}: " + ("PASSED" if r.returncode == 0 else "FAILED: re-measure or look at the import before using this EQ in the room"))
+    if runs:
+        print("  Add the analysis line(s) to mise.toml's analyse task so it stays reproducible.")
 
 
 if __name__ == "__main__":

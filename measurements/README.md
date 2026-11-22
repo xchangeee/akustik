@@ -16,6 +16,12 @@ Raw data: one folder per day, one subfolder per measurement set. Each set holds 
 | [2026-11-22/eq-seat/](2026-11-22/eq-seat/) | EQ v1 (P02) + v2 (P03) interleaved | 90° | Seat + 6 positions as 11-18, L and R, tags `eq1`/`eq2` | [eq-room](../findings/2026-11-22-eq-room.md) |
 | [2026-11-22/eq-corners/](2026-11-22/eq-corners/) | EQ v1 + v2 interleaved | 90° | Floor corners front left / right, L and R | [eq-room](../findings/2026-11-22-eq-room.md) |
 | [2026-11-22/eq-dj/](2026-11-22/eq-dj/) | EQ v1 + v2 interleaved | 90° | DJ spot, 7 positions as 11-18, L and R (measured with `mise run measure`, no date in names) | [eq-room](../findings/2026-11-22-eq-room.md) |
+| [2026-11-22/sweep-check-electrical-run1/](2026-11-22/sweep-check-electrical-run1/) | P03 | none | First sweep.py try: sweep 3 dB too loud (RMS level guess) | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
+| [2026-11-22/sweep-check-electrical/](2026-11-22/sweep-check-electrical/) | P03 | none | sweep.py, DSP Out 1 → In 3, `py` + `py2` | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
+| [2026-11-22/sweep-check-electrical-flat/](2026-11-22/sweep-check-electrical-flat/) | P01 | none | sweep.py `py` + `py2` and one REW sweep `1 L dsp rew` (own `.mdat`), same wiring | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
+| [2026-11-22/sweep-check-electrical-flat-pre2/](2026-11-22/sweep-check-electrical-flat-pre2/) | P01 | none | Same with 2 s pre-roll | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
+| [2026-11-22/tone-check/](2026-11-22/tone-check/) | P01 | none | Steady sines 10 Hz–1 kHz, DSP Out 1 → In 3 (truth for the low end) | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
+| [2026-11-22/in3-noise/](2026-11-22/in3-noise/) | P03 / P01 / muted | none | Noise captures on In 3 while unplugging things one by one (`noise.txt`) | [sweep-validation](../findings/2026-11-22-sweep-validation.md) |
 | [2026-11-22/nosub-seat/](2026-11-22/nosub-seat/) | EQ v1 (P02) | 90° | One sweep, L at the main seat, Sub8 out of the room (resonance test) | [eq-room](../findings/2026-11-22-eq-room.md#sub-out-of-the-room-test-and-the-p02-routing) |
 
 All 2026-11-18 sets: 512k sweep, −24 dBFS (close-ups −40), loopback timing reference, amp volume and In 1 gain as fixed in setup Phase D. Positions ball-parked by hand.

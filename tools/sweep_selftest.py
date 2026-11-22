@@ -9,6 +9,8 @@ latency), plus noise; on a copy also 1 % second-harmonic distortion. Then it run
 - its spectrum (500 ms window, 1/24 oct) matches the REW file within 0.02 dB from 20 Hz to 20 kHz (with the
   distortion from 40 Hz: a long IR carries the harmonic IR into t>0 below ~30 Hz, in REW as well);
 - the THD comes out near 1 % on the distorted copy and near 0 on the clean one.
+Before that, synthetic paths with an exact truth (flat, 2 Hz and 5 Hz high-pass) at the real latency: 10-100 Hz
+within 0.02 dB (this catches low-end processing errors that the REW IRs can't; see the 2026-11-22 regularisation bug).
 Exit code 1 if anything fails.
 """
 import json, os, sys
@@ -71,6 +73,27 @@ def main():
     h2 = harmonic2(cfg["sweep"], cfg["sr"])
     noise = float(os.environ.get("SELFTEST_NOISE_DBFS", -120))
     ok = True
+    # 1. Synthetic paths with an exact truth: flat (pure delay) and 1st-order high-passes at 2 and 5 Hz, at the real
+    #    stream latency (12580 samples). Magnitude re 1 kHz at 10-100 Hz in the 500 ms window must match within
+    #    0.02 dB. (REW IRs can't catch low-end errors: they don't contain the real path's long low-frequency tail.)
+    from scipy.signal import butter, lfilter, sosfreqz
+    F = np.array([10, 12, 15, 20, 25, 30, 40, 50, 70, 100])
+    nf = 1 << 18
+    fr = np.fft.rfftfreq(nf, 1 / SR)
+    for fc in (None, 2.0, 5.0):
+        y = played if fc is None else lfilter(*butter(1, fc, "high", fs=SR), played)
+        y = np.concatenate([np.zeros(12580), y])[:len(played)]
+        ir, _ = sweep.process(np.stack([y, y], 1), unit, cfg, L)
+        H = np.abs(np.fft.rfft(ir[:256 + 24000], nf))
+        got = 20 * np.log10(np.interp(F, fr, H) / np.interp(1000, fr, H))
+        true = np.zeros(len(F)) if fc is None else 20 * np.log10(np.abs(
+            sosfreqz(butter(1, fc, "high", fs=SR, output="sos"), worN=np.append(F, 1000), fs=SR)[1]))
+        true = true[:len(F)] - (true[-1] if fc else 0)
+        err = np.max(np.abs(got - true))
+        ok &= err <= 0.02
+        print(f"{'FAIL' if err > 0.02 else 'ok  '} synthetic path {'flat' if fc is None else f'HPF {fc} Hz'}: "
+              f"max |error| 10-100 Hz {err:.3f} dB")
+    # 2. REW IR exports as paths
     for path in files:
         sr, h = wavfile.read(path)
         assert sr == SR

@@ -1,0 +1,24 @@
+=== 1 L dsp electrical v2 Nov 22.wav  vs  1 L dsp py.wav
+  lengths 83373 / 83372 samples; IR peak -22.37 / -23.46 dBFS
+  py - rew, 20-20000 Hz (1/24 oct): mean -0.004 dB, max |0.671| dB at 20.5 Hz  -> FAIL (tol 0.1 dB)
+  after removing the mean offset: max |0.667| dB
+       20-50    Hz: mean -0.058  max |0.671| dB
+       50-200   Hz: mean +0.003  max |0.034| dB
+      200-1000  Hz: mean +0.004  max |0.010| dB
+     1000-5000  Hz: mean +0.004  max |0.006| dB
+     5000-20000 Hz: mean +0.005  max |0.006| dB
+  t=0: IR peak py - rew = -0.87 samples -> PASS (+-1)
+  noise before t=0: -96.5 / -81.1 dBFS; last 200 ms: -131.7 / -131.0 dBFS (rew / py)
+=== 1 L dsp electrical v2 Nov 22.wav  vs  1 L dsp py2.wav
+  lengths 83373 / 83372 samples; IR peak -22.37 / -23.45 dBFS
+  py - rew, 20-20000 Hz (1/24 oct): mean -0.009 dB, max |0.619| dB at 20.5 Hz  -> FAIL (tol 0.1 dB)
+  after removing the mean offset: max |0.611| dB
+       20-50    Hz: mean -0.101  max |0.619| dB
+       50-200   Hz: mean +0.007  max |0.039| dB
+      200-1000  Hz: mean +0.005  max |0.009| dB
+     1000-5000  Hz: mean +0.005  max |0.006| dB
+     5000-20000 Hz: mean +0.005  max |0.007| dB
+  t=0: IR peak py - rew = -0.87 samples -> PASS (+-1)
+  noise before t=0: -96.5 / -81.1 dBFS; last 200 ms: -131.7 / -133.2 dBFS (rew / py)
+plot: analysis/output/sweep_vs_rew_electrical.png
+NOT ALL PASS

@@ -8,6 +8,7 @@
   "dsp": {"probe": "~/WPlay/tracks/tools/probe/probe"},
   "rew": {"import": true, "api": "http://127.0.0.1:4735", "dbfs_at_94db_spl": -22.99},
   "presets": {
+    "P01": {"slot": 1, "name": "Flat"},
     "P03": {"slot": 3, "name": "EQ v2 Harmann"}
   },
   "channel_groups": {
@@ -19,9 +20,19 @@
   },
   "sets": {
     "sweep-check-electrical": {
-      "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P03", "py"]],
+      "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P03", "py"], ["P03", "py2"]],
       "eq": "eq/v2-harman", "tolerance_db": 1.0, "check_band_hz": [20, 20000],
       "before": "Electrical wiring as for dsp-electrical-v2: DSP Out 1 -> UMC In 3 (TRS-TRS) instead of the amp, In 3 knobs untouched."
+    },
+    "sweep-check-electrical-flat": {
+      "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P01", "py"], ["P01", "py2"]],
+      "eq": "flat", "tolerance_db": 0.2, "check_band_hz": [20, 20000],
+      "before": "Electrical wiring: DSP Out 1 -> UMC In 3, DSP In A/B from UMC Out 1/2. P01 FLAT: 16 dB less DSP noise below 20 Hz than P03 (in3-noise captures)."
+    },
+    "sweep-check-electrical-flat-pre2": {
+      "kind": "electrical", "label": "dsp", "input": 3, "channels": "L", "presets": [["P01", "py"]], "sweep": {"pre_s": 2.0},
+      "eq": "flat", "tolerance_db": 0.2, "check_band_hz": [20, 20000],
+      "before": "As sweep-check-electrical-flat, but 2 s silence before the sweep (UMC settling test)."
     },
     "sweep-check-seat": {
       "kind": "room", "positions": "seat-only", "channels": "mains", "presets": [["P03", "py"]],
