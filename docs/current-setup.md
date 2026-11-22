@@ -32,6 +32,8 @@ The DSP is moved between two setups:
 | UMC Out 3 (rear) | UMC In 2 | loopback / timing reference, TRS–TRS, In 2 = LINE, gain min, PAD off |
 | UMC Out 1 | DSP In A (1) | TRS–TRS |
 | UMC Out 2 | DSP In B (2) | TRS–TRS |
+| DSP USB | Mac | for the configurator and, with the planned measuring script, preset recall ([plans/python-sweep.md](plans/python-sweep.md)); close Chrome/the configurator while a script talks to the DSP |
+| UMC USB | Mac | |
 | DSP Out 1 / Out 2 | A300 RCA L / R | **temporarily via TS adapters** (sssnake 1820, RCA female → 6.3 mm TS): shorts the DSP's cold output. Replace with TRS → 2× RCA (use tip/white only). See [decisions.md](decisions.md) |
 
 - MIX knob fully at PLAYBACK. All other UMC gains at minimum except In 1 (mic) and In 2 (loopback, gain min gave −12 dBFS).

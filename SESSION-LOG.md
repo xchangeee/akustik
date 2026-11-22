@@ -13,11 +13,12 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 ## Next
 
 1. Next measuring session, run sheet: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). v2 electrical check, then v1/v2 in the room interleaved per mic position, then Sub8 sub-only passes at spots C and A. Sub8 not wired yet; check the TRS cable length first.
-2. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
-3. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
-4. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
-5. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
-6. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
+2. Python measuring script (sweep + preset recall, REW only for analysis), not built yet; validate against REW first: [docs/plans/python-sweep.md](docs/plans/python-sweep.md).
+3. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
+4. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
+5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
+6. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
+7. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
 
 Open questions for the user: a fresh REW settings export after the calibration (optional).
 

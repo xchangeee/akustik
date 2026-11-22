@@ -30,7 +30,7 @@ you hear at the seat. Cutting mode peaks reduces energy everywhere, which helps 
   - Woofer centre 0.69 m above the floor
   - Bass reflex port on the front; **port tuning ≈ 35 Hz** (measured 2026-11-18)
   - **Mains run full range** (no high-pass), so with the sub off the port tuning sets the useful low end.
-    A PreSonus Eris Sub8 will be added as an overlay: wired in permanently (once set up), switched on only occasionally. Not connected yet: [plans/sub8-overlay.md](plans/sub8-overlay.md).
+    A PreSonus Eris Sub8 will be added as an overlay: wired in permanently (once set up), switched on only occasionally. Bass reflex with a front port (user, 2026-11-22). Not connected yet: [plans/sub8-overlay.md](plans/sub8-overlay.md).
 - Amp: SMSL A300 (class D, plenty of headroom)
   - Inputs RCA (unbalanced), Bluetooth, USB; no balanced input
   - Very sensitive input: 280 mV for full power
