@@ -1,0 +1,69 @@
+{
+ "set": "subC-leveltest2",
+ "kind": "room",
+ "date": "2026-11-22",
+ "plan": "docs/plans/next-session-eq-sub.json",
+ "device": "UMC404HD 192k",
+ "samplerate": 48000,
+ "samplerate_reported": 48000.0,
+ "mic_cal": "reference/mic-cal/MM-1C_90deg.txt",
+ "input_channel": 1,
+ "loopback_out": 3,
+ "loopback_in": 2,
+ "dbfs_at_94db_spl": -22.99,
+ "spl_offset_db": 116.99,
+ "sweep": {
+  "length_samples": 524288,
+  "f_start_hz": 10,
+  "f_end_hz": 22050,
+  "level_dbfs": -24,
+  "fade_in_ms": 20,
+  "fade_out_ms": 5,
+  "pre_s": 0.5,
+  "silence_s": 3
+ },
+ "t0_sample": 256,
+ "after_peak_samples": 83072,
+ "ir_scale": "IR of the unit-amplitude sweep (level-dependent, as REW)",
+ "stimulus": "raw/stimulus.flac",
+ "eq": null,
+ "script": "tools/sweep.py v3",
+ "sweeps": [
+  {
+   "title": "3 S seat subC test",
+   "index": 1,
+   "time": "2026-11-22T04:54:00",
+   "preset": "P04",
+   "preset_slot_read": 4,
+   "preset_name_read": "SUB MEAS",
+   "position": "seat",
+   "side": "S",
+   "output": 1,
+   "input": 1,
+   "level_dbfs": -24,
+   "wav": "3 S seat subC test.wav",
+   "git": "24e314b",
+   "script_version": 3,
+   "input_peak_dbfs": -20.83,
+   "loopback_peak_dbfs": -23.5,
+   "noise_dbfs": -53.5,
+   "snr_db": 43.8,
+   "rec_snr_db": 16.6,
+   "ir_peak_dbfs": -78.66,
+   "t0_buffer_sample": 12586,
+   "delay_ms": 10.771,
+   "thd_pct": 7.928,
+   "harmonics_db": {
+    "2": -25.9,
+    "3": -27.8,
+    "4": -29.6,
+    "5": -30.2
+   },
+   "checks_failed": [
+    "IR SNR 44 dB < 50 (noise during the sweep? mic connected?)"
+   ],
+   "raw": "raw/3 S seat subC test.flac",
+   "rew_uuid": "f24f61a1-eb4f-4219-a97a-c282db1db928"
+  }
+ ]
+}

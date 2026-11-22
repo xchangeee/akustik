@@ -1,0 +1,16 @@
+Filter Settings file
+
+Room EQ V5.31
+Dated: 22 Nov 2026 05:44:19
+
+Notes:akustik v3-flat-sub sub (DSP out 3); designed by analysis/analyse_sub_c.py on the t.racks grid (REW text format = transport for the configurator import); set by hand on Out 3: LPF BW24 38.5 Hz, polarity 180 (invert), delay 6.104 ms = 293 samples, gain -7.8 dB (for amp 50), routing In A + In B + In C + In D; mains Out 1/2 = eq/v1-flat unchanged
+
+Equaliser: Generic
+akustik v3-flat-sub Sub
+Filter  1: ON  PK       Fc    46.28 Hz  Gain -11.9 dB  Q  5.0808
+Filter  2: OFF None
+Filter  3: OFF None
+Filter  4: OFF None
+Filter  5: OFF None
+Filter  6: OFF None
+Filter  7: OFF None

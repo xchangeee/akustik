@@ -61,6 +61,18 @@ The sub is switched on and off manually at its own power switch (no switched str
 2. EQ v2 with a moderate house curve. Listen first: it may already fix "boring". **Designed 2026-11-18 with a Harman target (+6 dB shelf, 105 Hz), see [findings/eq-v2-harman.md](../../findings/eq-v2-harman.md); imported into slot 3, not listened yet.**
 3. Sub as overlay: sub-only sweeps at candidate spots → simulate → configure Out 3.
 
+## Status 2026-11-22: designed, next steps
+
+Spot C measured; Out 3 designed per preset as **v3 = v1 + sub** and **v4 = v2 + sub** (mains unchanged): [findings/2026-11-22-sub-c.md](../../findings/2026-11-22-sub-c.md). Spot A skipped for now.
+
+- [x] ~~User:~~ Done 2026-11-22 by probe `--make-preset` (read back): make **P05 "EQ v3 flat+sub"** = copy of P02, and **P06 "EQ v4 Harm+sub"** = copy of P03. In each, set Out 3 as in the finding's table: routing In A+B+C+D, LPF, polarity, delay, gain; import `eq/v3-flat-sub/Sub.txt` / `eq/v4-harman-sub/Sub.txt` into Out 3's PEQ. Leave Out 1/2 untouched.
+- [ ] Listen with the sub on and off, **v3 at amp 50, v4 at amp 45** (the sub is matched there; the amp doesn't move the sub): level, the 28 Hz overshoot, the neighbours. Adjust the level only with Out 3's gain.
+- [ ] Maybe: stereo volume control (with remote) between TV and DSP In A/B, so the sub follows the volume and can run at any level. Hiss at a fixed amp 50 is slight (user, 2026-11-22).
+- [ ] Measuring check of P05/P06 at the seat (mains + sub together). sweep.py plays one output per sweep, so this needs the sweep on UMC Out 1 and 2 at once (or a mono feed into In A and In B); script change first.
+- [ ] Optional: spot A (`subA-*` sets are in the plan JSON), if C turns out unsatisfying.
+
+Later, nice-to-have: **real 2.1** variants (mains high-passed at ~80 Hz, sub takes all the bass) as extra presets, designed the same way from the same data. Needs the sub on, so not for everyday use.
+
 ## Open questions for the user
 
 - Where can the sub physically go? 2026-11-20: three candidate spots A/B/C sketched, model screening: [findings/2026-11-20-sub-positions-model.md](../../findings/2026-11-20-sub-positions-model.md). B dropped; measure A and C.

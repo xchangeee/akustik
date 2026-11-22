@@ -36,6 +36,7 @@ Absolute level: fixed offset of 100.9 dB so that the L seat 1–8 kHz average is
 | `sub_positions_modes.py` | Rigid-box modal model (no measurement): candidate Sub8 positions A/B/C at seat, DJ and room average; validated on measured R − L at the seat | `sub_positions_modes.txt`, `sub_positions_modes.png`, `sub_positions_validation.png` |
 | `analyse_eq_room.py` | EQ v1/v2 measured in the room (2026-11-22 `eq-*` sets, v1/v2 interleaved per mic spot) vs 2026-11-18 flat, vs simulated (flat IR × filter files) and vs target; mic placement from arrival delays; v2 − v1 at the same spot vs predicted; IR noise check; ringing (band energy left after t) and waterfall; scan for new narrow resonances | `eq_room.txt`, `eq_room_v1.png`, `eq_room_v2.png`, `eq_room_v2_minus_v1.png`, `eq_room_waterfall.png` |
 | `check_nosub.py` | Sub-out-of-the-room test (`nosub-seat`) vs `L seat eq1`: spectra, difference IR, late energy at 77.8 Hz; plus per-spot residual eq1 − eq2 × filter ratio, L vs R, to check whether the sub played along (P02 routing) | `nosub.txt`, `nosub.png` |
+| `analyse_sub_c.py` | Sub8 at spot C (`subC-*`) alone and summed with the mains (eq1/eq2 from the `eq-*` sets, complex sum on the loopback timing); Out 3 design per preset (LPF type/fc, polarity, delay, gain, 1 PEQ band) on the device grid, per-position check, live Out 3 gain; writes `eq/v3-flat-sub/Sub.txt`, `eq/v4-harman-sub/Sub.txt` | `sub_c.txt`, `sub_c.png` |
 
 ## Known limitations
 

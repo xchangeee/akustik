@@ -16,9 +16,9 @@ Method and positions: [procedures/measurement-sets.md](../procedures/measurement
 | 1 | Electrical check of EQ v2 (no amp, no mic) ✅ 2026-11-22 | P03 | 2 |
 | 2 | Rewire for the room, SPL check, mic on the seat spot ✅ 2026-11-22 | P01 | – |
 | 3 | Mains, interleaved: at every mic position v1 L/R, then v2 L/R | P02, P03 | 16 × 4 = 64 |
-| 3b | Prepare the sub: P04 SUB MEAS, cable, sub level (only before the sub parts) | P04 | – |
-| 4 | Sub at spot C, every mic position | P04 | 16 |
-| 5 | Sub at spot A, as many positions as you can manage (at least seat, 2 corners, DJ pos) | P04 | 4–16 |
+| 3b | Prepare the sub: P04 SUB MEAS, cable, sub level ✅ 2026-11-22 (Out 3 −10 dB) | P04 | – |
+| 4 | Sub at spot C, every mic position ✅ 2026-11-22 | P04 | 16 |
+| 5 | Sub at spot A: skipped 2026-11-22 (maybe later) | P04 | 4–16 |
 | 6 | Back to live mode | P03 | – |
 
 16 mic positions: seat + pos1–pos6, corner front left/right, DJ pos + 6 DJ offsets (names as on 2026-11-18).
@@ -290,4 +290,4 @@ Placement: spot C = right side wall at the sofa's right end, ~0.40 m from the wa
 - ~~Electrical v2 vs prediction~~ done ([findings](../../findings/2026-11-22-eq-v2-electrical.md)).
 - ~~Mic positions vs 2026-11-18 from the loopback delays in the exported IRs.~~ done
 - ~~v1 and v2 in the room vs their simulations, waterfall before/after.~~ done ([findings](../../findings/2026-11-22-eq-room.md)); narrow ~78 Hz resonance in the L speaker found (low relevance).
-- Sub: A vs C at seat/DJ/corners, then sum with the mains (same loopback timing) to choose crossover, delay, polarity and the Out 3 PEQ.
+- ~~Sub: sum with the mains to choose crossover, delay, polarity and the Out 3 PEQ.~~ done for C ([findings](../../findings/2026-11-22-sub-c.md)); A skipped.

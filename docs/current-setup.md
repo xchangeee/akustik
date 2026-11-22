@@ -40,7 +40,7 @@ The DSP is moved between two setups:
 - macOS output = MacBook speakers (verified). UMC at 48 kHz.
 - Mic at the main seat, centred between the speakers, pointing up, 90° cal file.
 - Speaker placement: see [context.md, Room](context.md#room).
-- Sub8: under the table and switched off on 2026-11-18, at spot C since then (user, 2026-11-22). During the `eq-*` sets: switched on, connected to the DSP, nothing meant to be routed to Out 3 (but see P02 below). Out of the room for the `nosub-seat` sweep (2026-11-22). Spot C: [plan, section 3](plans/next-session-eq-sub.md).
+- Sub8: under the table and switched off on 2026-11-18, at spot C since then (user, 2026-11-22). During the `eq-*` sets: switched on, connected to the DSP, nothing meant to be routed to Out 3 (but see P02 below). Out of the room for the `nosub-seat` sweep (2026-11-22). Back at spot C for the sub passes (2026-11-22): back (connectors, heatsink) against the right wall, driver and port facing into the room, 0.73 m from the right wall; driver centre 2.40 m from the speaker wall. No audible hum with nothing playing (user). Knobs: gain 0 dB, LP 130 Hz, HP off, 0° (no photo). Out 3 → left balanced input. P04 SUB MEAS saved in slot 4, Out 3 at **−10 dB** (level tests `subC-leveltest` at −20, `subC-leveltest2` at −10 dB: in-band SNR 43 → 52 dB). Spot C: [plan, section 3](plans/next-session-eq-sub.md).
 
 ## Levels (fixed; don't touch)
 
@@ -58,6 +58,9 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | P01 **FLAT** | routing A+C→1, B+D→2 (summed, changed 2026-11-20; was A→1, B→2, C→3, D→4); all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring. In the measuring setup only A/B are connected, so the summing doesn't matter |
 | P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked. 2026-11-22: routing found broken (In A also → Out 3), **fixed by the user the same day**; P03 checked, routing correct. The `eq-*` data show the sub didn't play along ([findings](../findings/2026-11-22-eq-room.md#sub-out-of-the-room-test-and-the-p02-routing)) |
 | P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; electrically checked 2026-11-22 ([findings](../findings/2026-11-22-eq-v2-electrical.md)); listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
+| P04 **SUB MEAS** | copy of P01; In A → Out 3 only, Out 1/2 muted; Out 3 gain −10 dB, PEQ/HPF/LPF/compressor off, delay 0, polarity normal | slot 4, made 2026-11-22 for the sub passes; measuring only |
+| P05 **EQ v3 flat+sub** | copy of P02 + Out 3: In A+B+C+D, LPF BW24 38.5 Hz, polarity 180, delay 293 samples, gain −7.8 dB (for amp 50), PEQ [eq/v3-flat-sub/](../eq/v3-flat-sub/), HPF/compressor off | slot 5, written 2026-11-22 by probe `--make-preset`, read back ([findings](../findings/2026-11-22-sub-c.md)); not listened to yet |
+| P06 **EQ v4 Harm+sub** | copy of P03 + Out 3: In A+B+C+D, LPF LR24 52.0 Hz, polarity 180, delay 317 samples, gain −4.5 dB (for amp 45), PEQ [eq/v4-harman-sub/](../eq/v4-harman-sub/), HPF/compressor off | slot 6, written 2026-11-22 the same way; not listened to yet |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 

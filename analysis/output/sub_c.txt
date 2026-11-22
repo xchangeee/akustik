@@ -1,0 +1,146 @@
+seat: 7 positions: pos1 left30, pos2 right30, pos3 fwd20, pos4 back20, pos5 up10, pos6 down10, seat
+dj: 7 positions: DJ back30, DJ down30, DJ fwd30, DJ left30, DJ pos, DJ right30, DJ up30
+corners: 2 positions: corner front left, corner front right
+
+=== 1. Sub alone (Out 3 -10 dB, In A only) vs mains L+R, power average, 1/6 oct, dB SPL ===
+group    curve         20    25    28  31.5    35    40    45    50    56    63    71    80    90   100   125   160   200
+seat     sub         41.4  65.2  71.0  69.0  69.0  66.0  73.5  76.5  75.1  74.5  76.7  73.3  77.6  71.1  68.4  64.9  61.2
+seat     mains eq2   46.1  64.9  73.1  74.6  77.5  82.8  82.2  80.3  80.6  79.7  80.2  81.2  82.2  78.2  80.3  75.6  74.4
+seat     mains eq1   47.9  65.0  73.0  74.0  76.0  77.9  77.8  76.5  76.2  74.9  75.7  77.7  78.6  74.8  79.1  75.4  74.9
+dj       sub         45.8  63.1  67.0  59.6  55.3  67.9  69.4  76.2  77.7  74.0  77.5  77.0  75.2  70.1  69.6  68.7  62.9
+dj       mains eq2   48.1  62.1  67.0  64.9  69.4  80.5  84.4  81.1  77.6  71.5  73.7  74.7  77.2  80.7  79.1  78.5  77.1
+dj       mains eq1   47.3  61.1  66.6  64.2  68.0  75.6  79.4  75.0  77.6  72.1  77.2  75.2  75.1  78.8  77.6  78.3  77.5
+corners  sub         46.8  68.8  74.6  71.3  71.6  72.2  76.1  83.1  84.8  83.8  86.5  87.5  87.7  85.1  82.1  78.2  73.0
+corners  mains eq2   56.2  70.3  72.4  73.8  79.9  86.5  85.9  87.8  85.9  91.4  88.0  88.8  88.3  92.1  92.1  96.7  87.4
+corners  mains eq1   56.9  69.3  72.8  73.2  78.3  81.3  81.8  83.3  81.1  83.5  81.4  84.8  85.1  90.4  91.7  96.6  87.1
+
+Spread over the positions (max - min of the 1/6-oct curves), seat group:
+  sub          5.9   3.8   2.8   1.9   1.2   3.2   4.1   9.9  10.5   4.3   2.4   3.2   6.4   5.9   5.5   5.5   3.0
+  mains eq2    8.9   5.8   2.8   1.8   2.0   3.2   4.1   4.1   5.7   1.7   5.3   9.7   5.6   5.7   2.6   1.3   4.3
+
+=== 2. Alignment scan: sum = mains (measured, L+R) + sub x Out 3 LPF x polarity x delay x gain ===
+Designed per preset (new versions v3 = v1 + sub, v4 = v2 + sub; mains filters unchanged).
+cost = rms dB of the sum vs the preset's target (v1 flat, v2 low shelf +6 dB 105 Hz), 25-120 Hz, 1/6 oct,
+seat 2/3 + DJ 1/3, each rel. to its mains mid level 300 Hz-3 kHz.
+delay > 0: on Out 3 (sub later); < 0: on Out 1/2 (mains later). Gain rel. to the measured Out 3 (-10 dB, In A only).
+
+-- v1 flat (P02): mains alone 4.22 dB. Best 8 (no PEQ on Out 3):
+   cost  LPF   fc Hz  pol  delay ms  gain dB
+   2.26  BW24   31.2  180     +4.0    +8.5
+   2.27  BW24   29.8  180     +3.5    +9.5
+   2.27  BW24   31.2  180     +4.5    +9.0
+   2.27  LR24   29.8  180     +4.0   +12.5
+   2.27  BW24   32.7  180     +4.5    +8.0
+   2.27  LR24   31.2  180     +4.5   +11.5
+   2.27  LR24   28.5  180     +3.5   +13.5
+   2.27  BW24   29.8  180     +4.0   +10.0
+
+-- v2 Harman (P03): mains alone 7.07 dB. Best 8 (no PEQ on Out 3):
+   cost  LPF   fc Hz  pol  delay ms  gain dB
+   2.87  LR24   45.2  180     +6.5   +15.5
+   2.88  LR24   43.2  180     +6.0   +16.0
+   2.88  LR24   45.2  180     +6.0   +15.0
+   2.89  LR24   47.4  180     +6.5   +14.5
+   2.89  LR24   47.4  180     +7.0   +15.0
+   2.89  LR24   43.2  180     +6.5   +16.0
+   2.89  LR24   45.2  180     +7.0   +15.5
+   2.90  LR24   43.2  180     +5.5   +16.0
+
+=== 2b. Refined per preset: gain, delay, LPF fc and 1 PEQ band(s) on Out 3 (gain -12..+6 dB, Q <= 5), device grid ===
+
+-- v1 flat (P02) -> v3-flat-sub: cost mains alone 4.22, aligned 2.26, with PEQ 2.15, on the device grid 2.15 dB
+   Out 3 LPF BW24 38.5 Hz (raw 29), polarity 180 (inverted), delay +6.104 ms (+293 samples, Out 3), gain +8.2 dB vs measured
+   PEQ   46.28 Hz  -11.9 dB  Q_rbj 5.081
+
+-- v2 Harman (P03) -> v4-harman-sub: cost mains alone 7.07, aligned 2.87, with PEQ 2.58, on the device grid 2.56 dB
+   Out 3 LPF LR24 52.0 Hz (raw 42), polarity 180 (inverted), delay +6.604 ms (+317 samples, Out 3), gain +16.5 dB vs measured
+   PEQ   47.37 Hz  -12.0 dB  Q_rbj 4.248
+
+=== 3. Per position: rms dB vs the target, 25-120 Hz, 1/6 oct (rel. to the group's mid level) ===
+-- v3-flat-sub
+   seat     pos1 left30          mains  3.96   +sub  1.72   better
+   seat     pos2 right30         mains  2.64   +sub  1.89   better
+   seat     pos3 fwd20           mains  4.02   +sub  2.66   better
+   seat     pos4 back20          mains  4.06   +sub  2.63   better
+   seat     pos5 up10            mains  3.44   +sub  1.88   better
+   seat     pos6 down10          mains  2.81   +sub  1.53   better
+   seat     seat                 mains  3.46   +sub  1.69   better
+   dj       DJ back30            mains  7.06   +sub  3.95   better
+   dj       DJ down30            mains  5.97   +sub  3.41   better
+   dj       DJ fwd30             mains  6.22   +sub  4.21   better
+   dj       DJ left30            mains  6.07   +sub  4.63   better
+   dj       DJ pos               mains  5.95   +sub  3.43   better
+   dj       DJ right30           mains  7.26   +sub  4.08   better
+   dj       DJ up30              mains  6.42   +sub  3.65   better
+   corners  corner front left    mains  5.72   +sub  5.69   same
+   corners  corner front right   mains  8.77   +sub  9.30   WORSE
+-- v4-harman-sub
+   seat     pos1 left30          mains  6.14   +sub  1.80   better
+   seat     pos2 right30         mains  5.11   +sub  2.18   better
+   seat     pos3 fwd20           mains  6.56   +sub  2.73   better
+   seat     pos4 back20          mains  5.90   +sub  2.39   better
+   seat     pos5 up10            mains  5.81   +sub  1.87   better
+   seat     pos6 down10          mains  5.64   +sub  1.92   better
+   seat     seat                 mains  6.06   +sub  1.90   better
+   dj       DJ back30            mains  9.90   +sub  4.44   better
+   dj       DJ down30            mains  9.89   +sub  4.51   better
+   dj       DJ fwd30             mains  9.46   +sub  3.99   better
+   dj       DJ left30            mains  9.92   +sub  3.95   better
+   dj       DJ pos               mains  9.85   +sub  3.93   better
+   dj       DJ right30           mains 10.28   +sub  4.81   better
+   dj       DJ up30              mains  9.43   +sub  4.15   better
+   corners  corner front left    mains  7.20   +sub  6.65   better
+   corners  corner front right   mains  9.34   +sub 10.46   WORSE
+
+=== 4. Power averages rel. to the mains mid level (dB), 1/6 oct: target, mains alone, mains + sub ===
+-- v3-flat-sub
+   group   curve        25    28  31.5    35    40    45    50    56    63    71    80    90   100   120
+   all     target     +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0  +0.0
+   seat    mains     -12.6  -4.5  -3.3  -1.3  +0.6  +0.4  -0.8  -1.2  -2.4  -1.7  +0.2  +1.3  -2.4  +1.1
+   seat    +sub       -2.4  +3.7  +1.5  -0.5  -0.2  +0.3  -0.6  -0.7  -1.4  -0.1  -0.0  +1.6  -2.1  +1.1
+   seat    sub only   -4.8  +1.0  -1.9  -3.4 -10.5 -11.7  -9.0 -10.0 -13.8 -14.0 -21.9 -21.1 -30.8 -41.1
+   dj      mains     -15.9 -10.0 -12.4  -8.6  -1.0  +2.8  -1.8  +0.8  -4.4  +0.5  -1.4  -1.6  +2.1  +0.4
+   dj      +sub       -4.3  -0.3  -6.3  -6.8  +1.5  +3.6  +0.1  +3.3  -4.1  -1.0  -1.9  -1.1  +2.2  +0.4
+   dj      sub only   -6.2  -2.3 -10.3 -16.4  -9.9 -13.1  -8.4  -6.9 -12.5 -13.2 -17.4 -22.4 -31.9 -37.1
+   corners mains      -7.6  -3.9  -3.6  +1.6  +4.6  +5.1  +6.7  +4.5  +6.8  +4.8  +8.0  +8.5 +13.6 +13.7
+   corners +sub       +1.6  +5.8  +1.9  +4.5  +6.6  +5.4  +7.0  +7.4  +8.7  +5.9  +6.9  +9.1 +13.8 +13.7
+   corners sub only   -0.6  +5.2  +1.2  -0.2  -4.3  -8.4  -1.7  +0.2  -3.5  -3.8  -7.0 -10.2 -17.1 -25.0
+   seat bass energy 25-60 Hz with the sub: +2.1 dB vs mains alone
+-- v4-harman-sub
+   group   curve        25    28  31.5    35    40    45    50    56    63    71    80    90   100   120
+   all     target     +6.0  +6.0  +5.9  +5.9  +5.9  +5.8  +5.7  +5.5  +5.3  +4.9  +4.4  +3.9  +3.3  +2.2
+   seat    mains     -12.9  -4.4  -2.7  +0.2  +5.3  +4.8  +3.0  +3.2  +2.4  +2.8  +3.7  +4.8  +0.9  +2.9
+   seat    +sub       +4.2  +9.9  +7.3  +5.4  +5.7  +7.4  +6.0  +4.1  +5.1  +7.1  +3.1  +5.4  +2.1  +3.1
+   seat    sub only   +3.0  +8.8  +5.9  +4.6  -1.3  -0.4  +1.8  +2.3  +1.2  +1.9  -4.8  -3.6 -12.9 -22.8
+   dj      mains     -14.8  -9.6 -11.7  -7.0  +3.7  +7.8  +4.5  +0.8  -4.9  -2.9  -1.9  +0.5  +4.0  +1.9
+   dj      +sub       +2.6  +6.4  -0.7  -3.1  +7.6  +9.9  +6.1  +9.1  +3.8  +5.3  -0.1  +1.3  +4.6  +2.4
+   dj      sub only   +1.6  +5.5  -2.5  -8.3  -0.3  -2.1  +2.5  +5.6  +2.0  +3.0  -0.3  -4.9 -13.9 -18.7
+   corners mains      -6.7  -4.4  -3.0  +3.3  +9.6  +9.2 +11.1  +9.2 +14.6 +11.2 +12.0 +11.7 +15.3 +14.1
+   corners +sub       +8.0 +13.1  +8.8  +9.7 +12.9 +11.8 +13.5 +16.4 +17.9 +17.4 +10.9 +13.4 +16.6 +14.3
+   corners sub only   +7.2 +12.9  +9.0  +7.8  +4.9  +2.8  +9.0 +12.7 +11.3 +12.2 +10.0  +7.4  +0.9  -6.7
+   seat bass energy 25-60 Hz with the sub: +4.6 dB vs mains alone
+
+=== 5. Out 3 settings per new version (configurator values) ===
+Gain: measured with In A only -> Out 3 at -10 dB. Live, Out 3 sums In A + In B (+ C + D), and bass is ~mono, so the
+live Out 3 gain is 6.0 dB lower for the same sub level: live = -10 + gain - 6.0 dB.
+The design matches sub and mains at the measuring amp position (50). The amp only drives the mains, so the sub is
+tuned for each preset's fun position (listening finding): Out 3 lower by 1 dB per amp step below 50 (A300 measured
+2026-11-22: 72 dB(C) at 50, 67 at 45). At lower amp positions the sub plays relatively louder.
+-- v3-flat-sub (= v1 flat (P02) mains unchanged, + Out 3):
+   lpf      BW24 38.5 Hz
+   pol      180 (invert)
+   delay    6.104 ms = 293 samples
+   gain     -7.8 dB (for amp 50)
+   hpf      off
+   routing  In A + In B + In C + In D
+   PEQ      46.28 Hz -11.9 dB Q_rbj 5.0808  (device Q 10.08)
+-- v4-harman-sub (= v2 Harman (P03) mains unchanged, + Out 3):
+   lpf      LR24 52.0 Hz
+   pol      180 (invert)
+   delay    6.604 ms = 317 samples
+   gain     -4.5 dB (for amp 45)
+   hpf      off
+   routing  In A + In B + In C + In D
+   PEQ      47.37 Hz -12.0 dB Q_rbj 4.2479  (device Q 8.48)
+
+wrote eq/v3-flat-sub/Sub.txt, eq/v4-harman-sub/Sub.txt

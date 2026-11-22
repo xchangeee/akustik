@@ -3,19 +3,20 @@
 Read this first. **Status** and **Next** are kept current; the **Log** gets one dated entry per session (newest at the bottom; don't edit old entries).
 Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md). What is wired/configured now: [docs/current-setup.md](docs/current-setup.md).
 
-## Status (2026-11-21)
+## Status (2026-11-22)
 
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
 - **Live mode wired** (TV → In A/B, mixer → In C/D, summed A+C → 1, B+D → 2 in all presets; UMC disconnected; no hum/hiss with the mixer on but idle): [docs/current-setup.md](docs/current-setup.md#two-modes).
 - **On the DSP:** P01 FLAT (routing now summed); EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
+- **Sub8 at spot C measured** and designed in as Out 3: EQ v3 (v1 + sub) and v4 (v2 + sub), mains unchanged; **on the DSP as P05 / P06** (sub matched at amp 50 / 45), not listened to yet: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md).
 - EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target): more "subby" bass, not boomy, also better at low volume; bass audible outside the room depending on where you stand: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ is in the same file (v2: everyday 30–35, fun 40–45; v1: fun 50). **v2 = everyday EQ, v1 kept for loud sessions.**
 
 ## Next
 
-1. Next measuring session, run sheet: [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md). v2 electrical check, then v1/v2 in the room interleaved per mic position, then Sub8 sub-only passes at spots C and A. Sub8 not wired yet; check the TRS cable length first.
-2. Python measuring script **validated** (electrical and seat, [finding](findings/2026-11-22-sweep-validation.md)): use `mise run measure <plan.json> <set>` from now on. Now: room wiring, DSP on P03, Sub8 still out of the room.
+1. **Sub8: listen to P05 (v3, amp 50) and P06 (v4, amp 45)** with the sub on/off, steps in [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md#status-2026-11-22-designed-next-steps). Then a seat check of mains + sub (needs a sweep.py change: both outputs at once).
+2. Measuring: `mise run measure <plan.json> <set>` ([tools/README.md](tools/README.md)). Spot A (`subA-*`) skipped for now.
 3. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
-4. Sub8 overlay: after the sub-only data, choose the spot and set up Out 3 ([docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md)). Model favours C: [findings/2026-11-20-sub-positions-model.md](findings/2026-11-20-sub-positions-model.md).
+4. Later, nice-to-have: real 2.1 presets (mains high-passed, sub does all the bass), from the same data.
 5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
 6. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
 7. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
@@ -82,3 +83,12 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - Electrical validation on the hardware: matches REW within 0.016 dB (P01). Found: REW's level is peak; a low-end bug in sweep.py (fixed, all sets reprocessed); P03's PEQ makes 2–12 Hz noise at −59 dBFS on the DSP output (cables, ground, USB ruled out). [Finding](findings/2026-11-22-sweep-validation.md).
 - Seat check: REW vs Python at the same spot within the room's own sweep-to-sweep scatter (Python vs Python differs more). SNR check now on the IR (room rumble made the old one fire).
 - CLAUDE.md: write user docs short, agent docs dense; delete superseded scripts.
+
+### 2026-11-22: Sub8 at spot C
+
+- Sub back at C (back to the right wall, driver 0.73 m off it, centre 2.40 m from the speaker wall); P04 SUB MEAS made; sub knobs 0 dB / LP 130 / HP off / 0° (no photo).
+- Level tests: Out 3 −20 dB too quiet (SNR 43 dB in band), −10 dB kept. Sub-set SNR check lowered to 40 dB (the full-band check counts noise where the sub plays nothing).
+- `subC-seat`, `subC-corners`, `subC-dj` measured (16 positions). Spot A skipped.
+- `analysis/analyse_sub_c.py`: Out 3 designed per preset → `eq/v3-flat-sub/`, `eq/v4-harman-sub/` (LPF BW24 38.5 / LR24 52 Hz, 180°, ~6 ms, one PEQ band at 46–47 Hz). Every seat and DJ position gets better: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md).
+- User: v3/v4 = new versions with the sub as the 3rd output; real 2.1 maybe later.
+- P05/P06 written to the DSP by a new tracks probe mode `--make-preset` (and `--set-out3-gain`), read back. Problem found: the amp knob doesn't move the sub. Decided: sub for fun sessions at the preset's fun amp position (v3 50, v4 45; A300 = 1 dB/step), P06 Out 3 lowered to −4.5 dB. TV out can't be variable; slight hiss at amp 50.
