@@ -54,7 +54,7 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | --- | --- | --- |
 | P01 **FLAT** | routing A+C→1, B+D→2 (summed, changed 2026-11-20; was A→1, B→2, C→3, D→4); all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring. In the measuring setup only A/B are connected, so the summing doesn't matter |
 | P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
-| P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; not electrically checked; listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
+| P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; electrically checked 2026-11-22 ([findings](../findings/2026-11-22-eq-v2-electrical.md)); listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 

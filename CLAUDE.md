@@ -24,6 +24,16 @@ Instructions for Claude working in this repo. Everything Claude needs to know li
   (2026-11-20: telling them not to redline the mixer annoyed them.)
 - Watch the generator's band radio buttons in their screenshots (Full range / Sub Cal / Speaker Cal): they were left on Sub Cal several times.
 
+## Run sheets for measuring sessions
+
+- Write the sweeps of a session plan (`docs/plans/`) as a Markdown **checklist**, not a table (checkboxes don't render in tables). Example: Part 3 of [docs/plans/next-session-eq-sub.md](docs/plans/next-session-eq-sub.md).
+  - One heading per set (= REW project = folder `measurements/<date>/<set>/`).
+  - Per mic position: a bold line with the position name and where the mic goes.
+  - One checkbox per preset recall and **one per sweep**, numbered (`#1`…), with the REW output and the exact name to type (`L seat eq1`; REW adds the output prefix, no date).
+  - At the end of each set, one checkbox: save `<set>.mdat`, export the IRs, then REW **Remove all**.
+- Write the procedure exactly as agreed; don't add shortcuts that aren't in it (2026-11-22: an "alternate the preset order to save recalls" trick was added on my own and rejected; recall each preset every time).
+- Mic at the seat: place it by the loopback delays vs the baseline ([docs/procedures/session-checklist.md](docs/procedures/session-checklist.md)), not by eye.
+
 ## Analysis
 
 - Python via **mise + uv** only (`mise.toml`, `pyproject.toml`, `uv sync` / `uv run`), not `python3 -m venv` / pip.

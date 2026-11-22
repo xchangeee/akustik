@@ -1,6 +1,6 @@
 """Electrical check: DSP out -> UMC In 3 (no amp, no mic) vs the predicted HPF + PEQ curve.
 
-Usage: check_dsp_electrical.py <repo> <out_dir>
+Usage: check_dsp_electrical.py <repo> <out_dir> [v1|v2]   (default v1; v1 writes dsp_electrical.png, v2 dsp_electrical_v2.png)
 Predicted curve: the filter files in eq/ (RBJ values that the configurator import maps onto the device grid, so
 RBJ peaking with these exact values is the device filter, protocol §6.2) + Butterworth 24 HPF from the Notes line.
 Measured: IR export, no mic cal, normalised to its 1-5 kHz level (the EQ is flat there).
@@ -14,12 +14,18 @@ from scipy.optimize import minimize_scalar
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 
 repo, out = sys.argv[1], sys.argv[2]
+version = sys.argv[3] if len(sys.argv) > 3 else "v1"
 T0, SR, NFFT = 256, 48000, 1 << 18
-folder = os.path.join(repo, "measurements", "2026-11-18", "dsp-electrical")
+VERSIONS = {  # measurement folder, eq folder, plot name
+    "v1": (("2026-11-18", "dsp-electrical"), "v1-flat", "dsp_electrical.png"),
+    "v2": (("2026-11-22", "dsp-electrical-v2"), "v2-harman", "dsp_electrical_v2.png"),
+}
+(day, setname), eqdir, plotname = VERSIONS[version]
+folder = os.path.join(repo, "measurements", day, setname)
 
 
 def read_eq(s):
-    txt = open(os.path.join(repo, "eq", "v1-flat", f"{s}.txt")).read()
+    txt = open(os.path.join(repo, "eq", eqdir, f"{s}.txt")).read()
     bands = [(float(f), float(g), float(q)) for f, g, q in
              re.findall(r"ON\s+PK\s+Fc\s+([\d.]+)\s*Hz\s+Gain\s+([-\d.]+)\s*dB\s+Q\s+([\d.]+)", txt)]
     hp = float(re.search(r"Butterworth 24 dB/oct ([\d.]+) Hz", txt).group(1))
@@ -80,12 +86,12 @@ for col, s in enumerate("LR"):
     ax.semilogx(grid, m, "k", lw=2, label="measured (DSP out, electrical)")
     ax.semilogx(grid, p, "tab:orange", lw=1.2, ls="--", label="predicted (design)")
     ax.set_ylim(-30, 5); ax.grid(True, which="both", alpha=0.3); ax.legend(fontsize=8)
-    ax.set_title(f"{s} (Out {col+1}): electrical response, 1/48 oct, 0 dB = 1-5 kHz"); ax.set_ylabel("dB")
+    ax.set_title(f"EQ {version}, {s} (Out {col+1}): electrical response, 1/48 oct, 0 dB = 1-5 kHz"); ax.set_ylabel("dB")
     axs[1, col].semilogx(grid, d, "k", lw=1); axs[1, col].axhline(0, color="grey", lw=0.5)
     axs[1, col].set_ylim(-3, 3); axs[1, col].grid(True, which="both", alpha=0.3); axs[1, col].set_ylabel("measured - predicted (dB)")
     axs[1, col].set_xlabel("Hz")
 ticks = [20, 30, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 for ax in axs.flat:
     ax.set_xlim(15, 20000); ax.set_xticks(ticks); ax.set_xticklabels(["20", "30", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"])
-plt.tight_layout(); plt.savefig(os.path.join(out, "dsp_electrical.png"), dpi=110)
-print("plot:", os.path.join(out, "dsp_electrical.png"))
+plt.tight_layout(); plt.savefig(os.path.join(out, plotname), dpi=110)
+print("plot:", os.path.join(out, plotname))

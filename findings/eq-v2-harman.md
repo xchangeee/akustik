@@ -1,6 +1,6 @@
 # EQ v2: Harman target (2026-11-18)
 
-**Status:** imported into DSP preset slot 3 (2026-11-20: copy of v1's slot 2 with only the PEQ replaced, so same HPF BW 24 29.8 Hz; FLAT = slot 1). Listening: [2026-11-20-listening.md](2026-11-20-listening.md).
+**Status:** imported into DSP preset slot 3 (2026-11-20: copy of v1's slot 2 with only the PEQ replaced, so same HPF BW 24 29.8 Hz; FLAT = slot 1). Electrically checked 2026-11-22, matches the design: [2026-11-22-eq-v2-electrical.md](2026-11-22-eq-v2-electrical.md). Listening: [2026-11-20-listening.md](2026-11-20-listening.md).
 Why: v1 sounded "boring" ([docs/plans/sub8-overlay.md](../docs/plans/sub8-overlay.md), section 1). Compared against: [eq-v1-flat.md](eq-v1-flat.md).
 
 ## Design (no new measurements)

@@ -13,6 +13,7 @@ Use every time before measuring. First-time setup: [measurement-setup.md](measur
 - [ ] Correct cal file loaded (90° up at seat, 0° for close-up)
 - [ ] Mic gain + amp volume = same as the photo from last time (or redo Phase D + E)
 - [ ] REW output −24 dBFS (fixed), input peaks ≈ −12 dBFS, ~75–80 dB SPL at the seat
+- [ ] **Mic back on the baseline seat spot** via the loopback delays (1 cm ≈ 0.03 ms): one sweep per speaker with FLAT, read REW's "Delay … relative to Loopback". Targets (2026-11-18 seat): **L 9.29 ms, R 9.15 ms**, within ±0.15 ms (±5 cm). Placing by eye was 18 cm off on 2026-11-22
 - [ ] Measurements named per [measurements/README.md](../../measurements/README.md) (e.g. `1 L pos1 left30`), IR export settings from there too
 
 ## Troubleshooting

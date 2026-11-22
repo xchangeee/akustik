@@ -15,6 +15,7 @@ uv run python analysis/design_eq.py . analysis/output eq > analysis/output/eq_de
 uv run python analysis/design_eq.py . analysis/output eq harman > analysis/output/eq_design_harman.log
 uv run python analysis/analyse_treble.py . analysis/output > analysis/output/treble.txt
 uv run python analysis/check_dsp_electrical.py . analysis/output > analysis/output/dsp_electrical.txt
+uv run python analysis/check_dsp_electrical.py . analysis/output v2 > analysis/output/dsp_electrical_v2.txt
 uv run python analysis/sub_positions_modes.py . analysis/output > analysis/output/sub_positions_modes.txt
 uv run python analysis/build_explainer.py .
 """
