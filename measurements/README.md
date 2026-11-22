@@ -13,6 +13,10 @@ Raw data from REW: one folder per day, one subfolder per measurement set. Each s
 | [2026-11-18/closeups/](2026-11-18/closeups/) | FLAT | **0°** | Woofer and port at ~1 cm, L and R, −40 dBFS | [baseline](../findings/2026-11-18-baseline.md#close-ups-wooferport) |
 | [2026-11-18/dsp-electrical/](2026-11-18/dsp-electrical/) | EQ v1 | none | DSP Out 1/2 → UMC In 3, no amp/mic | [eq-v1-flat](../findings/eq-v1-flat.md#dsp-electrical-check) |
 | [2026-11-22/dsp-electrical-v2/](2026-11-22/dsp-electrical-v2/) | EQ v2 (P03) | none | DSP Out 1/2 → UMC In 3, no amp/mic | [eq-v2-electrical](../findings/2026-11-22-eq-v2-electrical.md) |
+| [2026-11-22/eq-seat/](2026-11-22/eq-seat/) | EQ v1 (P02) + v2 (P03) interleaved | 90° | Seat + 6 positions as 11-18, L and R, tags `eq1`/`eq2` | [eq-room](../findings/2026-11-22-eq-room.md) |
+| [2026-11-22/eq-corners/](2026-11-22/eq-corners/) | EQ v1 + v2 interleaved | 90° | Floor corners front left / right, L and R | [eq-room](../findings/2026-11-22-eq-room.md) |
+| [2026-11-22/eq-dj/](2026-11-22/eq-dj/) | EQ v1 + v2 interleaved | 90° | DJ spot, 7 positions as 11-18, L and R (measured with `mise run measure`, no date in names) | [eq-room](../findings/2026-11-22-eq-room.md) |
+| [2026-11-22/nosub-seat/](2026-11-22/nosub-seat/) | EQ v1 (P02) | 90° | One sweep, L at the main seat, Sub8 out of the room (resonance test) | [eq-room](../findings/2026-11-22-eq-room.md#sub-out-of-the-room-test-and-the-p02-routing) |
 
 All 2026-11-18 sets: 512k sweep, −24 dBFS (close-ups −40), loopback timing reference, amp volume and In 1 gain as fixed in setup Phase D. Positions ball-parked by hand.
 

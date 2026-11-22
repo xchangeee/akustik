@@ -1,0 +1,233 @@
+eq1    measurements/2026-11-22/eq-seat/1 L seat eq1 Nov 22.wav
+eq2    measurements/2026-11-22/eq-seat/1 L seat eq2 Nov 22.wav
+nosub  measurements/2026-11-22/nosub-seat/1 L seat eq1 nosub.wav
+flat   measurements/2026-11-18/seat/1 first sweep, left speaker only Nov 18.wav
+
+=== 1. Mic placement / gain: direct sound arrival (samples after t0, 30 % of HP peak) and mid level ===
+   eq1    arrival  443 samples ( 9.23 ms)   mid 300 Hz-2 kHz -0.67 dB re nosub
+   eq2    arrival  443 samples ( 9.23 ms)   mid 300 Hz-2 kHz -0.69 dB re nosub
+   nosub  arrival  443 samples ( 9.23 ms)   mid 300 Hz-2 kHz +0.00 dB re nosub
+   flat   arrival  444 samples ( 9.25 ms)   mid 300 Hz-2 kHz -0.00 dB re nosub
+
+=== 2. L seat, 1/24 oct, dB re nosub's 300 Hz-2 kHz level ===
+    Hz |     nosub       eq1   eq2->v1 flat x v1      flat | eq1-nosub eq2v1-nos
+    25 |     -20.5     -25.9     -24.2     -21.2     -14.0 |      -5.4      -3.7
+    28 |     -12.9     -15.5     -13.5     -13.5      -9.0 |      -2.6      -0.6
+    30 |      -6.8     -11.6     -11.7     -12.7      -9.3 |      -4.7      -4.9
+    33 |      -7.2      -8.2      -8.9      -8.2      -5.8 |      -1.0      -1.7
+    36 |      -5.2      -5.0      -4.9      -4.6      -2.2 |      +0.3      +0.3
+    40 |      -1.0      -1.0      -1.1      -0.2      +5.4 |      -0.1      -0.2
+    43 |      +0.7      +1.1      +1.0      +1.8     +13.7 |      +0.4      +0.3
+    47 |      +0.1      +1.3      +1.2      +1.6      +6.3 |      +1.1      +1.1
+    51 |      +2.2      +2.5      +2.4      +3.0      +5.0 |      +0.3      +0.2
+    55 |     -11.3     -10.3      -9.8     -13.3     -12.1 |      +1.0      +1.5
+    60 |      -0.8      -0.2      -0.5      -0.9      -0.1 |      +0.6      +0.3
+    65 |      +1.0      +1.1      +1.0      +2.1      +2.9 |      +0.1      +0.0
+    70 |      +0.5      +0.2      +0.1      +1.3      +2.3 |      -0.3      -0.4
+    75 |      -2.2      -3.5      -3.3      -2.8      -1.2 |      -1.3      -1.1
+    77 |      -3.4      -5.0      -5.1      -4.0      -2.0 |      -1.6      -1.7
+    78 |      -3.8      -4.8      -4.7      -4.2      -2.0 |      -1.0      -0.9
+    80 |      -0.6      -2.1      -2.3      +0.7      +3.7 |      -1.5      -1.7
+    85 |      +3.5      +3.1      +3.0      +1.8      +5.8 |      -0.4      -0.5
+    90 |      -1.2      -0.5      -0.4      +0.3      +6.3 |      +0.7      +0.8
+    95 |      +2.3      +2.4      +2.4      +2.3     +11.0 |      +0.1      +0.1
+   100 |      +0.3      +0.5      +0.4      +1.3      +7.7 |      +0.2      +0.2
+   110 |      +2.5      +2.4      +2.4      +1.8      +9.8 |      -0.1      -0.1
+   120 |      +0.4      +0.6      +0.5      -1.9      +6.5 |      +0.2      +0.0
+   130 |      +2.4      +1.7      +1.6      +0.7      +5.8 |      -0.7      -0.8
+   150 |      +3.1      +3.0      +3.0      -0.6      +0.5 |      -0.1      -0.1
+   175 |      +1.1      +1.6      +1.7      +3.9      +4.3 |      +0.5      +0.6
+   200 |      -0.3      +1.8      +1.7      +0.8      +1.0 |      +2.0      +2.0
+   250 |      +3.5      +3.5      +3.5      +5.0      +5.1 |      -0.0      -0.0
+   300 |      -3.6      -2.5      -2.5      -6.5      -6.5 |      +1.1      +1.2
+     25-40   Hz  eq1       - nosub: mean -2.22  rms 3.82 dB
+     25-40   Hz  eq2->v1   - nosub: mean -2.34  rms 4.61 dB
+     25-40   Hz  flat x v1 - nosub: mean -1.04  rms 2.75 dB
+     40-80   Hz  eq1       - nosub: mean +0.19  rms 0.76 dB
+     40-80   Hz  eq2->v1   - nosub: mean +0.20  rms 0.80 dB
+     40-80   Hz  flat x v1 - nosub: mean +0.61  rms 1.14 dB
+     80-130  Hz  eq1       - nosub: mean -0.00  rms 0.71 dB
+     80-130  Hz  eq2->v1   - nosub: mean -0.06  rms 0.72 dB
+     80-130  Hz  flat x v1 - nosub: mean -0.14  rms 1.54 dB
+    130-300  Hz  eq1       - nosub: mean +0.02  rms 0.95 dB
+    130-300  Hz  eq2->v1   - nosub: mean -0.02  rms 0.96 dB
+    130-300  Hz  flat x v1 - nosub: mean -0.04  rms 2.62 dB
+    300-2000 Hz  eq1       - nosub: mean -0.67  rms 2.84 dB
+    300-2000 Hz  eq2->v1   - nosub: mean -0.69  rms 2.83 dB
+    300-2000 Hz  flat x v1 - nosub: mean -0.02  rms 2.82 dB
+
+=== 3. Difference IR (low-passed 200 Hz) vs the nosub IR (same low-pass) ===
+energy in windows after t0, dB re nosub's total low-passed energy 0-500 ms
+   nosub            0-5ms  -36.9 5-10ms  -15.6 10-15ms   -5.4 15-20ms   -7.8 20-30ms   -8.4 30-50ms   -7.6 50-100ms   -8.2 100-300ms  -13.7
+   eq1 - nosub      0-5ms  -55.3 5-10ms  -45.4 10-15ms  -32.0 15-20ms  -25.9 20-30ms  -24.3 30-50ms  -22.7 50-100ms  -20.1 100-300ms  -23.8
+   eq2->v1 - nosub  0-5ms  -44.0 5-10ms  -51.6 10-15ms  -31.4 15-20ms  -25.3 20-30ms  -24.7 30-50ms  -22.7 50-100ms  -20.2 100-300ms  -23.8
+   eq1 - nosub: first reaches 30 % of its peak at 11.38 ms after t0 (L direct sound at 9.23 ms); peak at 59.62 ms
+
+=== 4. Late energy (0.3-1.0 s) vs early (0-0.3 s), 1/24-oct band, per file ===
+    62.0 Hz: nosub   -9.2  eq1   -8.7  eq2   -8.6  flat  -10.7
+    70.0 Hz: nosub  -11.6  eq1  -11.4  eq2  -11.9  flat  -11.7
+    77.8 Hz: nosub   -1.7  eq1   -0.2  eq2   -0.9  flat  -18.0
+    80.1 Hz: nosub  -18.8  eq1  -17.2  eq2  -18.1  flat  -10.6
+    85.0 Hz: nosub  -12.5  eq1  -11.9  eq2  -12.1  flat  -15.4
+   nosub  late spectrum 60-100 Hz: peak at 77.91 Hz, +16.8 dB over median
+   eq1    late spectrum 60-100 Hz: peak at 77.77 Hz, +17.3 dB over median
+   eq2    late spectrum 60-100 Hz: peak at 77.73 Hz, +21.1 dB over median
+   flat   late spectrum 60-100 Hz: peak at 80.06 Hz, +14.2 dB over median
+
+=== 5. Residual eq1 - eq2 x (H_v1 / H_v2), every eq-* spot, low-passed 200 Hz, 0-300 ms ===
+eq1 and eq2 were swept at the same mic spot; converting eq2 by the filter ratio should give eq1 exactly. A sub
+playing only on the P02 L sweeps leaves its sound in the L residual. R is the control (In B never went to Out 3).
+dB re the eq1 IR's own low-passed energy; also the residual's 30 % onset (ms after t0) vs the speaker's direct sound.
+   eq-seat    1 L pos1 left30              residual  -22.7 dB   onset   10.1 ms (direct   8.8 ms)
+   eq-seat    1 L pos2 right30             residual  -29.2 dB   onset    0.2 ms (direct   9.6 ms)
+   eq-seat    1 L pos3 fwd20               residual  -18.1 dB   onset    9.0 ms (direct   8.6 ms)
+   eq-seat    1 L pos4 back20              residual  -25.6 dB   onset    9.9 ms (direct   9.7 ms)
+   eq-seat    1 L pos5 up10                residual  -31.7 dB   onset    2.8 ms (direct   9.2 ms)
+   eq-seat    1 L pos6 down10              residual  -22.7 dB   onset    0.0 ms (direct   9.2 ms)
+   eq-seat    1 L seat                     residual  -33.3 dB   onset    8.4 ms (direct   9.2 ms)
+   eq-seat    2 R pos1 left30              residual  -20.5 dB   onset   16.0 ms (direct   9.5 ms)
+   eq-seat    2 R pos2 right30             residual  -25.7 dB   onset   11.8 ms (direct   8.8 ms)
+   eq-seat    2 R pos3 fwd20               residual  -26.9 dB   onset    6.3 ms (direct   8.6 ms)
+   eq-seat    2 R pos4 back20              residual  -23.4 dB   onset   13.9 ms (direct   9.6 ms)
+   eq-seat    2 R pos5 up10                residual  -21.3 dB   onset   10.6 ms (direct   9.1 ms)
+   eq-seat    2 R pos6 down10              residual  -26.7 dB   onset    7.9 ms (direct   9.1 ms)
+   eq-seat    2 R seat                     residual  -26.8 dB   onset    5.3 ms (direct   9.1 ms)
+   eq-corners 1 L corner front left        residual  -31.8 dB   onset   10.5 ms (direct  14.7 ms)
+   eq-corners 1 L corner front right       residual  -38.1 dB   onset    9.2 ms (direct  14.8 ms)
+   eq-corners 2 R corner front left        residual  -29.0 dB   onset   26.1 ms (direct  21.7 ms)
+   eq-corners 2 R corner front right       residual  -31.0 dB   onset    3.2 ms (direct   3.0 ms)
+   eq-dj      1 L DJ back30                residual  -25.6 dB   onset   19.9 ms (direct   5.3 ms)
+   eq-dj      1 L DJ down30                residual  -34.4 dB   onset    0.5 ms (direct   4.2 ms)
+   eq-dj      1 L DJ fwd30                 residual  -28.0 dB   onset   22.8 ms (direct   4.6 ms)
+   eq-dj      1 L DJ left30                residual  -24.2 dB   onset   29.7 ms (direct   5.5 ms)
+   eq-dj      1 L DJ pos                   residual  -32.2 dB   onset    8.0 ms (direct   4.8 ms)
+   eq-dj      1 L DJ right30               residual  -27.5 dB   onset    1.8 ms (direct   4.3 ms)
+   eq-dj      1 L DJ up30                  residual  -33.6 dB   onset   19.6 ms (direct   5.2 ms)
+   eq-dj      2 R DJ back30                residual  -27.8 dB   onset   16.5 ms (direct  11.3 ms)
+   eq-dj      2 R DJ down30                residual  -26.8 dB   onset    6.1 ms (direct  10.9 ms)
+   eq-dj      2 R DJ fwd30                 residual  -27.9 dB   onset    1.0 ms (direct  11.1 ms)
+   eq-dj      2 R DJ left30                residual  -28.9 dB   onset    7.5 ms (direct  12.1 ms)
+   eq-dj      2 R DJ pos                   residual  -26.6 dB   onset    1.4 ms (direct  11.2 ms)
+   eq-dj      2 R DJ right30               residual  -26.0 dB   onset    1.0 ms (direct  10.4 ms)
+   eq-dj      2 R DJ up30                  residual  -26.6 dB   onset   19.8 ms (direct  11.2 ms)
+   eq-seat    L: median residual  -25.6 dB  (range -33.3 .. -18.1)
+   eq-seat    R: median residual  -25.7 dB  (range -26.9 .. -20.5)
+   eq-corners L: median residual  -35.0 dB  (range -38.1 .. -31.8)
+   eq-corners R: median residual  -30.0 dB  (range -31.0 .. -29.0)
+   eq-dj      L: median residual  -28.0 dB  (range -34.4 .. -24.2)
+   eq-dj      R: median residual  -26.8 dB  (range -28.9 .. -26.0)
+
+=== 6. Narrow late line 70-90 Hz in every IR: peak of the late spectrum (0.3-1.0 s, Hann, 0.07 Hz bins) ===
+prominence = peak over the median of 60-100 Hz (dB); lev = peak re the IR's early 60-100 Hz level (0-0.3 s)
+-- 2026-11-18/closeups
+   1 L close up port Nov 18.wav              80.11 Hz  prominence  +6.9  lev  -14.4
+   1 L close up woofer Nov 18.wav            79.42 Hz  prominence  +6.3  lev  -15.3
+   2 R close up port Nov 18.wav              77.55 Hz  prominence  +8.3  lev  -23.2
+   2 R close up woofer Nov 18.wav            74.25 Hz  prominence  +5.6  lev  -22.0
+-- 2026-11-18/corners
+   1 L corner front left Nov 18.wav          80.02 Hz  prominence +17.8  lev  -17.4
+   1 L corner front right Nov 18.wav         80.06 Hz  prominence +11.6  lev  -24.8
+   2 R corner front left Nov 18.wav          88.44 Hz  prominence +15.2  lev  -28.6
+   2 R corner front right Nov 18.wav         84.55 Hz  prominence  +5.6  lev  -34.4
+-- 2026-11-18/dj
+   1 L DJ back30 Nov 18.wav                  80.02 Hz  prominence +20.9  lev   -9.0
+   1 L DJ down30 Nov 18.wav                  79.83 Hz  prominence +15.6  lev  -15.8
+   1 L DJ fwd30 Nov 18.wav                   79.93 Hz  prominence +17.9  lev  -16.8
+   1 L DJ left30 Nov 18.wav                  79.93 Hz  prominence +21.5  lev  -13.8
+   1 L DJ pos Nov 18.wav                     80.02 Hz  prominence +20.7  lev  -13.7
+   1 L DJ right30 Nov 18.wav                 80.06 Hz  prominence +17.9  lev  -16.7
+   1 L DJ up30 Nov 18.wav                    79.88 Hz  prominence +21.4  lev  -11.2
+   2 R DJ back30 Nov 18.wav                  80.02 Hz  prominence +12.9  lev  -25.8
+   2 R DJ down30 Nov 18.wav                  88.49 Hz  prominence +10.5  lev  -22.7
+   2 R DJ fwd30 Nov 18.wav                   79.74 Hz  prominence +10.5  lev  -28.1
+   2 R DJ left30 Nov 18.wav                  79.61 Hz  prominence  +7.8  lev  -28.2
+   2 R DJ pos Nov 18.wav                     79.61 Hz  prominence  +9.7  lev  -27.5
+   2 R DJ right30 Nov 18.wav                 83.54 Hz  prominence  +5.5  lev  -30.8
+   2 R DJ up30 Nov 18.wav                    80.34 Hz  prominence  +8.6  lev  -30.6
+-- 2026-11-18/positions
+   1 L pos1 left30 Nov 18.wav                79.74 Hz  prominence +16.9  lev  -21.1
+   1 L pos2 right30 Nov 18.wav               79.79 Hz  prominence +13.8  lev  -13.1
+   1 L pos3 fwd20 Nov 18.wav                 80.02 Hz  prominence +16.3  lev  -16.7
+   1 L pos4 back20 Nov 18.wav                79.93 Hz  prominence +17.8  lev  -14.9
+   1 L pos5 up10 Nov 18.wav                  79.88 Hz  prominence +16.4  lev  -13.8
+   1 L pos6 down10 Nov 18.wav                80.11 Hz  prominence +17.7  lev  -18.1
+   2 R pos1 left30 Nov 18.wav                80.80 Hz  prominence +14.1  lev  -23.9
+   2 R pos2 right30 Nov 18.wav               80.20 Hz  prominence  +7.4  lev  -29.3
+   2 R pos3 fwd20 Nov 18.wav                 79.24 Hz  prominence  +8.6  lev  -31.0
+   2 R pos4 back20 Nov 18.wav                79.10 Hz  prominence  +9.9  lev  -28.5
+   2 R pos5 up10 Nov 18.wav                  87.75 Hz  prominence  +8.2  lev  -30.0
+   2 R pos6 down10 Nov 18.wav                79.70 Hz  prominence  +8.5  lev  -33.0
+-- 2026-11-18/seat
+   1 first sweep, left speaker only Nov 18.  80.06 Hz  prominence +14.2  lev  -18.4
+   2 first sweep, right speaker o.wav        79.61 Hz  prominence  +8.2  lev  -30.8
+-- 2026-11-22/eq-corners
+   1 L corner front left eq1 Nov 22.wav      77.91 Hz  prominence +20.6  lev  -16.3
+   1 L corner front left eq2 Nov 22.wav      77.91 Hz  prominence +18.7  lev  -15.8
+   1 L corner front right eq1 Nov 22.wav     78.00 Hz  prominence +14.2  lev  -18.2
+   1 L corner front right eq2 Nov 22.wav     78.37 Hz  prominence +12.8  lev  -19.4
+   2 R corner front left eq1 Nov 22.wav      77.73 Hz  prominence  +6.9  lev  -27.6
+   2 R corner front left eq2 Nov 22.wav      78.28 Hz  prominence +11.7  lev  -27.5
+   2 R corner front right eq1 Nov 22.wav     88.49 Hz  prominence  +4.6  lev  -25.5
+   2 R corner front right eq2 Nov 22.wav     86.52 Hz  prominence  +8.8  lev  -30.3
+-- 2026-11-22/eq-dj
+   1 L DJ back30 eq1.wav                     78.09 Hz  prominence +18.4  lev   -9.7
+   1 L DJ back30 eq2.wav                     77.91 Hz  prominence +21.0  lev  -10.1
+   1 L DJ down30 eq1.wav                     78.05 Hz  prominence +15.5  lev  -11.6
+   1 L DJ down30 eq2.wav                     75.39 Hz  prominence +20.9  lev   -6.5
+   1 L DJ fwd30 eq1.wav                      77.91 Hz  prominence +19.4  lev  -13.3
+   1 L DJ fwd30 eq2.wav                      77.91 Hz  prominence +20.6  lev  -13.2
+   1 L DJ left30 eq1.wav                     77.91 Hz  prominence +22.6  lev   -8.8
+   1 L DJ left30 eq2.wav                     77.87 Hz  prominence +19.5  lev  -10.2
+   1 L DJ pos eq1.wav                        78.05 Hz  prominence +20.0  lev  -11.4
+   1 L DJ pos eq2.wav                        78.05 Hz  prominence +19.5  lev  -11.6
+   1 L DJ right30 eq1.wav                    77.96 Hz  prominence +13.6  lev  -11.9
+   1 L DJ right30 eq2.wav                    78.00 Hz  prominence +18.8  lev  -12.2
+   1 L DJ up30 eq1.wav                       77.91 Hz  prominence +19.6  lev   -9.7
+   1 L DJ up30 eq2.wav                       78.00 Hz  prominence +20.5  lev  -10.1
+   2 R DJ back30 eq1.wav                     75.07 Hz  prominence  +8.7  lev  -17.8
+   2 R DJ back30 eq2.wav                     78.23 Hz  prominence  +6.6  lev  -28.9
+   2 R DJ down30 eq1.wav                     72.83 Hz  prominence  +6.6  lev  -18.2
+   2 R DJ down30 eq2.wav                     85.83 Hz  prominence  +6.3  lev  -23.5
+   2 R DJ fwd30 eq1.wav                      84.78 Hz  prominence  +8.6  lev  -19.6
+   2 R DJ fwd30 eq2.wav                      77.64 Hz  prominence  +6.3  lev  -28.3
+   2 R DJ left30 eq1.wav                     78.69 Hz  prominence  +8.5  lev  -20.2
+   2 R DJ left30 eq2.wav                     77.68 Hz  prominence  +5.2  lev  -27.4
+   2 R DJ pos eq1.wav                        83.91 Hz  prominence  +4.6  lev  -24.4
+   2 R DJ pos eq2.wav                        78.28 Hz  prominence  +6.8  lev  -25.2
+   2 R DJ right30 eq1.wav                    74.57 Hz  prominence  +6.4  lev  -23.7
+   2 R DJ right30 eq2.wav                    77.64 Hz  prominence  +4.0  lev  -29.0
+   2 R DJ up30 eq1.wav                       78.14 Hz  prominence  +8.5  lev  -23.5
+   2 R DJ up30 eq2.wav                       78.37 Hz  prominence  +8.9  lev  -26.8
+-- 2026-11-22/eq-seat
+   1 L pos1 left30 eq1 Nov 22.wav            77.91 Hz  prominence +20.8  lev   -8.9
+   1 L pos1 left30 eq2 Nov 22.wav            77.91 Hz  prominence +23.5  lev  -13.2
+   1 L pos2 right30 eq1 Nov 22.wav           77.68 Hz  prominence +16.2  lev   -8.2
+   1 L pos2 right30 eq2 Nov 22.wav           77.73 Hz  prominence +19.6  lev   -8.7
+   1 L pos3 fwd20 eq1 Nov 22.wav             77.87 Hz  prominence +19.7  lev   -7.7
+   1 L pos3 fwd20 eq2 Nov 22.wav             77.87 Hz  prominence +21.0  lev  -10.1
+   1 L pos4 back20 eq1 Nov 22.wav            78.19 Hz  prominence +20.9  lev   -7.6
+   1 L pos4 back20 eq2 Nov 22.wav            77.91 Hz  prominence +22.7  lev   -9.3
+   1 L pos5 up10 eq1 Nov 22.wav              77.91 Hz  prominence +23.2  lev   -6.4
+   1 L pos5 up10 eq2 Nov 22.wav              77.96 Hz  prominence +21.2  lev  -10.1
+   1 L pos6 down10 eq1 Nov 22.wav            77.87 Hz  prominence +21.3  lev   -4.4
+   1 L pos6 down10 eq2 Nov 22.wav            77.77 Hz  prominence +22.0  lev  -10.7
+   1 L seat eq1 Nov 22.wav                   77.77 Hz  prominence +17.3  lev   -6.4
+   1 L seat eq2 Nov 22.wav                   77.73 Hz  prominence +21.1  lev   -8.9
+   2 R pos1 left30 eq1 Nov 22.wav            77.41 Hz  prominence +11.0  lev  -18.1
+   2 R pos1 left30 eq2 Nov 22.wav            77.87 Hz  prominence +11.9  lev  -22.5
+   2 R pos2 right30 eq1 Nov 22.wav           85.74 Hz  prominence  +6.9  lev  -19.4
+   2 R pos2 right30 eq2 Nov 22.wav           78.28 Hz  prominence  +7.3  lev  -24.1
+   2 R pos3 fwd20 eq1 Nov 22.wav             77.50 Hz  prominence  +8.5  lev  -20.7
+   2 R pos3 fwd20 eq2 Nov 22.wav             83.04 Hz  prominence  +8.4  lev  -25.2
+   2 R pos4 back20 eq1 Nov 22.wav            81.44 Hz  prominence +12.7  lev   -7.3
+   2 R pos4 back20 eq2 Nov 22.wav            77.73 Hz  prominence +11.4  lev  -21.5
+   2 R pos5 up10 eq1 Nov 22.wav              81.85 Hz  prominence  +9.4  lev  -14.7
+   2 R pos5 up10 eq2 Nov 22.wav              78.00 Hz  prominence  +7.1  lev  -26.4
+   2 R pos6 down10 eq1 Nov 22.wav            89.81 Hz  prominence  +7.7  lev  -20.8
+   2 R pos6 down10 eq2 Nov 22.wav            78.46 Hz  prominence  +9.0  lev  -23.3
+   2 R seat eq1 Nov 22.wav                   73.24 Hz  prominence  +7.8  lev  -20.2
+   2 R seat eq2 Nov 22.wav                   90.00 Hz  prominence  +7.2  lev  -22.8
+-- 2026-11-22/nosub-seat
+   1 L seat eq1 nosub.wav                    77.91 Hz  prominence +16.8  lev   -7.0
+
+plot: analysis/output/nosub.png

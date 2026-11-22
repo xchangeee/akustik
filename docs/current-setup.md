@@ -38,6 +38,7 @@ The DSP is moved between two setups:
 - macOS output = MacBook speakers (verified). UMC at 48 kHz.
 - Mic at the main seat, centred between the speakers, pointing up, 90° cal file.
 - Speaker placement: see [context.md, Room](context.md#room).
+- Sub8: under the table and switched off on 2026-11-18, at spot C since then (user, 2026-11-22). During the `eq-*` sets: switched on, connected to the DSP, nothing meant to be routed to Out 3 (but see P02 below). Out of the room for the `nosub-seat` sweep (2026-11-22). Spot C: [plan, section 3](plans/next-session-eq-sub.md).
 
 ## Levels (fixed; don't touch)
 
@@ -53,7 +54,7 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | Preset | Content | Status |
 | --- | --- | --- |
 | P01 **FLAT** | routing A+C→1, B+D→2 (summed, changed 2026-11-20; was A→1, B→2, C→3, D→4); all faders 0 dB; PEQ bypassed (all bands 0 dB); HPF/LPF off; gate/compressor off; delay 0; mute and polarity off | saved 2026-11-17; for re-measuring. In the measuring setup only A/B are connected, so the summing doesn't matter |
-| P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked |
+| P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked. 2026-11-22: routing found broken (In A also → Out 3), **fixed by the user the same day**; P03 checked, routing correct. The `eq-*` data show the sub didn't play along ([findings](../findings/2026-11-22-eq-room.md#sub-out-of-the-room-test-and-the-p02-routing)) |
 | P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; electrically checked 2026-11-22 ([findings](../findings/2026-11-22-eq-v2-electrical.md)); listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).

@@ -21,6 +21,9 @@
     ],
     "sub": [
       {"n": 3, "side": "S", "rew_output": "1"}
+    ],
+    "L": [
+      {"n": 1, "side": "L", "rew_output": "1"}
     ]
   },
   "position_groups": {
@@ -45,12 +48,16 @@
       {"name": "DJ back30", "mic": "30 cm back from DJ pos"},
       {"name": "DJ up30", "mic": "30 cm above DJ pos"},
       {"name": "DJ down30", "mic": "30 cm below DJ pos"}
+    ],
+    "seat-only": [
+      {"name": "seat", "mic": "seat spot", "delay_ms": {"L": 9.29, "R": 9.15}}
     ]
   },
   "sets": {
     "eq-seat":      {"positions": "seat",    "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
     "eq-corners":   {"positions": "corners", "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
     "eq-dj":        {"positions": "dj",      "channels": "mains", "presets": [["P02", "eq1"], ["P03", "eq2"]]},
+    "nosub-seat":   {"positions": "seat-only", "channels": "L", "presets": [["P02", "eq1 nosub"]], "before": "Resonance test: Sub8 carried out of the room. Mic back at the seat spot, placed by the loopback delays."},
     "subC-seat":    {"positions": "seat",    "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, Sub8 gain 0 dB, LP 130 Hz, HP off, 0°. Mains muted in P04."},
     "subC-corners": {"positions": "corners", "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},
     "subC-dj":      {"positions": "dj",      "channels": "sub",   "presets": [["P04", "subC"]], "before": "Sub at spot C, knobs as in the photo."},

@@ -220,6 +220,22 @@ The sub can already stand at spot C during this part. Without routing to Out 3 i
 
 REW adds the output number in front ("Prefix with output", "Use as entered"): `L seat eq1` becomes `1 L seat eq1`. v1 = P02 = `eq1`, v2 = P03 = `eq2`.
 
+## 3a. Resonance test: sub out of the room
+
+Why: a narrow resonance at ~78 Hz on L seemed new since the Sub8 stands at spot C. One sweep without the sub, compared with `1 L seat eq1` from `eq-seat`. Result: not the sub; the resonance is in the L speaker and was already there on 11-18 ([findings](../../findings/2026-11-22-eq-room.md#narrow-resonance-at-78-hz-in-the-l-speaker)).
+
+`mise run measure nosub-seat`
+
+### Set `nosub-seat`
+
+- [x] Sub8 switched off, unplugged, carried out of the room
+
+**seat**: mic seat spot, placed by the loopback delays (L 9.29 / R 9.15 ms)
+
+- [x] recall **P02**
+- [x] #65 output 1: `L seat eq1 nosub`
+- [x] Save `nosub-seat.mdat` in `nosub-seat/`, export the IR there, then REW **Remove all**
+
 ## 3b. Prepare the sub (only before parts 4–5)
 
 Not needed for the mains passes; do this when the mains are done.
@@ -272,6 +288,6 @@ Placement: spot C = right side wall at the sofa's right end, ~0.40 m from the wa
 ## Afterwards (Claude)
 
 - ~~Electrical v2 vs prediction~~ done ([findings](../../findings/2026-11-22-eq-v2-electrical.md)).
-- Mic positions vs 2026-11-18 from the loopback delays in the exported IRs.
-- v1 and v2 in the room vs their simulations, waterfall before/after.
+- ~~Mic positions vs 2026-11-18 from the loopback delays in the exported IRs.~~ done
+- ~~v1 and v2 in the room vs their simulations, waterfall before/after.~~ done ([findings](../../findings/2026-11-22-eq-room.md)); narrow ~78 Hz resonance in the L speaker found (low relevance).
 - Sub: A vs C at seat/DJ/corners, then sum with the mains (same loopback timing) to choose crossover, delay, polarity and the Out 3 PEQ.

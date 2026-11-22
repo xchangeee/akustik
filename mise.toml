@@ -17,6 +17,8 @@ uv run python analysis/analyse_treble.py . analysis/output > analysis/output/tre
 uv run python analysis/check_dsp_electrical.py . analysis/output > analysis/output/dsp_electrical.txt
 uv run python analysis/check_dsp_electrical.py . analysis/output v2 > analysis/output/dsp_electrical_v2.txt
 uv run python analysis/sub_positions_modes.py . analysis/output > analysis/output/sub_positions_modes.txt
+uv run python analysis/analyse_eq_room.py . analysis/output > analysis/output/eq_room.txt
+uv run python analysis/check_nosub.py . analysis/output > analysis/output/nosub.txt
 uv run python analysis/build_explainer.py .
 """
 
