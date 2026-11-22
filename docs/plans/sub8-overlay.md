@@ -66,7 +66,8 @@ The sub is switched on and off manually at its own power switch (no switched str
 Spot C measured; Out 3 designed per preset as **v3 = v1 + sub** and **v4 = v2 + sub** (mains unchanged): [findings/2026-11-22-sub-c.md](../../findings/2026-11-22-sub-c.md). Spot A skipped for now.
 
 - [x] ~~User:~~ Done 2026-11-22 by probe `--make-preset` (read back): make **P05 "EQ v3 flat+sub"** = copy of P02, and **P06 "EQ v4 Harm+sub"** = copy of P03. In each, set Out 3 as in the finding's table: routing In A+B+C+D, LPF, polarity, delay, gain; import `eq/v3-flat-sub/Sub.txt` / `eq/v4-harman-sub/Sub.txt` into Out 3's PEQ. Leave Out 1/2 untouched.
-- [ ] Listen with the sub on and off, **v3 at amp 50, v4 at amp 45** (the sub is matched there; the amp doesn't move the sub): level, the 28 Hz overshoot, the neighbours. Adjust the level only with Out 3's gain.
+- [x] Done 2026-11-22: write the second design (28 Hz fix) to P05/P06 with the probe commands printed at the end of [sub_c.txt](../../analysis/output/sub_c.txt) (`--reads-only` first): [finding](../../findings/2026-11-22-sub-c-28hz.md).
+- [ ] Listen with the sub on and off, **v3 at amp 50, v4 at amp 45** (the sub is matched there; the amp doesn't move the sub): level, the deepest bass (28 Hz), the neighbours. Adjust the level only with Out 3's gain.
 - [ ] Maybe: stereo volume control (with remote) between TV and DSP In A/B, so the sub follows the volume and can run at any level. Hiss at a fixed amp 50 is slight (user, 2026-11-22).
 - [ ] Measuring check of P05/P06 at the seat (mains + sub together). sweep.py plays one output per sweep, so this needs the sweep on UMC Out 1 and 2 at once (or a mono feed into In A and In B); script change first.
 - [ ] Optional: spot A (`subA-*` sets are in the plan JSON), if C turns out unsatisfying.

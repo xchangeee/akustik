@@ -21,8 +21,8 @@ The DSP is moved between two setups:
 - Routing in **all presets**: A+C → Out 1, B+D → Out 2 (summed, so whichever source plays is heard).
 - Usually only one source plays at a time. The mixer is usually switched off completely. TV and mixer are on the same power line.
 - Checked 2026-11-20: TV playing with the mixer on but idle, no hum or hiss.
-- TV settings (confirmed 2026-11-21): all TV sound processing off, analog output level fixed at 80/100.
-- Source levels (2026-11-20): TV analog output volume 80/100, mixer master +3 dB on the master level meter. Both set by ear, no difference in loudness noticed. The amp volume positions per EQ ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq)) assume these source levels.
+- TV settings (confirmed 2026-11-21): all TV sound processing off, analog output level fixed at 80/100. 2026-11-22: 50/100 for one session only (P05 listening); 80/100 stays the setting until the HDMI audio extractor replaces this path ([plan](plans/tv-digital-audio.md)).
+- Source levels (2026-11-20): TV analog output volume 80/100, mixer master +3 dB on the master level meter. Both set by ear, no difference in loudness noticed. The amp volume positions per EQ ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md#amp-volume-smsl-a300-per-eq)) assume these source levels. The TV level moves mains and sub together (it's before the DSP), so the sub balance depends only on the amp position.
 
 ## Wiring: measuring
 
@@ -59,8 +59,8 @@ Configured with the **user's own configurator** in `~/WPlay/tracks` (browser/Web
 | P02 **EQ v1 (flat target)**, for loud sessions | routing as P01; [eq/v1-flat/](../eq/v1-flat/) PEQ on Out 1/2 + HPF Butterworth 24, 29.8 Hz (set by hand in the crossover), EQ Bypass off | slot 2 (P01 FLAT untouched); imported 2026-11-18, electrically checked. 2026-11-22: routing found broken (In A also → Out 3), **fixed by the user the same day**; P03 checked, routing correct. The `eq-*` data show the sub didn't play along ([findings](../findings/2026-11-22-eq-room.md#sub-out-of-the-room-test-and-the-p02-routing)) |
 | P03 **EQ v2 (Harman)**, everyday | copy of P02 with only the PEQ replaced by [eq/v2-harman/](../eq/v2-harman/); same HPF Butterworth 24, 29.8 Hz, EQ Bypass off | slot 3, imported 2026-11-20; electrically checked 2026-11-22 ([findings](../findings/2026-11-22-eq-v2-electrical.md)); listened to 2026-11-20 ([findings/2026-11-20-listening.md](../findings/2026-11-20-listening.md)) |
 | P04 **SUB MEAS** | copy of P01; In A → Out 3 only, Out 1/2 muted; Out 3 gain −10 dB, PEQ/HPF/LPF/compressor off, delay 0, polarity normal | slot 4, made 2026-11-22 for the sub passes; measuring only |
-| P05 **EQ v3 flat+sub** | copy of P02 + Out 3: In A+B+C+D, LPF BW24 38.5 Hz, polarity 180, delay 293 samples, gain −7.8 dB (for amp 50), PEQ [eq/v3-flat-sub/](../eq/v3-flat-sub/), HPF/compressor off | slot 5, written 2026-11-22 by probe `--make-preset`, read back ([findings](../findings/2026-11-22-sub-c.md)); not listened to yet |
-| P06 **EQ v4 Harm+sub** | copy of P03 + Out 3: In A+B+C+D, LPF LR24 52.0 Hz, polarity 180, delay 317 samples, gain −4.5 dB (for amp 45), PEQ [eq/v4-harman-sub/](../eq/v4-harman-sub/), HPF/compressor off | slot 6, written 2026-11-22 the same way; not listened to yet |
+| P05 **EQ v3 flat+sub** | copy of P02 + Out 3: In A+B+C+D, LPF BW24 32.7 Hz, polarity 180, delay 264 samples, gain −2.8 dB (for amp 50), PEQ [eq/v3-flat-sub/](../eq/v3-flat-sub/) (2 bands), HPF/compressor off | slot 5; second design ([28 Hz fix](../findings/2026-11-22-sub-c-28hz.md)), written 2026-11-22 by probe `--make-preset --overwrite` over the first ([findings](../findings/2026-11-22-sub-c.md)), read back; listened: "sounds great" ([listening](../findings/2026-11-22-sub-listening.md)) |
+| P06 **EQ v4 Harm+sub** | copy of P03 + Out 3: In A+B+C+D, LPF LR24 52.0 Hz, polarity 180, delay 330 samples, gain −3.7 dB (for amp 45), PEQ [eq/v4-harman-sub/](../eq/v4-harman-sub/) (2 bands), HPF/compressor off | slot 6; second design, written the same way, read back; not listened to yet |
 
 Compressor/limiter: off on all outputs (procedure: [procedures/output-limiter.md](procedures/output-limiter.md), after the EQ is final).
 

@@ -1,14 +1,14 @@
 Filter Settings file
 
 Room EQ V5.31
-Dated: 22 Nov 2026 05:44:19
+Dated: 22 Nov 2026 13:25:54
 
-Notes:akustik v4-harman-sub sub (DSP out 3); designed by analysis/analyse_sub_c.py on the t.racks grid (REW text format = transport for the configurator import); set by hand on Out 3: LPF LR24 52.0 Hz, polarity 180 (invert), delay 6.604 ms = 317 samples, gain -4.5 dB (for amp 45), routing In A + In B + In C + In D; mains Out 1/2 = eq/v2-harman unchanged
+Notes:akustik v4-harman-sub sub (DSP out 3); designed by analysis/analyse_sub_c.py on the t.racks grid (REW text format = transport for the configurator import); set by hand on Out 3: LPF LR24 52.0 Hz, polarity 180 (invert), delay 6.875 ms = 330 samples, gain -3.7 dB (for amp 45), routing In A + In B + In C + In D; mains Out 1/2 = eq/v2-harman unchanged
 
 Equaliser: Generic
 akustik v4-harman-sub Sub
-Filter  1: ON  PK       Fc    47.37 Hz  Gain -12.0 dB  Q  4.2479
-Filter  2: OFF None
+Filter  1: ON  PK       Fc    28.49 Hz  Gain  -4.8 dB  Q  5.1031
+Filter  2: ON  PK       Fc    47.37 Hz  Gain -12.0 dB  Q  3.5721
 Filter  3: OFF None
 Filter  4: OFF None
 Filter  5: OFF None

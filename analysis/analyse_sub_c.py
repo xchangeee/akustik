@@ -190,6 +190,24 @@ A_of = lambda graw: 10 ** (abs((graw - 120) / 10) / 40)
 NPEQ = int(os.environ.get("SUB_NPEQ", 1)); G_MIN, G_MAX = -12.0, 6.0     # boost limited to +6 dB per band (headroom, leakage)
 Q_MAX = float(os.environ.get("SUB_QMAX", 5.0))
 FR_MAX = freq_raw(130)                  # PEQ bands only where the sub plays
+# Leak guard (2026-11-22, after the first design overshot the seat by ~+4 dB at 28 Hz, the 28.6 Hz length mode spot C
+# drives): the deepest bass leaks through the building most, so overshoot above the target at the seat below LEAK_HZ
+# costs extra (LEAK_W x mean squared overshoot, added to the squared rms), and one extra cut-only band sits at 25-32 Hz.
+# LEAK_W = 0 and no leak band = the first design (env SUB_LEAK_W, SUB_LEAK_BAND=0).
+LEAK_HZ, LEAK_W = 35.0, float(os.environ.get("SUB_LEAK_W", 2.0))
+LEAK_BAND = os.environ.get("SUB_LEAK_BAND", "1") == "1"
+LEAK_F = (25.0, 32.0)
+NB_ALL = NPEQ + LEAK_BAND
+LEAKM = FIT <= LEAK_HZ
+
+
+def leak_db(tag, curves):
+    """rms overshoot of the seat above the target below LEAK_HZ, dB"""
+    return np.sqrt(np.mean(np.maximum(0, curves["seat"][LEAKM] - TGT[tag][LEAKM]) ** 2))
+
+
+def design_cost(tag, curves):
+    return np.sqrt(cost_of(tag, curves) ** 2 + LEAK_W * leak_db(tag, curves) ** 2)
 
 
 def peq(fc, gain, q, z_=zb):
@@ -209,7 +227,7 @@ def curves_of(tag, slope, fc, pol, tau, gd, bands):
 
 def unpack(p):
     gd, tau, lfc = p[:3]
-    return gd, tau, 2 ** lfc, [(2 ** p[3 + 3 * i], p[4 + 3 * i], 2 ** p[5 + 3 * i]) for i in range(NPEQ)]
+    return gd, tau, 2 ** lfc, [(2 ** p[3 + 3 * i], p[4 + 3 * i], 2 ** p[5 + 3 * i]) for i in range(NB_ALL)]
 
 
 def design(tag):
@@ -225,7 +243,10 @@ def design(tag):
     p0 = [g0, tau0, np.log2(freq_hz(fr))]
     for f in picked: p0 += [np.log2(f), float(np.clip(-np.interp(f, FIT, dev), G_MIN, 0)), np.log2(4.0)]
     bounds = [(-25, 25), (-10, 15), (np.log2(25), np.log2(120))] + [(np.log2(22), np.log2(130)), (G_MIN, G_MAX), (np.log2(0.5), np.log2(Q_MAX))] * NPEQ
-    f_cost = lambda p: cost_of(tag, curves_of(tag, slope, unpack(p)[2], pol, unpack(p)[1], unpack(p)[0], unpack(p)[3]))
+    if LEAK_BAND:   # last band: cut only, 25-32 Hz
+        p0 += [np.log2(28.6), -3.0, np.log2(3.0)]
+        bounds += [(np.log2(LEAK_F[0]), np.log2(LEAK_F[1])), (G_MIN, 0.0), (np.log2(0.5), np.log2(Q_MAX))]
+    f_cost = lambda p: design_cost(tag, curves_of(tag, slope, unpack(p)[2], pol, unpack(p)[1], unpack(p)[0], unpack(p)[3]))
     r = minimize(f_cost, p0, method="Powell", bounds=bounds, options=dict(maxiter=20000, xtol=1e-3, ftol=1e-5))
     gd, tau, fc, bands = unpack(r.x)
     # device grid: LPF fc raw, delay in samples, Out 3 gain 0.1 dB, PEQ raw (f, gain, Q_dev = Q_rbj * A)
@@ -235,7 +256,7 @@ def design(tag):
         bb = [(freq_hz(a), (b - 120) / 10, q_val(c) / A_of(b)) for a, b, c in D["bands"] if b != 120]
         return freq_hz(D["fr"]), D["n"] * 1000 / SR, D["g10"] / 10, bb
     def dcost(D):
-        fc_, tau_, g_, bb = real(D); return cost_of(tag, curves_of(tag, slope, fc_, pol, tau_, g_, bb))
+        fc_, tau_, g_, bb = real(D); return design_cost(tag, curves_of(tag, slope, fc_, pol, tau_, g_, bb))
     c_best, improved = dcost(D), True
     while improved:   # coordinate search on the integer grid, +-1 step
         improved = False
@@ -247,20 +268,26 @@ def design(tag):
             for j in range(3):
                 for st in (-1, 1):
                     b = list(D["bands"][i]); b[j] += st
-                    if not (0 <= b[0] <= FR_MAX and 0 <= b[1] <= 180 and 0 <= b[2] <= 100 and q_val(b[2]) / A_of(b[1]) <= Q_MAX * 2 ** (1 / 24)): continue
+                    lo_, hi_ = (freq_raw(LEAK_F[0]), freq_raw(LEAK_F[1])) if LEAK_BAND and i == NPEQ else (0, FR_MAX)
+                    if not (lo_ <= b[0] <= hi_ and 0 <= b[1] <= (120 if LEAK_BAND and i == NPEQ else 180) and 0 <= b[2] <= 100 and q_val(b[2]) / A_of(b[1]) <= Q_MAX * 2 ** (1 / 24)): continue
                     T = dict(D); T["bands"] = D["bands"][:i] + [tuple(b)] + D["bands"][i + 1:]; c = dcost(T)
                     if c < c_best - 1e-6: D, c_best, improved = T, c, True
     D["bands"] = sorted(b for b in D["bands"] if b[1] != 120)
     fc, tau, gd, bb = real(D)
-    return dict(slope=slope, pol=pol, D=D, fc=fc, tau=tau, gd=gd, bands=bb, cost=c_best, cost_align=c0, cost_cont=r.fun)
+    cur = curves_of(tag, slope, fc, pol, tau, gd, bb)
+    return dict(slope=slope, pol=pol, D=D, fc=fc, tau=tau, gd=gd, bands=bb, cost=cost_of(tag, cur), leak=leak_db(tag, cur),
+                cost_align=c0, cost_cont=r.fun)
 
 
 print(f"\n=== 2b. Refined per preset: gain, delay, LPF fc and {NPEQ} PEQ band(s) on Out 3 (gain -12..+6 dB, Q <= {Q_MAX:g}), device grid ===")
+print(f"Leak guard: seat overshoot above the target below {LEAK_HZ:g} Hz weighted x{LEAK_W:g} in the design cost"
+      + (f"; + 1 cut-only band at {LEAK_F[0]:g}-{LEAK_F[1]:g} Hz." if LEAK_BAND else "; no extra band."))
+print("Printed costs: 'with PEQ' = design cost (incl. the guard); 'device grid' = plain rms vs target; 'seat overshoot' = rms dB above target <35 Hz.")
 DES = {}
 for tag in TAGS:
     d = DES[tag] = design(tag)
     print(f"\n-- {TNAME[tag]} -> {NEW[tag]}: cost mains alone {ALONE[tag]:.2f}, aligned {d['cost_align']:.2f}, "
-          f"with PEQ {d['cost_cont']:.2f}, on the device grid {d['cost']:.2f} dB")
+          f"with PEQ {d['cost_cont']:.2f}, on the device grid {d['cost']:.2f} dB, seat overshoot <{LEAK_HZ:g} Hz {d['leak']:.2f} dB")
     print(f"   Out 3 LPF {XO[d['slope']][0]} {d['fc']:.1f} Hz (raw {d['D']['fr']}), polarity {'180 (inverted)' if d['pol'] < 0 else '0'}, "
           f"delay {d['tau']:+.3f} ms ({d['D']['n']:+d} samples, {'Out 3' if d['tau'] >= 0 else 'Out 1/2'}), gain {d['gd']:+.1f} dB vs measured")
     for f, g, q in d["bands"]: print(f"   PEQ  {f:6.2f} Hz  {g:+5.1f} dB  Q_rbj {q:.3f}")
@@ -318,7 +345,18 @@ for tag in TAGS:
                          gain=f"{g_live:+.1f} dB (for amp {AMP_FUN[tag]})", hpf="off", routing="In A + In B + In C + In D")
     print(f"-- {NEW[tag]} (= {TNAME[tag]} mains unchanged, + Out 3):")
     for k, v in SETTINGS[tag].items(): print(f"   {k:8} {v}")
-    for f, g, q in d["bands"]: print(f"   PEQ      {f:.2f} Hz {g:+.1f} dB Q_rbj {q:.4f}  (device Q {q_val(d['D']['bands'][0][2]):.2f})")
+    for (f, g, q), raw in zip(d["bands"], d["D"]["bands"]): print(f"   PEQ      {f:.2f} Hz {g:+.1f} dB Q_rbj {q:.4f}  (device Q {q_val(raw[2]):.2f})")
+
+# tracks probe command that writes the preset (raw values, docs/protocol.md section 5/6 in ~/WPlay/tracks): recall the
+# mains preset, set Out 3, store over the existing sub preset (--overwrite checks its current name)
+PRESET = {"eq1": (2, 5, "EQ v3 flat+sub"), "eq2": (3, 6, "EQ v4 Harm+sub")}
+print("\ntracks probe (cd ~/WPlay/tracks; add --reads-only for a dry run):")
+for tag in TAGS:
+    d = DES[tag]; src, dst, name = PRESET[tag]
+    g_live = round(-10 + d["gd"] - 6.0 - AMP_DB_PER_STEP * (50 - AMP_FUN[tag]), 1)
+    out3 = f"15 {d['D']['fr']} {d['slope']} {1 if d['pol'] < 0 else 0} {d['D']['n']} {int(round(280 + 10 * g_live))}"
+    peqs = " ".join(f"--peq {g} {f} {q}" for f, g, q in d["D"]["bands"])
+    print(f'  tools/probe/probe --make-preset {src} {dst} "{name}" --out3 {out3} {peqs} --overwrite "{name}"')
 
 # filter files (REW text = transport for the configurator import, as eq/v1-flat, eq/v2-harman)
 import datetime

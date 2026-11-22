@@ -8,18 +8,19 @@ Map of the repo: [README.md](README.md). How to work here: [CLAUDE.md](CLAUDE.md
 - Baseline measurements done (DSP flat): [findings/2026-11-18-baseline.md](findings/2026-11-18-baseline.md).
 - **Live mode wired** (TV → In A/B, mixer → In C/D, summed A+C → 1, B+D → 2 in all presets; UMC disconnected; no hum/hiss with the mixer on but idle): [docs/current-setup.md](docs/current-setup.md#two-modes).
 - **On the DSP:** P01 FLAT (routing now summed); EQ v1 (flat target) + HPF BW 24 29.8 Hz in slot 2, electrically verified; **EQ v2 (Harman) in slot 3**: [docs/current-setup.md](docs/current-setup.md#dsp-tracks-dsp-4x4-mini).
-- **Sub8 at spot C measured** and designed in as Out 3: EQ v3 (v1 + sub) and v4 (v2 + sub), mains unchanged; **on the DSP as P05 / P06** (sub matched at amp 50 / 45), not listened to yet: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md).
+- **Sub8 at spot C measured** and designed in as Out 3: EQ v3 (v1 + sub) and v4 (v2 + sub), mains unchanged; **on the DSP as P05 / P06** (sub matched at amp 50 / 45), not listened to yet: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md). **Now the second design** (no 28 Hz overshoot at the seat), written over P05/P06 the same day: [findings/2026-11-22-sub-c-28hz.md](findings/2026-11-22-sub-c-28hz.md).
 - EQ v1 sounds "boring" (low end missing) → EQ v2 (Harman target): more "subby" bass, not boomy, also better at low volume; bass audible outside the room depending on where you stand: [findings/2026-11-20-listening.md](findings/2026-11-20-listening.md). Amp volume per EQ is in the same file (v2: everyday 30–35, fun 40–45; v1: fun 50). **v2 = everyday EQ, v1 kept for loud sessions.**
 
 ## Next
 
-1. **Sub8: listen to P05 (v3, amp 50) and P06 (v4, amp 45)** with the sub on/off, steps in [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md#status-2026-11-22-designed-next-steps). Then a seat check of mains + sub (needs a sweep.py change: both outputs at once).
+1. **Sub8: P05 first listen "sounds great with sub" ([notes](findings/2026-11-22-sub-listening.md)). Still to do: P06 (v4, amp 45), and both (P05 at amp 50)** with the sub on/off, steps in [docs/plans/sub8-overlay.md](docs/plans/sub8-overlay.md#status-2026-11-22-designed-next-steps). Then a seat check of mains + sub (needs a sweep.py change: both outputs at once).
 2. Measuring: `mise run measure <plan.json> <set>` ([tools/README.md](tools/README.md)). Spot A (`subA-*`) skipped for now.
 3. Output limiter (compressor, ratio Limit) for both presets, v2 and v1: [docs/procedures/output-limiter.md](docs/procedures/output-limiter.md).
 4. Later, nice-to-have: real 2.1 presets (mains high-passed, sub does all the bass), from the same data.
-5. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
-6. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
-7. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
+5. TV audio digital (HDMI extractor → TOSLINK → SMSL D1 → DSP In A/B), replaces the worn TV 3.5 mm out (hum): [docs/plans/tv-digital-audio.md](docs/plans/tv-digital-audio.md).
+6. Replace the TS adapters on DSP Out 1/2 with TRS → 2× RCA ([shopping list](docs/shopping-list.md)).
+7. After the Sub8: iPhone room scan → room model → choose and build absorbers: [docs/plans/room-model-absorbers.md](docs/plans/room-model-absorbers.md).
+8. Last, nice-to-have: speakers on one concrete slab each, on Sylomer pads (less bass through the floor). Weigh a speaker first, then pick the Sylomer: [docs/plans/speaker-isolation.md](docs/plans/speaker-isolation.md).
 
 Open questions for the user: a fresh REW settings export after the calibration (optional).
 
@@ -98,3 +99,9 @@ Open questions for the user: a fresh REW settings export after the calibration (
 - [WRITEUP.md](WRITEUP.md): the whole project on one GitHub page (room, method, before/after, sub, tool checks, glossary), linking into the findings.
 - Plots from the new `analysis/build_writeup.py` (one style, plots only); `analyse_eq_room.py` / `analyse_sub_c.py` now also export their curves as `.npz`. Re-run changed no numbers.
 - User's updated room sketch with Sub spots A/B/C: [docs/img/room-layout-sketch.svg](docs/img/room-layout-sketch.svg) (replaces the PNG).
+
+### 2026-11-22: sub 28 Hz overshoot fixed
+
+- `analyse_sub_c.py`: leak guard (seat overshoot < 35 Hz weighted ×2) + a cut-only Out 3 band at 25–32 Hz. Seat 28 Hz +3.7/+3.9 → +0.4/+0.6 dB (v3/v4); DJ −3 dB there; new `eq/v3-flat-sub`, `eq/v4-harman-sub` (2 bands, pass `rewImport`): [finding](findings/2026-11-22-sub-c-28hz.md).
+- tracks probe `--make-preset`: `--peq` repeatable (0..7 bands), `--overwrite "NAME"` to replace a used slot (name must match). The script prints the commands; both run (user OK): P05/P06 overwritten, state as predicted, read back. DSP left on P06.
+- User listened to P05 (v3 + sub) at amp 45, TV 50, 70–75 dB(C): first design too subby, second "sounds great", nothing off; almost no leakage into other rooms, mostly through the door: [findings/2026-11-22-sub-listening.md](findings/2026-11-22-sub-listening.md).

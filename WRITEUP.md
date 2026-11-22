@@ -235,7 +235,7 @@ The fix tried here: a PreSonus Eris Sub8 on the DSP's third output, as an **add-
 - A script searched for the settings that bring mains + sub closest to each preset's target (25–120 Hz, seat weighted 2/3, DJ spot 1/3). All in the DSP's own steps, as for the main EQ:
   - Low-pass filter type and frequency (where the sub fades out).
   - Polarity and delay. The sub sits elsewhere in the room than the mains, and its own filter delays its sound, so its wave arrives at the seat shifted against theirs. Polarity and delay line them up so they add instead of cancel where both play (~30–50 Hz).
-  - Level, and one EQ cut.
+  - Level, and two EQ cuts.
 
 Result: grey is the main speakers alone with their EQ, the coloured line is mains + sub, dashed is the target:
 
@@ -243,21 +243,21 @@ Result: grey is the main speakers alone with their EQ, the coloured line is main
 
 | | v3 = v1 + sub | v4 = v2 + sub |
 | --- | --- | --- |
-| Sub low-pass | Butterworth 24 dB/oct, 38.5 Hz | Linkwitz-Riley 24 dB/oct, 52 Hz |
-| Polarity, delay | inverted, 6.1 ms | inverted, 6.6 ms |
-| EQ cut on the sub | 46.3 Hz, −11.9 dB | 47.4 Hz, −12.0 dB |
+| Sub low-pass | Butterworth 24 dB/oct, 32.7 Hz | Linkwitz-Riley 24 dB/oct, 52 Hz |
+| Polarity, delay | inverted, 5.5 ms | inverted, 6.9 ms |
+| EQ cuts on the sub | 29.2 Hz −8.0 dB, 45.2 Hz −12.0 dB | 28.5 Hz −4.8 dB, 47.4 Hz −12.0 dB |
 | rms deviation from target, 25–120 Hz | 4.2 dB → 2.2 dB | 7.1 dB → 2.6 dB |
 
 How to read this:
 
 - **The low end now reaches the target down to 25 Hz.** The curve's typical distance from the target halves (v3) or drops to a third (v4). v4 gains more because its target asks for more low bass.
-- Polarity inverted and ~6 ms delay came out the same in every run of the search and for both presets, so they reflect the real acoustic situation and aren't a fitting accident.
-- The sub's cut at ~47 Hz is there because at C the sub excites the 45–50 Hz mode at the seat.
+- Polarity inverted and a 5.5–7 ms delay came out in every run of the search and for both presets, so they reflect the real acoustic situation and aren't a fitting accident.
+- The sub's cut at 45–47 Hz is there because at C the sub excites the 45–50 Hz mode at the seat. The second cut (28–29 Hz) is explained in the next bullet.
 - **It's robust:** every single seat and DJ position gets closer to the target, not just the average. Only one floor corner gets slightly worse.
-- **It overshoots at 28 Hz** by about +4 dB at the seat. That's the 28.6 Hz mode the model predicted for spot C. The deepest bass is also what travels through buildings best, so that's the first thing to cut if the neighbours complain.
+- **No overshoot at 28 Hz.** The first search left the seat +4 dB above target there: the 28.6 Hz mode the model predicted for spot C. The deepest bass also travels through buildings best, so the search now penalises overshoot at the seat below 35 Hz and gets a cut-only band at 25–32 Hz. Seat now within +0.6 dB; the DJ spot drops ~3 dB below target at 28 Hz in exchange ([details](findings/2026-11-22-sub-c-28hz.md)).
 - **The DJ spot's 31–35 Hz hole stays.** The sub has the same hole there; spot C doesn't reach it.
 - **Practical catch:** the amp's volume knob only controls the main speakers; the sub has its own amp. So the sub is level-matched for one amp position per preset, and is meant for loud sessions at that position.
-- Loaded on the DSP as presets P05 / P06. **Not listened to yet.**
+- Loaded on the DSP as presets P05 / P06. First listen to P05 (v3 + sub): the first design was too subby, the second "sounds great" at ~70–75 dB(C); almost no leakage into other rooms, mostly through the door ([listening notes](findings/2026-11-22-sub-listening.md)). P06 not listened to yet.
 
 Details: [findings/2026-11-22-sub-c.md](findings/2026-11-22-sub-c.md).
 

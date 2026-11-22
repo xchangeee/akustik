@@ -229,6 +229,29 @@ prominence = peak over the median of 60-100 Hz (dB); lev = peak re the IR's earl
    2 R seat eq2 Nov 22.wav                   90.00 Hz  prominence  +7.2  lev  -22.8
 -- 2026-11-22/nosub-seat
    1 L seat eq1 nosub.wav                    77.91 Hz  prominence +16.8  lev   -7.0
+-- 2026-11-22/subC-corners
+   3 S corner front left subC.wav            78.41 Hz  prominence +14.0  lev  -20.8
+   3 S corner front right subC.wav           78.78 Hz  prominence +10.2  lev  -27.1
+-- 2026-11-22/subC-dj
+   3 S DJ back30 subC.wav                    77.96 Hz  prominence +21.5  lev  -14.1
+   3 S DJ down30 subC.wav                    78.23 Hz  prominence +16.5  lev  -12.0
+   3 S DJ fwd30 subC.wav                     78.09 Hz  prominence +17.9  lev  -12.9
+   3 S DJ left30 subC.wav                    78.05 Hz  prominence +18.0  lev  -11.8
+   3 S DJ pos subC.wav                       78.32 Hz  prominence +14.5  lev  -14.6
+   3 S DJ right30 subC.wav                   78.28 Hz  prominence +12.1  lev  -16.7
+   3 S DJ up30 subC.wav                      78.14 Hz  prominence +19.1  lev  -15.2
+-- 2026-11-22/subC-leveltest
+   3 S seat subC test.wav                    78.32 Hz  prominence  +9.2  lev  -18.4
+-- 2026-11-22/subC-leveltest2
+   3 S seat subC test.wav                    77.91 Hz  prominence +18.9  lev  -15.4
+-- 2026-11-22/subC-seat
+   3 S pos1 left30 subC.wav                  78.41 Hz  prominence +16.8  lev  -17.6
+   3 S pos2 right30 subC.wav                 78.64 Hz  prominence +15.3  lev  -17.6
+   3 S pos3 fwd20 subC.wav                   78.28 Hz  prominence +16.9  lev  -17.4
+   3 S pos4 back20 subC.wav                  78.14 Hz  prominence +20.7  lev  -16.6
+   3 S pos5 up10 subC.wav                    78.14 Hz  prominence +21.4  lev  -15.6
+   3 S pos6 down10 subC.wav                  78.00 Hz  prominence +17.4  lev  -16.6
+   3 S seat subC.wav                         78.28 Hz  prominence +17.7  lev  -16.8
 -- 2026-11-22/sweep-check-seat
    1 L seat py.wav                           78.14 Hz  prominence +24.9  lev  -10.3
    2 R seat py.wav                           90.00 Hz  prominence  +8.9  lev  -30.6
